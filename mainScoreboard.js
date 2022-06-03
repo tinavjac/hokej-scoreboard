@@ -121,6 +121,7 @@ var mainScoreboard = function mainScoreboard(props) {
 			setActiveLeagueTab(Object.entries(data)[0][1].league_name);
 			setNoDataCzech(false);
 		}).catch(function (error) {
+			setCzechLoad(false);
 			setNoDataCzech(true);
 			console.log(error);
 		});
@@ -136,6 +137,7 @@ var mainScoreboard = function mainScoreboard(props) {
 			}
 			setNoDataForeign(false);
 		}).catch(function (error) {
+			setForeignLoad(false);
 			setNoDataForeign(true);
 			console.log(error);
 		});

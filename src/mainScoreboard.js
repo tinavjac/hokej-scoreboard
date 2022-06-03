@@ -76,6 +76,7 @@ const mainScoreboard = (props) => {
 				setNoDataCzech(false);
 			})
 			.catch(function (error) {
+				setCzechLoad(false);
 				setNoDataCzech(true);
 				console.log(error);
 			});
@@ -94,6 +95,7 @@ const mainScoreboard = (props) => {
 				setNoDataForeign(false);
 			})
 			.catch(function (error) {
+				setForeignLoad(false);
 				setNoDataForeign(true);
 				console.log(error);
 			});

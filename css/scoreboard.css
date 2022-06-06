@@ -350,12 +350,22 @@ body {
 	padding: 10px 8px;
 	border-radius: var(--default-border-radius);
 	border: 1px solid var(--top-border-color);
+	background-color: var(--color-white);
 	cursor: pointer;
 
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: center;
 	gap: 8px;
+
+	text-decoration: none;
+	color: var(--color-black);
+
+	transition: background-color 200ms ease-in-out;
+}
+.match-tab:hover,
+.match-tab:focus {
+	background-color: var(--color-gray-light);
 }
 .match-tab img {
 	width: 14px;

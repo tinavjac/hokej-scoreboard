@@ -35,12 +35,12 @@ var mainScoreboard = function mainScoreboard(props) {
 	    APIDate = _useState8[0],
 	    setAPIDate = _useState8[1];
 
-	var _useState9 = useState(false),
+	var _useState9 = useState(true),
 	    _useState10 = _slicedToArray(_useState9, 2),
 	    noDataCzech = _useState10[0],
 	    setNoDataCzech = _useState10[1];
 
-	var _useState11 = useState(false),
+	var _useState11 = useState(true),
 	    _useState12 = _slicedToArray(_useState11, 2),
 	    noDataForeign = _useState12[0],
 	    setNoDataForeign = _useState12[1];
@@ -105,7 +105,6 @@ var mainScoreboard = function mainScoreboard(props) {
 
 	var urlForeignRoot = "https://hokej.cz.s3.amazonaws.com/scoreboard/onlajny/";
 	var urlCzechRoot = "http://hokej.cz.s3.amazonaws.com/scoreboard/";
-	var teamLogo = "";
 
 	var config = {
 		taskForeignUrl: "" + urlForeignRoot + APIDate + ".json",
@@ -118,7 +117,6 @@ var mainScoreboard = function mainScoreboard(props) {
 			return response.json();
 		}).then(function (data) {
 			setCzechLeagueData(Object.entries(data));
-			setActiveLeagueTab(Object.entries(data)[0][1].league_name);
 			setNoDataCzech(false);
 		}).catch(function (error) {
 			setCzechLoad(false);
@@ -132,9 +130,6 @@ var mainScoreboard = function mainScoreboard(props) {
 			return response.json();
 		}).then(function (data) {
 			setForeignLeagueData(Object.entries(data));
-			if (activeLeagueTab == undefined) {
-				setActiveLeagueTab(Object.entries(data)[0][1].league_name);
-			}
 			setNoDataForeign(false);
 		}).catch(function (error) {
 			setForeignLoad(false);
@@ -143,6 +138,16 @@ var mainScoreboard = function mainScoreboard(props) {
 		});
 	};
 
+	var setTab = function setTab() {
+		if (czechLeagueData != undefined) {
+			setActiveLeagueTab(czechLeagueData[0][1].league_name);
+		} else if (czechLeagueData == undefined && foreignLeagueData != undefined) {
+			setActiveLeagueTab(foreignLeagueData[0][1].league_name);
+		}
+	};
+	useEffect(function () {
+		setTab();
+	}, [czechLeagueData, foreignLeagueData]);
 	useEffect(function () {
 		fetchCzechData();
 		fetchForeignData();
@@ -309,7 +314,7 @@ var mainScoreboard = function mainScoreboard(props) {
 											React.createElement(
 												"p",
 												null,
-												"Den"
+												dayName
 											),
 											React.createElement(
 												"p",
@@ -360,9 +365,9 @@ var mainScoreboard = function mainScoreboard(props) {
 								React.createElement(
 									"div",
 									{ className: "match-tabsContainer" },
-									React.createElement(
-										"div",
-										{ className: "match-tab" },
+									value.league_name == "Tipsport extraliga" && match.match_status == "před zápasem" && React.createElement(
+										"a",
+										{ href: "#", className: "match-tab" },
 										React.createElement("img", { src: "../img/icoTextGray.svg", alt: "" }),
 										React.createElement(
 											"p",
@@ -370,9 +375,9 @@ var mainScoreboard = function mainScoreboard(props) {
 											"Preview"
 										)
 									),
-									React.createElement(
-										"div",
-										{ className: "match-tab" },
+									match.bets.tipsport.link != null && match.match_status == "před zápasem" && React.createElement(
+										"a",
+										{ href: match.bets.tipsport.link, target: "_blank", className: "match-tab" },
 										React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
 										React.createElement(
 											"div",
@@ -380,18 +385,58 @@ var mainScoreboard = function mainScoreboard(props) {
 											React.createElement(
 												"p",
 												null,
-												"1.5"
+												match.bets.tipsport.home_win
 											),
 											React.createElement(
 												"p",
 												null,
-												"5.2"
+												match.bets.tipsport.draw
 											),
 											React.createElement(
 												"p",
 												null,
-												"5.3"
+												match.bets.tipsport.away_win
 											)
+										)
+									),
+									match.bets.tipsport.link != null && match.match_status == "live" && React.createElement(
+										"a",
+										{ href: match.bets.tipsport.link, target: "_blank", className: "match-tab" },
+										React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
+										React.createElement(
+											"p",
+											null,
+											"Lives\xE1zka"
+										)
+									),
+									match.match_status == "live" && (value.league_name == "CHANCE LIGA" || value.league_name == "Tipsport extraliga") && React.createElement(
+										"a",
+										{ href: "#", target: "_blank", className: "match-tab" },
+										React.createElement("img", { src: "../img/icoPlay.svg", alt: "" }),
+										React.createElement(
+											"p",
+											null,
+											"\u017Div\u011B"
+										)
+									),
+									match.match_status == "po zápase" && (value.league_name == "CHANCE LIGA" || value.league_name == "Tipsport extraliga") && React.createElement(
+										"a",
+										{ href: "#", target: "_blank", className: "match-tab" },
+										React.createElement("img", { src: "../img/icoPlayBlack.svg", alt: "" }),
+										React.createElement(
+											"p",
+											null,
+											"Z\xE1znam"
+										)
+									),
+									match.match_status == "po zápase" && React.createElement(
+										"a",
+										{ href: "#", className: "match-tab" },
+										React.createElement("img", { src: "../img/icoSummary.svg", alt: "" }),
+										React.createElement(
+											"p",
+											null,
+											"Z\xE1pis"
 										)
 									)
 								)
@@ -476,7 +521,7 @@ var mainScoreboard = function mainScoreboard(props) {
 											React.createElement(
 												"p",
 												null,
-												"Den"
+												dayName
 											),
 											React.createElement(
 												"p",
@@ -540,19 +585,9 @@ var mainScoreboard = function mainScoreboard(props) {
 								React.createElement(
 									"div",
 									{ className: "match-tabsContainer" },
-									React.createElement(
-										"div",
-										{ className: "match-tab" },
-										React.createElement("img", { src: "../img/icoTextGray.svg", alt: "" }),
-										React.createElement(
-											"p",
-											null,
-											"Preview"
-										)
-									),
-									React.createElement(
-										"div",
-										{ className: "match-tab" },
+									match.bets.tipsport.link != null && match.match_status == "před zápasem" && React.createElement(
+										"a",
+										{ href: match.bets.tipsport.link, target: "_blank", className: "match-tab" },
 										React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
 										React.createElement(
 											"div",
@@ -560,18 +595,38 @@ var mainScoreboard = function mainScoreboard(props) {
 											React.createElement(
 												"p",
 												null,
-												"1.5"
+												match.bets.tipsport.home_win
 											),
 											React.createElement(
 												"p",
 												null,
-												"5.2"
+												match.bets.tipsport.draw
 											),
 											React.createElement(
 												"p",
 												null,
-												"5.3"
+												match.bets.tipsport.away_win
 											)
+										)
+									),
+									match.bets.tipsport.link != null && match.match_status == "live" && React.createElement(
+										"a",
+										{ href: match.bets.tipsport.link, target: "_blank", className: "match-tab" },
+										React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
+										React.createElement(
+											"p",
+											null,
+											"Lives\xE1zka"
+										)
+									),
+									match.match_status == "po zápase" && React.createElement(
+										"a",
+										{ href: "#", className: "match-tab" },
+										React.createElement("img", { src: "../img/icoSummary.svg", alt: "" }),
+										React.createElement(
+											"p",
+											null,
+											"Z\xE1pis"
 										)
 									)
 								)

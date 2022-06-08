@@ -399,6 +399,20 @@ var mainScoreboard = function mainScoreboard(props) {
 											)
 										)
 									),
+									value.league_name == "Tipsport extraliga" && (match.match_status == "před zápasem" || match.match_status == "live") && React.createElement(
+										"div",
+										{ className: "mediaTab-container" },
+										React.createElement(
+											"a",
+											{ href: "#", target: "_blank", className: "match-tab--imgOnly" },
+											React.createElement("img", { src: "../img/logoCT@2x.png", alt: "" })
+										),
+										React.createElement(
+											"a",
+											{ href: "#", target: "_blank", className: "match-tab--imgOnly" },
+											React.createElement("img", { src: "../img/logoO2@2x.png", alt: "" })
+										)
+									),
 									match.bets.tipsport.link != null && match.match_status == "live" && React.createElement(
 										"a",
 										{ href: match.bets.tipsport.link, target: "_blank", className: "match-tab" },
@@ -417,6 +431,16 @@ var mainScoreboard = function mainScoreboard(props) {
 											"p",
 											null,
 											"\u017Div\u011B"
+										)
+									),
+									match.match_status == "live" && React.createElement(
+										"a",
+										{ href: "", target: "_blank", className: "match-tab" },
+										React.createElement("img", { src: "../img/icoText.svg", alt: "" }),
+										React.createElement(
+											"p",
+											null,
+											"Text"
 										)
 									),
 									match.match_status == "po zápase" && (value.league_name == "CHANCE LIGA" || value.league_name == "Tipsport extraliga") && React.createElement(
@@ -617,6 +641,16 @@ var mainScoreboard = function mainScoreboard(props) {
 											"p",
 											null,
 											"Lives\xE1zka"
+										)
+									),
+									match.match_status == "live" && React.createElement(
+										"a",
+										{ href: "", target: "_blank", className: "match-tab" },
+										React.createElement("img", { src: "../img/icoText.svg", alt: "" }),
+										React.createElement(
+											"p",
+											null,
+											"Text"
 										)
 									),
 									match.match_status == "po zápase" && React.createElement(

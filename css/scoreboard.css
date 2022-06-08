@@ -391,9 +391,14 @@ body {
 	border-right: 0px;
 	padding-right: 0px;
 }
-.match-tab--imgOnly {
+.match-tab--imgOnly img {
 	height: 16px;
 	width: auto;
+}
+.mediaTab-container {
+	display: flex;
+	flex-flow: row nowrap;
+	gap: 16px;
 }
 
 .scoreBoard-buttonsContainer {

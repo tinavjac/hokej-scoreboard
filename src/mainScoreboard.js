@@ -258,6 +258,17 @@ const mainScoreboard = (props) => {
 																</div>
 															</a>
 														)}
+														{value.league_name == "Tipsport extraliga" &&
+															(match.match_status == "před zápasem" || match.match_status == "live") && (
+																<div className="mediaTab-container">
+																	<a href="#" target="_blank" className="match-tab--imgOnly">
+																		<img src="../img/logoCT@2x.png" alt="" />
+																	</a>
+																	<a href="#" target="_blank" className="match-tab--imgOnly">
+																		<img src="../img/logoO2@2x.png" alt="" />
+																	</a>
+																</div>
+															)}
 														{match.bets.tipsport.link != null && match.match_status == "live" && (
 															<a href={match.bets.tipsport.link} target="_blank" className="match-tab">
 																<img src="../img/icoTipsport.svg" alt="" />
@@ -271,6 +282,12 @@ const mainScoreboard = (props) => {
 																	<p>Živě</p>
 																</a>
 															)}
+														{match.match_status == "live" && (
+															<a href="" target="_blank" className="match-tab">
+																<img src="../img/icoText.svg" alt="" />
+																<p>Text</p>
+															</a>
+														)}
 														{match.match_status == "po zápase" &&
 															(value.league_name == "CHANCE LIGA" || value.league_name == "Tipsport extraliga") && (
 																<a href="#" target="_blank" className="match-tab">
@@ -396,6 +413,12 @@ const mainScoreboard = (props) => {
 															<a href={match.bets.tipsport.link} target="_blank" className="match-tab">
 																<img src="../img/icoTipsport.svg" alt="" />
 																<p>Livesázka</p>
+															</a>
+														)}
+														{match.match_status == "live" && (
+															<a href="" target="_blank" className="match-tab">
+																<img src="../img/icoText.svg" alt="" />
+																<p>Text</p>
 															</a>
 														)}
 														{match.match_status == "po zápase" && (

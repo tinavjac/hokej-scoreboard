@@ -223,15 +223,7 @@ var topScoreboard = function topScoreboard(props) {
 					})
 				);
 			})
-		) : React.createElement(
-			"div",
-			{ className: "topScoreboard-noData" },
-			React.createElement(
-				"h1",
-				null,
-				"\u017D\xE1dn\xE9 z\xE1pasy k zobrazen\xED"
-			)
-		)
+		) : console.log("Top Scoreboard: NO DATA")
 	);
 };
 

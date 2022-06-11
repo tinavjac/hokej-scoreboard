@@ -174,9 +174,7 @@ const topScoreboard = (props) => {
 						})}
 				</section>
 			) : (
-				<div className="topScoreboard-noData">
-					<h1>Žádné zápasy k zobrazení</h1>
-				</div>
+				console.log("Top Scoreboard: NO DATA")
 			)}
 		</div>
 	);

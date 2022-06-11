@@ -41,8 +41,8 @@ var topScoreboard = function topScoreboard(props) {
 	/* API FETCHING */
 
 
-	var urlForeignRoot = "//hokej.cz.s3.amazonaws.com/scoreboard/onlajny/";
-	var urlCzechRoot = "//hokej.cz.s3.amazonaws.com/scoreboard/";
+	var urlForeignRoot = "http://hokej.cz.s3.amazonaws.com/scoreboard/onlajny/";
+	var urlCzechRoot = "http://hokej.cz.s3.amazonaws.com/scoreboard/";
 
 	var config = {
 		taskForeignUrl: "" + urlForeignRoot + APIDate + ".json",

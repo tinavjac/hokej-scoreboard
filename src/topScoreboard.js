@@ -16,8 +16,8 @@ const topScoreboard = (props) => {
 	const [noDataForeign, setNoDataForeign] = useState(false);
 
 	/* API FETCHING */
-	const urlForeignRoot = "http://hokej.cz.s3.amazonaws.com/scoreboard/onlajny/";
-	const urlCzechRoot = "http://hokej.cz.s3.amazonaws.com/scoreboard/";
+	const urlForeignRoot = "//hokej.cz.s3.amazonaws.com/scoreboard/onlajny/";
+	const urlCzechRoot = "//hokej.cz.s3.amazonaws.com/scoreboard/";
 
 	const config = {
 		taskForeignUrl: `${urlForeignRoot}${APIDate}.json`,

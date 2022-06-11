@@ -103,8 +103,8 @@ var mainScoreboard = function mainScoreboard(props) {
 	    foreignLoad = _useState22[0],
 	    setForeignLoad = _useState22[1];
 
-	var urlForeignRoot = "http://hokej.cz.s3.amazonaws.com/scoreboard/onlajny/";
-	var urlCzechRoot = "http://hokej.cz.s3.amazonaws.com/scoreboard/";
+	var urlForeignRoot = "//hokej.cz.s3.amazonaws.com/scoreboard/onlajny/";
+	var urlCzechRoot = "//hokej.cz.s3.amazonaws.com/scoreboard/";
 
 	var config = {
 		taskForeignUrl: "" + urlForeignRoot + APIDate + ".json",

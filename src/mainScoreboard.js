@@ -55,8 +55,8 @@ const mainScoreboard = (props) => {
 	const [czechLoad, setCzechLoad] = useState(true);
 	const [foreignLoad, setForeignLoad] = useState(true);
 
-	const urlForeignRoot = "//hokej.cz.s3.amazonaws.com/scoreboard/onlajny/";
-	const urlCzechRoot = "//hokej.cz.s3.amazonaws.com/scoreboard/";
+	const urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/";
+	const urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/";
 
 	const config = {
 		taskForeignUrl: `${urlForeignRoot}${APIDate}.json`,

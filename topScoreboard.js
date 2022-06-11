@@ -42,7 +42,7 @@ var topScoreboard = function topScoreboard(props) {
 
 
 	var urlForeignRoot = "https://hokej.cz.s3.amazonaws.com/scoreboard/onlajny/";
-	var urlCzechRoot = "http://hokej.cz.s3.amazonaws.com/scoreboard/";
+	var urlCzechRoot = "https://hokej.cz.s3.amazonaws.com/scoreboard/";
 
 	var config = {
 		taskForeignUrl: "" + urlForeignRoot + APIDate + ".json",

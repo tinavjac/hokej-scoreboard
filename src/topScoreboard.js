@@ -128,46 +128,49 @@ const topScoreboard = (props) => {
 									{value.matches.map((match) => {
 										let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`;
 										let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`;
-										return (
-											<a href="" className="league-match">
-												<div className="league-team">
-													<div className="team-container">
-														<img src={homeLogo} alt="" />
-														<p className="team-name">{match.home.shortcut}</p>
+
+										if (APIDate == match.date) {
+											return (
+												<a href="" className="league-match">
+													<div className="league-team">
+														<div className="team-container">
+															<img src={homeLogo} alt="" />
+															<p className="team-name">{match.home.shortcut}</p>
+														</div>
+														<div
+															className={
+																"team-score " +
+																(match.match_status == "před zápasem"
+																	? "future-match"
+																	: match.match_status == "live"
+																	? "active-match"
+																	: "")
+															}
+														>
+															{match.score_home}
+														</div>
 													</div>
-													<div
-														className={
-															"team-score " +
-															(match.match_status == "před zápasem"
-																? "future-match"
-																: match.match_status == "live"
-																? "active-match"
-																: "")
-														}
-													>
-														{match.score_home}
+													<div className="league-team">
+														<div className="team-container">
+															<img src={visitorsLogo} alt="" />
+															<p className="team-name">{match.visitor.shortcut}</p>
+														</div>
+														<div
+															className={
+																"team-score " +
+																(match.match_status == "před zápasem"
+																	? "future-match"
+																	: match.match_status == "live"
+																	? "active-match"
+																	: "")
+															}
+														>
+															{match.score_visitor}
+														</div>
 													</div>
-												</div>
-												<div className="league-team">
-													<div className="team-container">
-														<img src={visitorsLogo} alt="" />
-														<p className="team-name">{match.visitor.shortcut}</p>
-													</div>
-													<div
-														className={
-															"team-score " +
-															(match.match_status == "před zápasem"
-																? "future-match"
-																: match.match_status == "live"
-																? "active-match"
-																: "")
-														}
-													>
-														{match.score_visitor}
-													</div>
-												</div>
-											</a>
-										);
+												</a>
+											);
+										}
 									})}
 								</section>
 							);

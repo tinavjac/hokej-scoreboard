@@ -312,6 +312,12 @@ const mainScoreboard = (props) => {
 					{foreignLeagueData != undefined &&
 						foreignLeagueData.map(([key, value]) => {
 							if (value.league_name == activeLeagueTab) {
+								let matchesToRender = value.matches.every(function (match) {
+									return match.date != APIDate;
+								});
+								if (matchesToRender == true) {
+									setNoDataForeign(true);
+								}
 								return (
 									<div>
 										{value.matches.map((match) => {

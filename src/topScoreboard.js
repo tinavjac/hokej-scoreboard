@@ -119,6 +119,12 @@ const topScoreboard = (props) => {
 						})}
 					{foreignLeagueData != undefined &&
 						foreignLeagueData.map(([key, value]) => {
+							let matchesToRender = value.matches.every(function (match) {
+								return match.date != APIDate;
+							});
+							if (matchesToRender == true) {
+								setNoDataForeign(true);
+							}
 							return (
 								<section className="League">
 									<a href="" className={"league-name" + (value.league_name.length > 10 ? " set-width" : "")}>

@@ -158,6 +158,12 @@ var topScoreboard = function topScoreboard(props) {
 				    key = _ref4[0],
 				    value = _ref4[1];
 
+				var matchesToRender = value.matches.every(function (match) {
+					return match.date != APIDate;
+				});
+				if (matchesToRender == true) {
+					setNoDataForeign(true);
+				}
 				return React.createElement(
 					"section",
 					{ className: "League" },

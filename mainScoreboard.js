@@ -475,6 +475,12 @@ var mainScoreboard = function mainScoreboard(props) {
 				    value = _ref8[1];
 
 				if (value.league_name == activeLeagueTab) {
+					var matchesToRender = value.matches.every(function (match) {
+						return match.date != APIDate;
+					});
+					if (matchesToRender == true) {
+						setNoDataForeign(true);
+					}
 					return React.createElement(
 						"div",
 						null,

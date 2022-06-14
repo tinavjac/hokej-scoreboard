@@ -461,6 +461,20 @@ const mainScoreboard = (props) => {
 		</section>
 	);
 };
+/* 
+const foreignQuery = useQuery(
+	"foreign",
+	() => fetch(`${urlForeignRoot}${luxon.DateTime.now().toFormat("yyyy-MM-dd")}.json`).then((res) => res.json()),
+	{
+		retry: false,
+		refetchIntervalInBackground: true,
+		refetchInterval: foreignRefetch,
+		refetchOnMount: false,
+		refetchOnWindowFocus: false,
+		refetchOnReconnect: false,
+		onSuccess: (res) => setForeignRefetch(5000),
+	},
+); */
 
 const domContainer = document.querySelector("#main-scoreboard");
 ReactDOM.render(React.createElement(mainScoreboard), domContainer);

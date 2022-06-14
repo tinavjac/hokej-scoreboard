@@ -703,6 +703,20 @@ var mainScoreboard = function mainScoreboard(props) {
 		)
 	);
 };
+/* 
+const foreignQuery = useQuery(
+	"foreign",
+	() => fetch(`${urlForeignRoot}${luxon.DateTime.now().toFormat("yyyy-MM-dd")}.json`).then((res) => res.json()),
+	{
+		retry: false,
+		refetchIntervalInBackground: true,
+		refetchInterval: foreignRefetch,
+		refetchOnMount: false,
+		refetchOnWindowFocus: false,
+		refetchOnReconnect: false,
+		onSuccess: (res) => setForeignRefetch(5000),
+	},
+); */
 
 var domContainer = document.querySelector("#main-scoreboard");
 ReactDOM.render(React.createElement(mainScoreboard), domContainer);

@@ -1,6 +1,14 @@
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var mainScoreboard = function mainScoreboard(props) {
+var _ReactQuery = ReactQuery,
+    QueryClient = _ReactQuery.QueryClient,
+    QueryClientProvider = _ReactQuery.QueryClientProvider,
+    useQuery = _ReactQuery.useQuery;
+
+
+var queryClient = new QueryClient();
+
+var MainScoreboard = function MainScoreboard(props) {
 	var _React = React,
 	    useState = _React.useState,
 	    useEffect = _React.useEffect;
@@ -14,6 +22,8 @@ var mainScoreboard = function mainScoreboard(props) {
 	var day = date.getDate();
 	if (day < 10) day = "0" + day;
 	if (month < 10) month = "0" + month;
+
+	var today = year + "-" + month + "-" + day;
 
 	var _useState = useState(0),
 	    _useState2 = _slicedToArray(_useState, 2),
@@ -35,19 +45,7 @@ var mainScoreboard = function mainScoreboard(props) {
 	    APIDate = _useState8[0],
 	    setAPIDate = _useState8[1];
 
-	var _useState9 = useState(true),
-	    _useState10 = _slicedToArray(_useState9, 2),
-	    noDataCzech = _useState10[0],
-	    setNoDataCzech = _useState10[1];
-
-	var _useState11 = useState(true),
-	    _useState12 = _slicedToArray(_useState11, 2),
-	    noDataForeign = _useState12[0],
-	    setNoDataForeign = _useState12[1];
-
 	var prevDate = function prevDate() {
-		setCzechLoad(true);
-		setForeignLoad(true);
 		setDayClicks(dayClicks - 1);
 
 		date = new Date(new Date().setDate(new Date().getDate() + (dayClicks - 1)));
@@ -61,8 +59,6 @@ var mainScoreboard = function mainScoreboard(props) {
 		setAPIDate(year + "-" + month + "-" + day);
 	};
 	var nextDate = function nextDate() {
-		setCzechLoad(true);
-		setForeignLoad(true);
 		setDayClicks(dayClicks + 1);
 
 		date = new Date(new Date().setDate(new Date().getDate() + (dayClicks + 1)));
@@ -78,85 +74,79 @@ var mainScoreboard = function mainScoreboard(props) {
 
 	/* API FETCHING */
 
-	var _useState13 = useState(),
+	var _useState9 = useState(false),
+	    _useState10 = _slicedToArray(_useState9, 2),
+	    czechRefetch = _useState10[0],
+	    setCzechRefetch = _useState10[1];
+
+	var _useState11 = useState(false),
+	    _useState12 = _slicedToArray(_useState11, 2),
+	    foreignRefetch = _useState12[0],
+	    setForeignRefetch = _useState12[1];
+
+	var _useState13 = useState(""),
 	    _useState14 = _slicedToArray(_useState13, 2),
-	    czechLeagueData = _useState14[0],
-	    setCzechLeagueData = _useState14[1];
-
-	var _useState15 = useState(),
-	    _useState16 = _slicedToArray(_useState15, 2),
-	    foreignLeagueData = _useState16[0],
-	    setForeignLeagueData = _useState16[1];
-
-	var _useState17 = useState(),
-	    _useState18 = _slicedToArray(_useState17, 2),
-	    activeLeagueTab = _useState18[0],
-	    setActiveLeagueTab = _useState18[1];
-
-	var _useState19 = useState(true),
-	    _useState20 = _slicedToArray(_useState19, 2),
-	    czechLoad = _useState20[0],
-	    setCzechLoad = _useState20[1];
-
-	var _useState21 = useState(true),
-	    _useState22 = _slicedToArray(_useState21, 2),
-	    foreignLoad = _useState22[0],
-	    setForeignLoad = _useState22[1];
+	    activeLeagueTab = _useState14[0],
+	    setActiveLeagueTab = _useState14[1];
 
 	var urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/";
 	var urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/";
 
-	var config = {
-		taskForeignUrl: "" + urlForeignRoot + APIDate + ".json",
-		taskCzechUrl: "" + urlCzechRoot + APIDate + ".json"
-	};
-
-	var fetchCzechData = function fetchCzechData() {
-		fetch(config.taskCzechUrl).then(function (response) {
-			setCzechLoad(false);
-			return response.json();
-		}).then(function (data) {
-			setCzechLeagueData(Object.entries(data));
-			setNoDataCzech(false);
-		}).catch(function (error) {
-			setCzechLoad(false);
-			setNoDataCzech(true);
-			console.log(error);
+	var foreignQuery = useQuery("foreign", function () {
+		return fetch("" + urlForeignRoot + APIDate + ".json").then(function (res) {
+			return res.json();
 		});
-	};
-	var fetchForeignData = function fetchForeignData() {
-		fetch(config.taskForeignUrl).then(function (response) {
-			setForeignLoad(false);
-			return response.json();
-		}).then(function (data) {
-			setForeignLeagueData(Object.entries(data));
-			setNoDataForeign(false);
-		}).catch(function (error) {
-			setForeignLoad(false);
-			setNoDataForeign(true);
-			console.log(error);
+	}, {
+		retry: false,
+		refetchOnMount: false,
+		refetchOnWindowFocus: false,
+		refetchOnReconnect: false,
+		refetchInterval: foreignRefetch,
+		onSuccess: function onSuccess(res) {
+			return setForeignRefetch(5000);
+		},
+		onError: function onError(res) {
+			return setForeignRefetch(false);
+		},
+		enabled: APIDate == today ? true : false
+	});
+	var czechQuery = useQuery("czech", function () {
+		return fetch("" + urlCzechRoot + APIDate + ".json").then(function (res) {
+			return res.json();
 		});
-	};
+	}, {
+		retry: false,
+		refetchOnMount: false,
+		refetchOnWindowFocus: false,
+		refetchOnReconnect: false,
+		refetchInterval: czechRefetch,
+		onSuccess: function onSuccess(res) {
+			return setCzechRefetch(5000);
+		},
+		onError: function onError(res) {
+			return setCzechRefetch(false);
+		},
+		enabled: APIDate == today ? true : false
+	});
 
-	var setTab = function setTab() {
-		if (czechLeagueData != undefined) {
-			setActiveLeagueTab(czechLeagueData[0][1].league_name);
-		} else if (czechLeagueData == undefined && foreignLeagueData != undefined) {
-			setActiveLeagueTab(foreignLeagueData[0][1].league_name);
-		}
-	};
 	useEffect(function () {
-		setTab();
-	}, [czechLeagueData, foreignLeagueData]);
-	useEffect(function () {
-		fetchCzechData();
-		fetchForeignData();
+		czechQuery.refetch();
+		foreignQuery.refetch();
 	}, [APIDate]);
+	useEffect(function () {
+		if (czechQuery.isSuccess) {
+			setActiveLeagueTab(Object.entries(czechQuery.data)[0][1].league_name);
+		}
+		if (foreignQuery.isSuccess && !czechQuery.isSuccess) {
+			setActiveLeagueTab(Object.entries(foreignQuery.data)[0][1].league_name);
+		}
+	}, [foreignQuery, czechQuery]);
+
 	/* END OF API FETCHING */
 	return React.createElement(
 		"section",
 		{ className: "mainScoreboard" },
-		czechLoad || foreignLoad == true ? React.createElement(
+		foreignQuery.isLoading || czechQuery.isLoading == true ? React.createElement(
 			"div",
 			{ className: "loadContainer" },
 			React.createElement(
@@ -167,7 +157,7 @@ var mainScoreboard = function mainScoreboard(props) {
 		) : "",
 		React.createElement(
 			"header",
-			{ className: "mainScoreboard-header " + (noDataCzech && noDataForeign ? "noData" : "") },
+			{ className: "mainScoreboard-header " + (czechQuery.isErorr && foreignQuery.isErorr ? "noData" : "") },
 			React.createElement(
 				"div",
 				{ className: "header-date" },
@@ -199,10 +189,10 @@ var mainScoreboard = function mainScoreboard(props) {
 					React.createElement("img", { src: "../img/ArrowRightGrey.svg", alt: "" })
 				)
 			),
-			!noDataCzech || !noDataForeign ? React.createElement(
+			czechQuery.isSuccess || foreignQuery.isSuccess ? React.createElement(
 				"div",
 				{ className: "header-tabs" },
-				czechLeagueData != undefined && czechLeagueData.map(function (_ref) {
+				czechQuery.data != undefined && Object.entries(czechQuery.data).map(function (_ref) {
 					var _ref2 = _slicedToArray(_ref, 2),
 					    key = _ref2[0],
 					    value = _ref2[1];
@@ -222,7 +212,7 @@ var mainScoreboard = function mainScoreboard(props) {
 						)
 					);
 				}),
-				foreignLeagueData != undefined && foreignLeagueData.map(function (_ref3) {
+				foreignQuery.data != undefined && Object.entries(foreignQuery.data).map(function (_ref3) {
 					var _ref4 = _slicedToArray(_ref3, 2),
 					    key = _ref4[0],
 					    value = _ref4[1];
@@ -244,10 +234,10 @@ var mainScoreboard = function mainScoreboard(props) {
 				})
 			) : React.createElement("div", null)
 		),
-		!noDataCzech || !noDataForeign ? React.createElement(
+		czechQuery.isSuccess || foreignQuery.isSuccess ? React.createElement(
 			"div",
 			{ className: "mainScoreBoard-body" },
-			czechLeagueData != undefined && czechLeagueData.map(function (_ref5) {
+			czechQuery.data != undefined && Object.entries(czechQuery.data).map(function (_ref5) {
 				var _ref6 = _slicedToArray(_ref5, 2),
 				    key = _ref6[0],
 				    value = _ref6[1];
@@ -469,18 +459,12 @@ var mainScoreboard = function mainScoreboard(props) {
 					);
 				}
 			}),
-			foreignLeagueData != undefined && foreignLeagueData.map(function (_ref7) {
+			foreignQuery.data != undefined && Object.entries(foreignQuery.data).map(function (_ref7) {
 				var _ref8 = _slicedToArray(_ref7, 2),
 				    key = _ref8[0],
 				    value = _ref8[1];
 
 				if (value.league_name == activeLeagueTab) {
-					var matchesToRender = value.matches.every(function (match) {
-						return match.date != APIDate;
-					});
-					if (matchesToRender == true) {
-						setNoDataForeign(true);
-					}
 					return React.createElement(
 						"div",
 						null,
@@ -488,192 +472,190 @@ var mainScoreboard = function mainScoreboard(props) {
 							var homeLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.home.onlajny_id;
 							var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.onlajny_id;
 
-							if (APIDate == match.date) {
-								return React.createElement(
+							return React.createElement(
+								"div",
+								{ className: "body-match" },
+								React.createElement(
 									"div",
-									{ className: "body-match" },
+									{ className: "match-infoContainer" },
 									React.createElement(
 										"div",
-										{ className: "match-infoContainer" },
+										{ className: "match-team match-team--left" },
 										React.createElement(
-											"div",
-											{ className: "match-team match-team--left" },
-											React.createElement(
-												"h3",
-												null,
-												match.home.short_name != "" ? match.home.short_name : match.home.name
-											),
-											React.createElement(
-												"h3",
-												{ className: "small-name" },
-												match.home.shortcut
-											),
-											React.createElement("img", { src: homeLogo, alt: "" })
+											"h3",
+											null,
+											match.home.short_name != "" ? match.home.short_name : match.home.name
 										),
 										React.createElement(
+											"h3",
+											{ className: "small-name" },
+											match.home.shortcut
+										),
+										React.createElement("img", { src: homeLogo, alt: "" })
+									),
+									React.createElement(
+										"div",
+										{ className: "match-scoreContainer" },
+										React.createElement(
 											"div",
-											{ className: "match-scoreContainer" },
+											{
+												className: "match-score " + (match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+											},
+											match.score_home
+										),
+										match.match_status == "po zápase" && React.createElement(
+											"div",
+											{ className: "match-date" },
 											React.createElement(
-												"div",
-												{
-													className: "match-score " + (match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
-												},
-												match.score_home
+												"p",
+												null,
+												"Konec"
 											),
-											match.match_status == "po zápase" && React.createElement(
-												"div",
-												{ className: "match-date" },
-												React.createElement(
-													"p",
-													null,
-													"Konec"
-												),
-												match.score_periods != undefined && React.createElement(
-													"p",
-													null,
-													match.score_periods[0],
-													", ",
-													match.score_periods[1],
-													", ",
-													match.score_periods[2]
-												),
-												match.score_period != undefined && React.createElement(
-													"p",
-													null,
-													match.score_period[0],
-													", ",
-													match.score_period[1],
-													", ",
-													match.score_period[2]
-												)
+											match.score_periods != undefined && React.createElement(
+												"p",
+												null,
+												match.score_periods[0],
+												", ",
+												match.score_periods[1],
+												", ",
+												match.score_periods[2]
 											),
-											match.match_status == "před zápasem" && React.createElement(
-												"div",
-												{ className: "match-date future-match" },
-												React.createElement(
-													"p",
-													null,
-													dayName
-												),
-												React.createElement(
-													"p",
-													null,
-													match.date.replace(/-/gi, "."),
-													" \u2022 ",
-													match.time
-												)
-											),
-											match.match_status == "live" && React.createElement(
-												"div",
-												{ className: "match-date active-match" },
-												React.createElement(
-													"p",
-													null,
-													match.match_actual_time_name
-												),
-												match.score_periods != undefined && React.createElement(
-													"p",
-													null,
-													match.score_periods[0],
-													", ",
-													match.score_periods[1],
-													", ",
-													match.score_periods[2]
-												),
-												match.score_period != undefined && React.createElement(
-													"p",
-													null,
-													match.score_period[0],
-													", ",
-													match.score_period[1],
-													", ",
-													match.score_period[2]
-												)
+											match.score_period != undefined && React.createElement(
+												"p",
+												null,
+												match.score_period[0],
+												", ",
+												match.score_period[1],
+												", ",
+												match.score_period[2]
+											)
+										),
+										match.match_status == "před zápasem" && React.createElement(
+											"div",
+											{ className: "match-date future-match" },
+											React.createElement(
+												"p",
+												null,
+												dayName
 											),
 											React.createElement(
-												"div",
-												{
-													className: "match-score " + (match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
-												},
-												match.score_visitor
+												"p",
+												null,
+												match.date.replace(/-/gi, "."),
+												" \u2022 ",
+												match.time
+											)
+										),
+										match.match_status == "live" && React.createElement(
+											"div",
+											{ className: "match-date active-match" },
+											React.createElement(
+												"p",
+												null,
+												match.match_actual_time_name
+											),
+											match.score_periods != undefined && React.createElement(
+												"p",
+												null,
+												match.score_periods[0],
+												", ",
+												match.score_periods[1],
+												", ",
+												match.score_periods[2]
+											),
+											match.score_period != undefined && React.createElement(
+												"p",
+												null,
+												match.score_period[0],
+												", ",
+												match.score_period[1],
+												", ",
+												match.score_period[2]
 											)
 										),
 										React.createElement(
 											"div",
-											{ className: "match-team" },
-											React.createElement("img", { src: visitorsLogo, alt: "" }),
-											React.createElement(
-												"h3",
-												null,
-												match.visitor.short_name != "" ? match.visitor.short_name : match.visitor.name
-											),
-											React.createElement(
-												"h3",
-												{ className: "small-name" },
-												match.visitor.shortcut
-											)
+											{
+												className: "match-score " + (match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+											},
+											match.score_visitor
 										)
 									),
 									React.createElement(
 										"div",
-										{ className: "match-tabsContainer" },
-										match.bets.tipsport.link != null && match.match_status == "před zápasem" && React.createElement(
-											"a",
-											{ href: match.bets.tipsport.link, target: "_blank", className: "match-tab" },
-											React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
-											React.createElement(
-												"div",
-												{ className: "tab-tipsportData" },
-												React.createElement(
-													"p",
-													null,
-													match.bets.tipsport.home_win
-												),
-												React.createElement(
-													"p",
-													null,
-													match.bets.tipsport.draw
-												),
-												React.createElement(
-													"p",
-													null,
-													match.bets.tipsport.away_win
-												)
-											)
+										{ className: "match-team" },
+										React.createElement("img", { src: visitorsLogo, alt: "" }),
+										React.createElement(
+											"h3",
+											null,
+											match.visitor.short_name != "" ? match.visitor.short_name : match.visitor.name
 										),
-										match.bets.tipsport.link != null && match.match_status == "live" && React.createElement(
-											"a",
-											{ href: match.bets.tipsport.link, target: "_blank", className: "match-tab" },
-											React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
-											React.createElement(
-												"p",
-												null,
-												"Lives\xE1zka"
-											)
-										),
-										match.match_status == "live" && React.createElement(
-											"a",
-											{ href: "", target: "_blank", className: "match-tab" },
-											React.createElement("img", { src: "../img/icoText.svg", alt: "" }),
-											React.createElement(
-												"p",
-												null,
-												"Text"
-											)
-										),
-										match.match_status == "po zápase" && React.createElement(
-											"a",
-											{ href: "#", className: "match-tab" },
-											React.createElement("img", { src: "../img/icoSummary.svg", alt: "" }),
-											React.createElement(
-												"p",
-												null,
-												"Z\xE1pis"
-											)
+										React.createElement(
+											"h3",
+											{ className: "small-name" },
+											match.visitor.shortcut
 										)
 									)
-								);
-							}
+								),
+								React.createElement(
+									"div",
+									{ className: "match-tabsContainer" },
+									match.bets.tipsport.link != null && match.match_status == "před zápasem" && React.createElement(
+										"a",
+										{ href: match.bets.tipsport.link, target: "_blank", className: "match-tab" },
+										React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
+										React.createElement(
+											"div",
+											{ className: "tab-tipsportData" },
+											React.createElement(
+												"p",
+												null,
+												match.bets.tipsport.home_win
+											),
+											React.createElement(
+												"p",
+												null,
+												match.bets.tipsport.draw
+											),
+											React.createElement(
+												"p",
+												null,
+												match.bets.tipsport.away_win
+											)
+										)
+									),
+									match.bets.tipsport.link != null && match.match_status == "live" && React.createElement(
+										"a",
+										{ href: match.bets.tipsport.link, target: "_blank", className: "match-tab" },
+										React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
+										React.createElement(
+											"p",
+											null,
+											"Lives\xE1zka"
+										)
+									),
+									match.match_status == "live" && React.createElement(
+										"a",
+										{ href: "", target: "_blank", className: "match-tab" },
+										React.createElement("img", { src: "../img/icoText.svg", alt: "" }),
+										React.createElement(
+											"p",
+											null,
+											"Text"
+										)
+									),
+									match.match_status == "po zápase" && React.createElement(
+										"a",
+										{ href: "#", className: "match-tab" },
+										React.createElement("img", { src: "../img/icoSummary.svg", alt: "" }),
+										React.createElement(
+											"p",
+											null,
+											"Z\xE1pis"
+										)
+									)
+								)
+							);
 						})
 					);
 				}
@@ -703,20 +685,14 @@ var mainScoreboard = function mainScoreboard(props) {
 		)
 	);
 };
-/* 
-const foreignQuery = useQuery(
-	"foreign",
-	() => fetch(`${urlForeignRoot}${luxon.DateTime.now().toFormat("yyyy-MM-dd")}.json`).then((res) => res.json()),
-	{
-		retry: false,
-		refetchIntervalInBackground: true,
-		refetchInterval: foreignRefetch,
-		refetchOnMount: false,
-		refetchOnWindowFocus: false,
-		refetchOnReconnect: false,
-		onSuccess: (res) => setForeignRefetch(5000),
-	},
-); */
+
+var Render = function Render() {
+	return React.createElement(
+		QueryClientProvider,
+		{ client: queryClient },
+		React.createElement(MainScoreboard, null)
+	);
+};
 
 var domContainer = document.querySelector("#main-scoreboard");
-ReactDOM.render(React.createElement(mainScoreboard), domContainer);
+ReactDOM.render(React.createElement(Render), domContainer);

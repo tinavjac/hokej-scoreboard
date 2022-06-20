@@ -1,10 +1,9 @@
 const { QueryClient, QueryClientProvider, useQuery } = ReactQuery;
+const { useState, useEffect } = React;
 
 const queryClient = new QueryClient();
 
 const MainScoreboard = (props) => {
-	const { useState, useEffect } = React;
-
 	const days = ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"];
 	let date = new Date();
 
@@ -88,7 +87,7 @@ const MainScoreboard = (props) => {
 		if (foreignQuery.isSuccess && !czechQuery.isSuccess) {
 			setActiveLeagueTab(Object.entries(foreignQuery.data)[0][1].league_name);
 		}
-	}, [foreignQuery, czechQuery]);
+	});
 
 	/* END OF API FETCHING */
 	return (
@@ -100,7 +99,7 @@ const MainScoreboard = (props) => {
 			) : (
 				""
 			)}
-			<header className={"mainScoreboard-header " + (czechQuery.isErorr && foreignQuery.isErorr ? "noData" : "")}>
+			<header className={"mainScoreboard-header"}>
 				<div className="header-date">
 					<div className="date-dayChanger" onClick={prevDate}>
 						<img src="../img/ArrowLeftGrey.svg" alt="" />
@@ -124,6 +123,7 @@ const MainScoreboard = (props) => {
 										onClick={() => {
 											setActiveLeagueTab(value.league_name);
 										}}
+										key={value.league_name}
 									>
 										<p>{value.league_name}</p>
 									</div>
@@ -137,6 +137,7 @@ const MainScoreboard = (props) => {
 										onClick={() => {
 											setActiveLeagueTab(value.league_name);
 										}}
+										key={value.league_name}
 									>
 										<p>{value.league_name}</p>
 									</div>
@@ -153,12 +154,12 @@ const MainScoreboard = (props) => {
 						Object.entries(czechQuery.data).map(([key, value]) => {
 							if (value.league_name == activeLeagueTab) {
 								return (
-									<div>
+									<div key={value.league_name}>
 										{value.matches.map((match) => {
 											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`;
 											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`;
 											return (
-												<div className="body-match">
+												<div className="body-match" key={match.onlajny_id}>
 													<div className="match-infoContainer">
 														<div className="match-team match-team--left">
 															<h3>{match.home.short_name != "" ? match.home.short_name : match.home.name}</h3>
@@ -293,13 +294,12 @@ const MainScoreboard = (props) => {
 						Object.entries(foreignQuery.data).map(([key, value]) => {
 							if (value.league_name == activeLeagueTab) {
 								return (
-									<div>
+									<div key={value.league_name}>
 										{value.matches.map((match) => {
 											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`;
 											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`;
-
 											return (
-												<div className="body-match">
+												<div className="body-match" key={match.onlajny_id}>
 													<div className="match-infoContainer">
 														<div className="match-team match-team--left">
 															<h3>{match.home.short_name != "" ? match.home.short_name : match.home.name}</h3>
@@ -337,7 +337,7 @@ const MainScoreboard = (props) => {
 															)}
 															{match.match_status == "před zápasem" && (
 																<div className="match-date future-match">
-																	<p>{dayName}</p>
+																	<p>{APIDate == match.date ? dayName : "Zítra ráno"}</p>
 																	<p>
 																		{match.date.replace(/-/gi, ".")} • {match.time}
 																	</p>

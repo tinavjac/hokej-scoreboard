@@ -4,16 +4,14 @@ var _ReactQuery = ReactQuery,
     QueryClient = _ReactQuery.QueryClient,
     QueryClientProvider = _ReactQuery.QueryClientProvider,
     useQuery = _ReactQuery.useQuery;
+var _React = React,
+    useState = _React.useState,
+    useEffect = _React.useEffect;
 
 
 var queryClient = new QueryClient();
 
 var MainScoreboard = function MainScoreboard(props) {
-	var _React = React,
-	    useState = _React.useState,
-	    useEffect = _React.useEffect;
-
-
 	var days = ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"];
 	var date = new Date();
 
@@ -140,7 +138,7 @@ var MainScoreboard = function MainScoreboard(props) {
 		if (foreignQuery.isSuccess && !czechQuery.isSuccess) {
 			setActiveLeagueTab(Object.entries(foreignQuery.data)[0][1].league_name);
 		}
-	}, [foreignQuery, czechQuery]);
+	});
 
 	/* END OF API FETCHING */
 	return React.createElement(
@@ -157,7 +155,7 @@ var MainScoreboard = function MainScoreboard(props) {
 		) : "",
 		React.createElement(
 			"header",
-			{ className: "mainScoreboard-header " + (czechQuery.isErorr && foreignQuery.isErorr ? "noData" : "") },
+			{ className: "mainScoreboard-header" },
 			React.createElement(
 				"div",
 				{ className: "header-date" },
@@ -203,7 +201,8 @@ var MainScoreboard = function MainScoreboard(props) {
 							className: "tab-container " + (value.league_name == activeLeagueTab ? "active" : ""),
 							onClick: function onClick() {
 								setActiveLeagueTab(value.league_name);
-							}
+							},
+							key: value.league_name
 						},
 						React.createElement(
 							"p",
@@ -223,7 +222,8 @@ var MainScoreboard = function MainScoreboard(props) {
 							className: "tab-container " + (value.league_name == activeLeagueTab ? "active" : ""),
 							onClick: function onClick() {
 								setActiveLeagueTab(value.league_name);
-							}
+							},
+							key: value.league_name
 						},
 						React.createElement(
 							"p",
@@ -245,13 +245,13 @@ var MainScoreboard = function MainScoreboard(props) {
 				if (value.league_name == activeLeagueTab) {
 					return React.createElement(
 						"div",
-						null,
+						{ key: value.league_name },
 						value.matches.map(function (match) {
 							var homeLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.home.onlajny_id;
 							var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.onlajny_id;
 							return React.createElement(
 								"div",
-								{ className: "body-match" },
+								{ className: "body-match", key: match.onlajny_id },
 								React.createElement(
 									"div",
 									{ className: "match-infoContainer" },
@@ -467,14 +467,13 @@ var MainScoreboard = function MainScoreboard(props) {
 				if (value.league_name == activeLeagueTab) {
 					return React.createElement(
 						"div",
-						null,
+						{ key: value.league_name },
 						value.matches.map(function (match) {
 							var homeLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.home.onlajny_id;
 							var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.onlajny_id;
-
 							return React.createElement(
 								"div",
-								{ className: "body-match" },
+								{ className: "body-match", key: match.onlajny_id },
 								React.createElement(
 									"div",
 									{ className: "match-infoContainer" },
@@ -536,7 +535,7 @@ var MainScoreboard = function MainScoreboard(props) {
 											React.createElement(
 												"p",
 												null,
-												dayName
+												APIDate == match.date ? dayName : "Zítra ráno"
 											),
 											React.createElement(
 												"p",

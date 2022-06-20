@@ -1,8 +1,9 @@
-const topScoreboard = (props) => {
-	const { useState, useEffect } = React;
-	const [czechLeagueData, setCzechLeagueData] = useState();
-	const [foreignLeagueData, setForeignLeagueData] = useState();
+const { QueryClient, QueryClientProvider, useQuery } = ReactQuery;
+const { useState } = React;
 
+const queryClient = new QueryClient();
+
+const TopScoreboard = (props) => {
 	let date = new Date();
 
 	let year = date.getFullYear();
@@ -12,58 +13,38 @@ const topScoreboard = (props) => {
 	if (month < 10) month = "0" + month;
 
 	const [APIDate, setAPIDate] = useState(year + "-" + month + "-" + day);
-	const [noDataCzech, setNoDataCzech] = useState(false);
-	const [noDataForeign, setNoDataForeign] = useState(false);
+	const [czechRefetch, setCzechRefetch] = useState(false);
+	const [foreignRefetch, setForeignRefetch] = useState(false);
 
 	/* API FETCHING */
 	const urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/";
 	const urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/";
 
-	const config = {
-		taskForeignUrl: `${urlForeignRoot}${APIDate}.json`,
-		taskCzechUrl: `${urlCzechRoot}${APIDate}.json`,
-	};
-
-	const fetchCzechData = () => {
-		fetch(config.taskCzechUrl)
-			.then((response) => {
-				return response.json();
-			})
-			.then((data) => {
-				setCzechLeagueData(Object.entries(data));
-				setNoDataCzech(false);
-			})
-			.catch(function (error) {
-				setNoDataCzech(true);
-				console.log(error);
-			});
-	};
-	const fetchForeignData = () => {
-		fetch(config.taskForeignUrl)
-			.then((response) => {
-				return response.json();
-			})
-			.then((data) => {
-				setForeignLeagueData(Object.entries(data));
-				setNoDataForeign(false);
-			})
-			.catch(function (error) {
-				setNoDataForeign(true);
-				console.log(error);
-			});
-	};
-
-	useEffect(() => {
-		fetchCzechData();
-		fetchForeignData();
-	}, []);
+	const foreignQuery = useQuery("foreign", () => fetch(`${urlForeignRoot}${APIDate}.json`).then((res) => res.json()), {
+		retry: false,
+		refetchOnMount: false,
+		refetchOnWindowFocus: false,
+		refetchOnReconnect: false,
+		refetchInterval: foreignRefetch,
+		onSuccess: (res) => setForeignRefetch(5000),
+		onError: (res) => setForeignRefetch(false),
+	});
+	const czechQuery = useQuery("czech", () => fetch(`${urlCzechRoot}${APIDate}.json`).then((res) => res.json()), {
+		retry: false,
+		refetchOnMount: false,
+		refetchOnWindowFocus: false,
+		refetchOnReconnect: false,
+		refetchInterval: czechRefetch,
+		onSuccess: (res) => setCzechRefetch(5000),
+		onError: (res) => setCzechRefetch(false),
+	});
 	/* END API FETCHING */
 	return (
 		<div className="topScoreboard-container">
-			{!noDataCzech || !noDataForeign ? (
+			{foreignQuery.isSuccess || czechQuery.isSuccess ? (
 				<section className="topScoreboard">
-					{czechLeagueData != undefined &&
-						czechLeagueData.map(([key, value]) => {
+					{czechQuery.data != undefined &&
+						Object.entries(czechQuery.data).map(([key, value]) => {
 							return (
 								<section className="League">
 									<a href="" className={"league-name" + (value.league_name.length > 14 ? " set-width" : "")}>
@@ -117,77 +98,85 @@ const topScoreboard = (props) => {
 								</section>
 							);
 						})}
-					{foreignLeagueData != undefined &&
-						foreignLeagueData.map(([key, value]) => {
-							let matchesToRender = value.matches.every(function (match) {
-								return match.date != APIDate;
-							});
-							if (matchesToRender == true) {
-								setNoDataForeign(true);
-							}
-							return (
-								<section className="League">
-									<a href="" className={"league-name" + (value.league_name.length > 10 ? " set-width" : "")}>
-										<h3>{value.league_name}</h3>
-										<img src="../img/ArrowRightBlack.svg" alt="" />
-									</a>
-									{value.matches.map((match) => {
-										let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`;
-										let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`;
+					{foreignQuery.data != undefined &&
+						Object.entries(foreignQuery.data).map(([key, value]) => {
+							if (
+								value.matches.some(function (match) {
+									return match.date == APIDate;
+								})
+							) {
+								return (
+									<section className="League">
+										<a href="" className={"league-name" + (value.league_name.length > 10 ? " set-width" : "")}>
+											<h3>{value.league_name}</h3>
+											<img src="../img/ArrowRightBlack.svg" alt="" />
+										</a>
+										{value.matches.map((match) => {
+											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`;
+											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`;
 
-										if (APIDate == match.date) {
-											return (
-												<a href="" className="league-match">
-													<div className="league-team">
-														<div className="team-container">
-															<img src={homeLogo} alt="" />
-															<p className="team-name">{match.home.shortcut}</p>
+											if (APIDate == match.date) {
+												return (
+													<a href="" className="league-match">
+														<div className="league-team">
+															<div className="team-container">
+																<img src={homeLogo} alt="" />
+																<p className="team-name">{match.home.shortcut}</p>
+															</div>
+															<div
+																className={
+																	"team-score " +
+																	(match.match_status == "před zápasem"
+																		? "future-match"
+																		: match.match_status == "live"
+																		? "active-match"
+																		: "")
+																}
+															>
+																{match.score_home}
+															</div>
 														</div>
-														<div
-															className={
-																"team-score " +
-																(match.match_status == "před zápasem"
-																	? "future-match"
-																	: match.match_status == "live"
-																	? "active-match"
-																	: "")
-															}
-														>
-															{match.score_home}
+														<div className="league-team">
+															<div className="team-container">
+																<img src={visitorsLogo} alt="" />
+																<p className="team-name">{match.visitor.shortcut}</p>
+															</div>
+															<div
+																className={
+																	"team-score " +
+																	(match.match_status == "před zápasem"
+																		? "future-match"
+																		: match.match_status == "live"
+																		? "active-match"
+																		: "")
+																}
+															>
+																{match.score_visitor}
+															</div>
 														</div>
-													</div>
-													<div className="league-team">
-														<div className="team-container">
-															<img src={visitorsLogo} alt="" />
-															<p className="team-name">{match.visitor.shortcut}</p>
-														</div>
-														<div
-															className={
-																"team-score " +
-																(match.match_status == "před zápasem"
-																	? "future-match"
-																	: match.match_status == "live"
-																	? "active-match"
-																	: "")
-															}
-														>
-															{match.score_visitor}
-														</div>
-													</div>
-												</a>
-											);
-										}
-									})}
-								</section>
-							);
+													</a>
+												);
+											}
+										})}
+									</section>
+								);
+							}
 						})}
 				</section>
 			) : (
-				console.log("Top Scoreboard: NO DATA")
+				""
 			)}
 		</div>
 	);
 };
 
+const Render = () => {
+	return (
+		<QueryClientProvider client={queryClient}>
+			<TopScoreboard />
+		</QueryClientProvider>
+	);
+};
+
 const domContainer = document.querySelector("#top-scoreboard");
-ReactDOM.render(React.createElement(topScoreboard), domContainer);
+ReactDOM.render(React.createElement(Render), domContainer);

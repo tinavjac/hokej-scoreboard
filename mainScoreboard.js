@@ -107,6 +107,7 @@ var MainScoreboard = function MainScoreboard(props) {
 		refetchOnWindowFocus: false,
 		refetchOnReconnect: false,
 		refetchInterval: foreignRefetch,
+		refetchIntervalInBackground: true,
 		onSuccess: function onSuccess(res) {
 			setForeignRefetch(5000);
 			setFakeData(false);
@@ -126,6 +127,7 @@ var MainScoreboard = function MainScoreboard(props) {
 		refetchOnWindowFocus: false,
 		refetchOnReconnect: false,
 		refetchInterval: czechRefetch,
+		refetchIntervalInBackground: true,
 		onSuccess: function onSuccess(res) {
 			return setCzechRefetch(5000);
 		},

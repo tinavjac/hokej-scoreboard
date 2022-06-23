@@ -50,6 +50,7 @@ var TopScoreboard = function TopScoreboard(props) {
 		refetchOnWindowFocus: false,
 		refetchOnReconnect: false,
 		refetchInterval: foreignRefetch,
+		refetchIntervalInBackground: true,
 		onSuccess: function onSuccess(res) {
 			return setForeignRefetch(5000);
 		},
@@ -67,6 +68,7 @@ var TopScoreboard = function TopScoreboard(props) {
 		refetchOnWindowFocus: false,
 		refetchOnReconnect: false,
 		refetchInterval: czechRefetch,
+		refetchIntervalInBackground: true,
 		onSuccess: function onSuccess(res) {
 			return setCzechRefetch(5000);
 		},

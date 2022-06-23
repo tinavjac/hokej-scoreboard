@@ -26,6 +26,7 @@ const TopScoreboard = (props) => {
 		refetchOnWindowFocus: false,
 		refetchOnReconnect: false,
 		refetchInterval: foreignRefetch,
+		refetchIntervalInBackground: true,
 		onSuccess: (res) => setForeignRefetch(5000),
 		onError: (res) => setForeignRefetch(false),
 	});
@@ -35,6 +36,7 @@ const TopScoreboard = (props) => {
 		refetchOnWindowFocus: false,
 		refetchOnReconnect: false,
 		refetchInterval: czechRefetch,
+		refetchIntervalInBackground: true,
 		onSuccess: (res) => setCzechRefetch(5000),
 		onError: (res) => setCzechRefetch(false),
 	});

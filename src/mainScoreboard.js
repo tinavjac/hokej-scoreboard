@@ -64,6 +64,7 @@ const MainScoreboard = (props) => {
 		refetchOnWindowFocus: false,
 		refetchOnReconnect: false,
 		refetchInterval: foreignRefetch,
+		refetchIntervalInBackground: true,
 		onSuccess: (res) => {
 			setForeignRefetch(5000);
 			setFakeData(false);
@@ -77,6 +78,7 @@ const MainScoreboard = (props) => {
 		refetchOnWindowFocus: false,
 		refetchOnReconnect: false,
 		refetchInterval: czechRefetch,
+		refetchIntervalInBackground: true,
 		onSuccess: (res) => setCzechRefetch(5000),
 		onError: (res) => setCzechRefetch(false),
 		enabled: APIDate == today ? true : false,

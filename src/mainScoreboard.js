@@ -51,6 +51,9 @@ const MainScoreboard = (props) => {
 	const [czechRefetch, setCzechRefetch] = useState(false);
 	const [foreignRefetch, setForeignRefetch] = useState(false);
 	const [activeLeagueTab, setActiveLeagueTab] = useState("");
+	const [fakeData, setFakeData] = useState(false);
+
+	console.log(fakeData);
 
 	const urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/";
 	const urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/";
@@ -61,7 +64,10 @@ const MainScoreboard = (props) => {
 		refetchOnWindowFocus: false,
 		refetchOnReconnect: false,
 		refetchInterval: foreignRefetch,
-		onSuccess: (res) => setForeignRefetch(5000),
+		onSuccess: (res) => {
+			setForeignRefetch(5000);
+			setFakeData(false);
+		},
 		onError: (res) => setForeignRefetch(false),
 		enabled: APIDate == today ? true : false,
 	});
@@ -99,7 +105,7 @@ const MainScoreboard = (props) => {
 			) : (
 				""
 			)}
-			<header className={"mainScoreboard-header"}>
+			<header className={"mainScoreboard-header" + (fakeData ? " noData" : "")}>
 				<div className="header-date">
 					<div className="date-dayChanger" onClick={prevDate}>
 						<img src="../img/ArrowLeftGrey.svg" alt="" />
@@ -113,8 +119,8 @@ const MainScoreboard = (props) => {
 						<img src="../img/ArrowRightGrey.svg" alt="" />
 					</div>
 				</div>
-				{czechQuery.isSuccess || foreignQuery.isSuccess ? (
-					<div className="header-tabs">
+				{czechQuery.isSuccess || (foreignQuery.isSuccess && !fakeData) ? (
+					<div className={"header-tabs"}>
 						{czechQuery.data != undefined &&
 							Object.entries(czechQuery.data).map(([key, value]) => {
 								return (
@@ -131,6 +137,12 @@ const MainScoreboard = (props) => {
 							})}
 						{foreignQuery.data != undefined &&
 							Object.entries(foreignQuery.data).map(([key, value]) => {
+								let isFake = value.matches.every((match) => {
+									return APIDate != match.date;
+								});
+								if (isFake) {
+									setFakeData(true);
+								}
 								return (
 									<div
 										className={"tab-container " + (value.league_name == activeLeagueTab ? "active" : "")}
@@ -148,7 +160,7 @@ const MainScoreboard = (props) => {
 					<div></div>
 				)}
 			</header>
-			{czechQuery.isSuccess || foreignQuery.isSuccess ? (
+			{czechQuery.isSuccess || (foreignQuery.isSuccess && !fakeData) ? (
 				<div className="mainScoreBoard-body">
 					{czechQuery.data != undefined &&
 						Object.entries(czechQuery.data).map(([key, value]) => {
@@ -298,119 +310,122 @@ const MainScoreboard = (props) => {
 										{value.matches.map((match) => {
 											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`;
 											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`;
-											return (
-												<div className="body-match" key={match.onlajny_id}>
-													<div className="match-infoContainer">
-														<div className="match-team match-team--left">
-															<h3>{match.home.short_name != "" ? match.home.short_name : match.home.name}</h3>
-															<h3 className="small-name">{match.home.shortcut}</h3>
-															<img src={homeLogo} alt="" />
-														</div>
-														<div className="match-scoreContainer">
-															<div
-																className={
-																	"match-score " +
-																	(match.match_status == "před zápasem"
-																		? "future-match"
-																		: match.match_status == "live"
-																		? "active-match"
-																		: "")
-																}
-															>
-																{match.score_home}
-															</div>
-															{match.match_status == "po zápase" && (
-																<div className="match-date">
-																	<p>Konec</p>
 
-																	{match.score_periods != undefined && (
-																		<p>
-																			{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
-																		</p>
-																	)}
-																	{match.score_period != undefined && (
-																		<p>
-																			{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}
-																		</p>
-																	)}
+											if (APIDate == match.date) {
+												return (
+													<div className="body-match" key={match.onlajny_id}>
+														<div className="match-infoContainer">
+															<div className="match-team match-team--left">
+																<h3>{match.home.short_name != "" ? match.home.short_name : match.home.name}</h3>
+																<h3 className="small-name">{match.home.shortcut}</h3>
+																<img src={homeLogo} alt="" />
+															</div>
+															<div className="match-scoreContainer">
+																<div
+																	className={
+																		"match-score " +
+																		(match.match_status == "před zápasem"
+																			? "future-match"
+																			: match.match_status == "live"
+																			? "active-match"
+																			: "")
+																	}
+																>
+																	{match.score_home}
 																</div>
+																{match.match_status == "po zápase" && (
+																	<div className="match-date">
+																		<p>Konec</p>
+
+																		{match.score_periods != undefined && (
+																			<p>
+																				{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
+																			</p>
+																		)}
+																		{match.score_period != undefined && (
+																			<p>
+																				{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}
+																			</p>
+																		)}
+																	</div>
+																)}
+																{match.match_status == "před zápasem" && (
+																	<div className="match-date future-match">
+																		<p>{APIDate == match.date ? dayName : "Zítra ráno"}</p>
+																		<p>
+																			{match.date.replace(/-/gi, ".")} • {match.time}
+																		</p>
+																	</div>
+																)}
+																{match.match_status == "live" && (
+																	<div className="match-date active-match">
+																		<p>{match.match_actual_time_name}</p>
+																		{match.score_periods != undefined && (
+																			<p>
+																				{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
+																			</p>
+																		)}
+																		{match.score_period != undefined && (
+																			<p>
+																				{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}
+																			</p>
+																		)}
+																	</div>
+																)}
+
+																<div
+																	className={
+																		"match-score " +
+																		(match.match_status == "před zápasem"
+																			? "future-match"
+																			: match.match_status == "live"
+																			? "active-match"
+																			: "")
+																	}
+																>
+																	{match.score_visitor}
+																</div>
+															</div>
+															<div className="match-team">
+																<img src={visitorsLogo} alt="" />
+																<h3>{match.visitor.short_name != "" ? match.visitor.short_name : match.visitor.name}</h3>
+																<h3 className="small-name">{match.visitor.shortcut}</h3>
+															</div>
+														</div>
+
+														<div className="match-tabsContainer">
+															{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
+																<a href={match.bets.tipsport.link} target="_blank" className="match-tab">
+																	<img src="../img/icoTipsport.svg" alt="" />
+																	<div className="tab-tipsportData">
+																		<p>{match.bets.tipsport.home_win}</p>
+																		<p>{match.bets.tipsport.draw}</p>
+																		<p>{match.bets.tipsport.away_win}</p>
+																	</div>
+																</a>
 															)}
-															{match.match_status == "před zápasem" && (
-																<div className="match-date future-match">
-																	<p>{APIDate == match.date ? dayName : "Zítra ráno"}</p>
-																	<p>
-																		{match.date.replace(/-/gi, ".")} • {match.time}
-																	</p>
-																</div>
+															{match.bets.tipsport.link != null && match.match_status == "live" && (
+																<a href={match.bets.tipsport.link} target="_blank" className="match-tab">
+																	<img src="../img/icoTipsport.svg" alt="" />
+																	<p>Livesázka</p>
+																</a>
 															)}
 															{match.match_status == "live" && (
-																<div className="match-date active-match">
-																	<p>{match.match_actual_time_name}</p>
-																	{match.score_periods != undefined && (
-																		<p>
-																			{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
-																		</p>
-																	)}
-																	{match.score_period != undefined && (
-																		<p>
-																			{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}
-																		</p>
-																	)}
-																</div>
+																<a href="" target="_blank" className="match-tab">
+																	<img src="../img/icoText.svg" alt="" />
+																	<p>Text</p>
+																</a>
 															)}
-
-															<div
-																className={
-																	"match-score " +
-																	(match.match_status == "před zápasem"
-																		? "future-match"
-																		: match.match_status == "live"
-																		? "active-match"
-																		: "")
-																}
-															>
-																{match.score_visitor}
-															</div>
-														</div>
-														<div className="match-team">
-															<img src={visitorsLogo} alt="" />
-															<h3>{match.visitor.short_name != "" ? match.visitor.short_name : match.visitor.name}</h3>
-															<h3 className="small-name">{match.visitor.shortcut}</h3>
+															{match.match_status == "po zápase" && (
+																<a href="#" className="match-tab">
+																	<img src="../img/icoSummary.svg" alt="" />
+																	<p>Zápis</p>
+																</a>
+															)}
 														</div>
 													</div>
-
-													<div className="match-tabsContainer">
-														{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
-															<a href={match.bets.tipsport.link} target="_blank" className="match-tab">
-																<img src="../img/icoTipsport.svg" alt="" />
-																<div className="tab-tipsportData">
-																	<p>{match.bets.tipsport.home_win}</p>
-																	<p>{match.bets.tipsport.draw}</p>
-																	<p>{match.bets.tipsport.away_win}</p>
-																</div>
-															</a>
-														)}
-														{match.bets.tipsport.link != null && match.match_status == "live" && (
-															<a href={match.bets.tipsport.link} target="_blank" className="match-tab">
-																<img src="../img/icoTipsport.svg" alt="" />
-																<p>Livesázka</p>
-															</a>
-														)}
-														{match.match_status == "live" && (
-															<a href="" target="_blank" className="match-tab">
-																<img src="../img/icoText.svg" alt="" />
-																<p>Text</p>
-															</a>
-														)}
-														{match.match_status == "po zápase" && (
-															<a href="#" className="match-tab">
-																<img src="../img/icoSummary.svg" alt="" />
-																<p>Zápis</p>
-															</a>
-														)}
-													</div>
-												</div>
-											);
+												);
+											}
 										})}
 									</div>
 								);

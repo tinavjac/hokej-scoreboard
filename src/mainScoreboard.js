@@ -1,64 +1,62 @@
-const { QueryClient, QueryClientProvider, useQuery } = ReactQuery;
-const { useState, useEffect } = React;
+const { QueryClient, QueryClientProvider, useQuery } = ReactQuery
+const { useState, useEffect, createRoot } = React
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient()
 
 const MainScoreboard = (props) => {
-	const days = ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"];
-	let date = new Date();
+	const days = ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"]
+	let date = new Date()
 
-	let year = date.getFullYear();
-	let month = date.getMonth() + 1;
-	let day = date.getDate();
-	if (day < 10) day = "0" + day;
-	if (month < 10) month = "0" + month;
+	let year = date.getFullYear()
+	let month = date.getMonth() + 1
+	let day = date.getDate()
+	if (day < 10) day = "0" + day
+	if (month < 10) month = "0" + month
 
-	let today = year + "-" + month + "-" + day;
+	let today = year + "-" + month + "-" + day
 
-	const [dayClicks, setDayClicks] = useState(0);
-	const [dayName, setDayName] = useState(days[date.getDay()]);
-	const [displayDate, setDisplayDate] = useState(day + "." + month + "." + year);
-	const [APIDate, setAPIDate] = useState(year + "-" + month + "-" + day);
+	const [dayClicks, setDayClicks] = useState(0)
+	const [dayName, setDayName] = useState(days[date.getDay()])
+	const [displayDate, setDisplayDate] = useState(day + "." + month + "." + year)
+	const [APIDate, setAPIDate] = useState(year + "-" + month + "-" + day)
 
 	const prevDate = () => {
-		setDayClicks(dayClicks - 1);
+		setDayClicks(dayClicks - 1)
 
-		date = new Date(new Date().setDate(new Date().getDate() + (dayClicks - 1)));
-		year = date.getFullYear();
-		month = date.getMonth() + 1;
-		day = date.getDate();
-		if (day < 10) day = "0" + day;
-		if (month < 10) month = "0" + month;
-		setDayName(days[date.getDay()]);
-		setDisplayDate(day + "." + month + "." + year);
-		setAPIDate(year + "-" + month + "-" + day);
-	};
+		date = new Date(new Date().setDate(new Date().getDate() + (dayClicks - 1)))
+		year = date.getFullYear()
+		month = date.getMonth() + 1
+		day = date.getDate()
+		if (day < 10) day = "0" + day
+		if (month < 10) month = "0" + month
+		setDayName(days[date.getDay()])
+		setDisplayDate(day + "." + month + "." + year)
+		setAPIDate(year + "-" + month + "-" + day)
+	}
 	const nextDate = () => {
-		setDayClicks(dayClicks + 1);
+		setDayClicks(dayClicks + 1)
 
-		date = new Date(new Date().setDate(new Date().getDate() + (dayClicks + 1)));
-		year = date.getFullYear();
-		month = date.getMonth() + 1;
-		day = date.getDate();
-		if (day < 10) day = "0" + day;
-		if (month < 10) month = "0" + month;
-		setDayName(days[date.getDay()]);
-		setDisplayDate(day + "." + month + "." + year);
-		setAPIDate(year + "-" + month + "-" + day);
-	};
+		date = new Date(new Date().setDate(new Date().getDate() + (dayClicks + 1)))
+		year = date.getFullYear()
+		month = date.getMonth() + 1
+		day = date.getDate()
+		if (day < 10) day = "0" + day
+		if (month < 10) month = "0" + month
+		setDayName(days[date.getDay()])
+		setDisplayDate(day + "." + month + "." + year)
+		setAPIDate(year + "-" + month + "-" + day)
+	}
 
 	/* API FETCHING */
-	const [czechRefetch, setCzechRefetch] = useState(false);
-	const [foreignRefetch, setForeignRefetch] = useState(false);
-	const [activeLeagueTab, setActiveLeagueTab] = useState("");
-	const [fakeData, setFakeData] = useState(false);
+	const [czechRefetch, setCzechRefetch] = useState(false)
+	const [foreignRefetch, setForeignRefetch] = useState(false)
+	const [activeLeagueTab, setActiveLeagueTab] = useState("")
+	const [fakeData, setFakeData] = useState(false)
 
-	console.log(fakeData);
+	const urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/"
+	const urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/"
 
-	const urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/";
-	const urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/";
-
-	const foreignQuery = useQuery("foreign", () => fetch(`${urlForeignRoot}${APIDate}.json`).then((res) => res.json()), {
+	const foreignQuery = useQuery(["foreign"], () => fetch(`${urlForeignRoot}${APIDate}.json`).then((res) => res.json()), {
 		retry: false,
 		refetchOnMount: false,
 		refetchOnWindowFocus: false,
@@ -66,13 +64,13 @@ const MainScoreboard = (props) => {
 		refetchInterval: foreignRefetch,
 		refetchIntervalInBackground: true,
 		onSuccess: (res) => {
-			setForeignRefetch(5000);
-			setFakeData(false);
+			setForeignRefetch(5000)
+			setFakeData(false)
 		},
 		onError: (res) => setForeignRefetch(false),
 		enabled: APIDate == today ? true : false,
-	});
-	const czechQuery = useQuery("czech", () => fetch(`${urlCzechRoot}${APIDate}.json`).then((res) => res.json()), {
+	})
+	const czechQuery = useQuery(["czech"], () => fetch(`${urlCzechRoot}${APIDate}.json`).then((res) => res.json()), {
 		retry: false,
 		refetchOnMount: false,
 		refetchOnWindowFocus: false,
@@ -82,20 +80,21 @@ const MainScoreboard = (props) => {
 		onSuccess: (res) => setCzechRefetch(5000),
 		onError: (res) => setCzechRefetch(false),
 		enabled: APIDate == today ? true : false,
-	});
+	})
 
 	useEffect(() => {
-		czechQuery.refetch();
-		foreignQuery.refetch();
-	}, [APIDate]);
+		czechQuery.refetch()
+		foreignQuery.refetch()
+	}, [APIDate])
+
 	useEffect(() => {
 		if (czechQuery.isSuccess) {
-			setActiveLeagueTab(Object.entries(czechQuery.data)[0][1].league_name);
+			setActiveLeagueTab(Object.entries(czechQuery.data)[0][1].league_name)
 		}
 		if (foreignQuery.isSuccess && !czechQuery.isSuccess) {
-			setActiveLeagueTab(Object.entries(foreignQuery.data)[0][1].league_name);
+			setActiveLeagueTab(Object.entries(foreignQuery.data)[0][1].league_name)
 		}
-	});
+	}, [czechRefetch, foreignRefetch])
 
 	/* END OF API FETCHING */
 	return (
@@ -129,33 +128,33 @@ const MainScoreboard = (props) => {
 									<div
 										className={"tab-container " + (value.league_name == activeLeagueTab ? "active" : "")}
 										onClick={() => {
-											setActiveLeagueTab(value.league_name);
+											setActiveLeagueTab(value.league_name)
 										}}
 										key={value.league_name}
 									>
 										<p>{value.league_name}</p>
 									</div>
-								);
+								)
 							})}
 						{foreignQuery.data != undefined &&
 							Object.entries(foreignQuery.data).map(([key, value]) => {
 								let isFake = value.matches.every((match) => {
-									return APIDate != match.date;
-								});
+									return APIDate != match.date
+								})
 								if (isFake) {
-									setFakeData(true);
+									setFakeData(true)
 								}
 								return (
 									<div
 										className={"tab-container " + (value.league_name == activeLeagueTab ? "active" : "")}
 										onClick={() => {
-											setActiveLeagueTab(value.league_name);
+											setActiveLeagueTab(value.league_name)
 										}}
 										key={value.league_name}
 									>
 										<p>{value.league_name}</p>
 									</div>
-								);
+								)
 							})}
 					</div>
 				) : (
@@ -170,8 +169,8 @@ const MainScoreboard = (props) => {
 								return (
 									<div key={value.league_name}>
 										{value.matches.map((match) => {
-											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`;
-											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`;
+											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
+											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
 											return (
 												<div className="body-match" key={match.onlajny_id}>
 													<div className="match-infoContainer">
@@ -184,11 +183,7 @@ const MainScoreboard = (props) => {
 															<div
 																className={
 																	"match-score " +
-																	(match.match_status == "před zápasem"
-																		? "future-match"
-																		: match.match_status == "live"
-																		? "active-match"
-																		: "")
+																	(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
 																}
 															>
 																{match.score_home}
@@ -219,11 +214,7 @@ const MainScoreboard = (props) => {
 															<div
 																className={
 																	"match-score " +
-																	(match.match_status == "před zápasem"
-																		? "future-match"
-																		: match.match_status == "live"
-																		? "active-match"
-																		: "")
+																	(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
 																}
 															>
 																{match.score_visitor}
@@ -270,13 +261,12 @@ const MainScoreboard = (props) => {
 																<p>Livesázka</p>
 															</a>
 														)}
-														{match.match_status == "live" &&
-															(value.league_name == "CHANCE LIGA" || value.league_name == "Tipsport extraliga") && (
-																<a href="#" target="_blank" className="match-tab">
-																	<img src="../img/icoPlay.svg" alt="" />
-																	<p>Živě</p>
-																</a>
-															)}
+														{match.match_status == "live" && (value.league_name == "CHANCE LIGA" || value.league_name == "Tipsport extraliga") && (
+															<a href="#" target="_blank" className="match-tab">
+																<img src="../img/icoPlay.svg" alt="" />
+																<p>Živě</p>
+															</a>
+														)}
 														{match.match_status == "live" && (
 															<a href="" target="_blank" className="match-tab">
 																<img src="../img/icoText.svg" alt="" />
@@ -298,10 +288,10 @@ const MainScoreboard = (props) => {
 														)}
 													</div>
 												</div>
-											);
+											)
 										})}
 									</div>
-								);
+								)
 							}
 						})}
 					{foreignQuery.data != undefined &&
@@ -310,8 +300,8 @@ const MainScoreboard = (props) => {
 								return (
 									<div key={value.league_name}>
 										{value.matches.map((match) => {
-											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`;
-											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`;
+											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
+											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
 
 											if (APIDate == match.date) {
 												return (
@@ -326,11 +316,7 @@ const MainScoreboard = (props) => {
 																<div
 																	className={
 																		"match-score " +
-																		(match.match_status == "před zápasem"
-																			? "future-match"
-																			: match.match_status == "live"
-																			? "active-match"
-																			: "")
+																		(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
 																	}
 																>
 																	{match.score_home}
@@ -378,11 +364,7 @@ const MainScoreboard = (props) => {
 																<div
 																	className={
 																		"match-score " +
-																		(match.match_status == "před zápasem"
-																			? "future-match"
-																			: match.match_status == "live"
-																			? "active-match"
-																			: "")
+																		(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
 																	}
 																>
 																	{match.score_visitor}
@@ -426,11 +408,11 @@ const MainScoreboard = (props) => {
 															)}
 														</div>
 													</div>
-												);
+												)
 											}
 										})}
 									</div>
-								);
+								)
 							}
 						})}
 				</div>
@@ -448,16 +430,17 @@ const MainScoreboard = (props) => {
 				</a>
 			</div>
 		</section>
-	);
-};
+	)
+}
 
 const Render = () => {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<MainScoreboard />
 		</QueryClientProvider>
-	);
-};
+	)
+}
 
-const domContainer = document.querySelector("#main-scoreboard");
-ReactDOM.render(React.createElement(Render), domContainer);
+const domContainer = document.querySelector("#main-scoreboard")
+/* ReactDOM.createRoot(domContainer).render(<Render />) */
+ReactDOM.render(React.createElement(Render), domContainer)

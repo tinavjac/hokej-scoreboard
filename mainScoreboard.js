@@ -6,7 +6,8 @@ var _ReactQuery = ReactQuery,
     useQuery = _ReactQuery.useQuery;
 var _React = React,
     useState = _React.useState,
-    useEffect = _React.useEffect;
+    useEffect = _React.useEffect,
+    createRoot = _React.createRoot;
 
 
 var queryClient = new QueryClient();
@@ -92,12 +93,10 @@ var MainScoreboard = function MainScoreboard(props) {
 	    fakeData = _useState16[0],
 	    setFakeData = _useState16[1];
 
-	console.log(fakeData);
-
 	var urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/";
 	var urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/";
 
-	var foreignQuery = useQuery("foreign", function () {
+	var foreignQuery = useQuery(["foreign"], function () {
 		return fetch("" + urlForeignRoot + APIDate + ".json").then(function (res) {
 			return res.json();
 		});
@@ -117,7 +116,7 @@ var MainScoreboard = function MainScoreboard(props) {
 		},
 		enabled: APIDate == today ? true : false
 	});
-	var czechQuery = useQuery("czech", function () {
+	var czechQuery = useQuery(["czech"], function () {
 		return fetch("" + urlCzechRoot + APIDate + ".json").then(function (res) {
 			return res.json();
 		});
@@ -141,6 +140,7 @@ var MainScoreboard = function MainScoreboard(props) {
 		czechQuery.refetch();
 		foreignQuery.refetch();
 	}, [APIDate]);
+
 	useEffect(function () {
 		if (czechQuery.isSuccess) {
 			setActiveLeagueTab(Object.entries(czechQuery.data)[0][1].league_name);
@@ -148,7 +148,7 @@ var MainScoreboard = function MainScoreboard(props) {
 		if (foreignQuery.isSuccess && !czechQuery.isSuccess) {
 			setActiveLeagueTab(Object.entries(foreignQuery.data)[0][1].league_name);
 		}
-	});
+	}, [czechRefetch, foreignRefetch]);
 
 	/* END OF API FETCHING */
 	return React.createElement(
@@ -713,4 +713,5 @@ var Render = function Render() {
 };
 
 var domContainer = document.querySelector("#main-scoreboard");
+/* ReactDOM.createRoot(domContainer).render(<Render />) */
 ReactDOM.render(React.createElement(Render), domContainer);

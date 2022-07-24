@@ -90,7 +90,7 @@ var TopScoreboard = function TopScoreboard(props) {
 
 				return React.createElement(
 					"section",
-					{ className: "League" },
+					{ className: "League", key: key },
 					React.createElement(
 						"a",
 						{ href: "", className: "league-name" + (value.league_name.length > 14 ? " set-width" : "") },
@@ -106,7 +106,7 @@ var TopScoreboard = function TopScoreboard(props) {
 						var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.onlajny_id;
 						return React.createElement(
 							"a",
-							{ href: "", className: "league-match" },
+							{ href: "", className: "league-match", key: match.hokejcz_id },
 							React.createElement(
 								"div",
 								{ className: "league-team" },
@@ -163,7 +163,7 @@ var TopScoreboard = function TopScoreboard(props) {
 				})) {
 					return React.createElement(
 						"section",
-						{ className: "League" },
+						{ className: "League", key: key },
 						React.createElement(
 							"a",
 							{ href: "", className: "league-name" + (value.league_name.length > 10 ? " set-width" : "") },
@@ -177,11 +177,10 @@ var TopScoreboard = function TopScoreboard(props) {
 						value.matches.map(function (match) {
 							var homeLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.home.onlajny_id;
 							var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.onlajny_id;
-
 							if (APIDate == match.date) {
 								return React.createElement(
 									"a",
-									{ href: "", className: "league-match" },
+									{ href: "", className: "league-match", key: match.hokejcz_id },
 									React.createElement(
 										"div",
 										{ className: "league-team" },
@@ -244,3 +243,4 @@ var Render = function Render() {
 
 var domContainer = document.querySelector("#top-scoreboard");
 ReactDOM.render(React.createElement(Render), domContainer);
+/* ReactDOM.createRoot(domContainer).render(<Render />) */

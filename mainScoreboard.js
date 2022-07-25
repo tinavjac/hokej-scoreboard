@@ -148,7 +148,7 @@ var MainScoreboard = function MainScoreboard(props) {
 		if (foreignQuery.isSuccess && !czechQuery.isSuccess) {
 			setActiveLeagueTab(Object.entries(foreignQuery.data)[0][1].league_name);
 		}
-	}, [czechRefetch, foreignRefetch]);
+	}, [czechRefetch, foreignRefetch, APIDate]);
 
 	/* END OF API FETCHING */
 	return React.createElement(
@@ -231,6 +231,7 @@ var MainScoreboard = function MainScoreboard(props) {
 					});
 					if (isFake) {
 						setFakeData(true);
+						setForeignRefetch(false);
 					}
 					return React.createElement(
 						"div",

@@ -22,6 +22,7 @@ const MainScoreboard = (props) => {
 
 	const prevDate = () => {
 		setDayClicks(dayClicks - 1)
+		setActiveLeagueTab("")
 
 		date = new Date(new Date().setDate(new Date().getDate() + (dayClicks - 1)))
 		year = date.getFullYear()
@@ -35,6 +36,7 @@ const MainScoreboard = (props) => {
 	}
 	const nextDate = () => {
 		setDayClicks(dayClicks + 1)
+		setActiveLeagueTab("")
 
 		date = new Date(new Date().setDate(new Date().getDate() + (dayClicks + 1)))
 		year = date.getFullYear()
@@ -51,7 +53,6 @@ const MainScoreboard = (props) => {
 	const [czechRefetch, setCzechRefetch] = useState(false)
 	const [foreignRefetch, setForeignRefetch] = useState(false)
 	const [activeLeagueTab, setActiveLeagueTab] = useState("")
-	const [fakeData, setFakeData] = useState(false)
 
 	const urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/"
 	const urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/"
@@ -65,7 +66,7 @@ const MainScoreboard = (props) => {
 		refetchIntervalInBackground: true,
 		onSuccess: (res) => {
 			setForeignRefetch(5000)
-			setFakeData(false)
+			setActiveLeagueTab(Object.entries(res)[0][1].league_name)
 		},
 		onError: (res) => setForeignRefetch(false),
 		enabled: APIDate == today ? true : false,
@@ -77,7 +78,10 @@ const MainScoreboard = (props) => {
 		refetchOnReconnect: false,
 		refetchInterval: czechRefetch,
 		refetchIntervalInBackground: true,
-		onSuccess: (res) => setCzechRefetch(5000),
+		onSuccess: (res) => {
+			setCzechRefetch(5000)
+			setActiveLeagueTab(Object.entries(res)[0][1].league_name)
+		},
 		onError: (res) => setCzechRefetch(false),
 		enabled: APIDate == today ? true : false,
 	})
@@ -87,16 +91,6 @@ const MainScoreboard = (props) => {
 		foreignQuery.refetch()
 	}, [APIDate])
 
-	useEffect(() => {
-		if (czechQuery.isSuccess) {
-			setActiveLeagueTab(Object.entries(czechQuery.data)[0][1].league_name)
-		}
-		if (foreignQuery.isSuccess && !czechQuery.isSuccess) {
-			setActiveLeagueTab(Object.entries(foreignQuery.data)[0][1].league_name)
-		}
-	}, [czechRefetch, foreignRefetch, APIDate])
-
-	/* END OF API FETCHING */
 	return (
 		<section className="mainScoreboard">
 			{foreignQuery.isLoading || czechQuery.isLoading == true ? (
@@ -106,7 +100,7 @@ const MainScoreboard = (props) => {
 			) : (
 				""
 			)}
-			<header className={"mainScoreboard-header" + (fakeData ? " noData" : "")}>
+			<header className={"mainScoreboard-header"}>
 				<div className="header-date">
 					<div className="date-dayChanger" onClick={prevDate}>
 						<img src="../img/ArrowLeftGrey.svg" alt="" />
@@ -120,7 +114,7 @@ const MainScoreboard = (props) => {
 						<img src="../img/ArrowRightGrey.svg" alt="" />
 					</div>
 				</div>
-				{czechQuery.isSuccess || (foreignQuery.isSuccess && !fakeData) ? (
+				{czechQuery.isSuccess || foreignQuery.isSuccess ? (
 					<div className={"header-tabs"}>
 						{czechQuery.data != undefined &&
 							Object.entries(czechQuery.data).map(([key, value]) => {
@@ -141,28 +135,26 @@ const MainScoreboard = (props) => {
 								let isFake = value.matches.every((match) => {
 									return APIDate != match.date
 								})
-								if (isFake) {
-									setFakeData(true)
-									setForeignRefetch(false)
+								if (!isFake) {
+									return (
+										<div
+											className={"tab-container " + (value.league_name == activeLeagueTab ? "active" : "")}
+											onClick={() => {
+												setActiveLeagueTab(value.league_name)
+											}}
+											key={value.league_name}
+										>
+											<p>{value.league_name}</p>
+										</div>
+									)
 								}
-								return (
-									<div
-										className={"tab-container " + (value.league_name == activeLeagueTab ? "active" : "")}
-										onClick={() => {
-											setActiveLeagueTab(value.league_name)
-										}}
-										key={value.league_name}
-									>
-										<p>{value.league_name}</p>
-									</div>
-								)
 							})}
 					</div>
 				) : (
 					<div></div>
 				)}
 			</header>
-			{czechQuery.isSuccess || (foreignQuery.isSuccess && !fakeData) ? (
+			{czechQuery.isSuccess || foreignQuery.isSuccess ? (
 				<div className="mainScoreBoard-body">
 					{czechQuery.data != undefined &&
 						Object.entries(czechQuery.data).map(([key, value]) => {

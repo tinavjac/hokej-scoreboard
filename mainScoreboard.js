@@ -46,6 +46,7 @@ var MainScoreboard = function MainScoreboard(props) {
 
 	var prevDate = function prevDate() {
 		setDayClicks(dayClicks - 1);
+		setActiveLeagueTab("");
 
 		date = new Date(new Date().setDate(new Date().getDate() + (dayClicks - 1)));
 		year = date.getFullYear();
@@ -59,6 +60,7 @@ var MainScoreboard = function MainScoreboard(props) {
 	};
 	var nextDate = function nextDate() {
 		setDayClicks(dayClicks + 1);
+		setActiveLeagueTab("");
 
 		date = new Date(new Date().setDate(new Date().getDate() + (dayClicks + 1)));
 		year = date.getFullYear();
@@ -88,11 +90,6 @@ var MainScoreboard = function MainScoreboard(props) {
 	    activeLeagueTab = _useState14[0],
 	    setActiveLeagueTab = _useState14[1];
 
-	var _useState15 = useState(false),
-	    _useState16 = _slicedToArray(_useState15, 2),
-	    fakeData = _useState16[0],
-	    setFakeData = _useState16[1];
-
 	var urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/";
 	var urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/";
 
@@ -109,7 +106,7 @@ var MainScoreboard = function MainScoreboard(props) {
 		refetchIntervalInBackground: true,
 		onSuccess: function onSuccess(res) {
 			setForeignRefetch(5000);
-			setFakeData(false);
+			setActiveLeagueTab(Object.entries(res)[0][1].league_name);
 		},
 		onError: function onError(res) {
 			return setForeignRefetch(false);
@@ -128,7 +125,8 @@ var MainScoreboard = function MainScoreboard(props) {
 		refetchInterval: czechRefetch,
 		refetchIntervalInBackground: true,
 		onSuccess: function onSuccess(res) {
-			return setCzechRefetch(5000);
+			setCzechRefetch(5000);
+			setActiveLeagueTab(Object.entries(res)[0][1].league_name);
 		},
 		onError: function onError(res) {
 			return setCzechRefetch(false);
@@ -141,16 +139,6 @@ var MainScoreboard = function MainScoreboard(props) {
 		foreignQuery.refetch();
 	}, [APIDate]);
 
-	useEffect(function () {
-		if (czechQuery.isSuccess) {
-			setActiveLeagueTab(Object.entries(czechQuery.data)[0][1].league_name);
-		}
-		if (foreignQuery.isSuccess && !czechQuery.isSuccess) {
-			setActiveLeagueTab(Object.entries(foreignQuery.data)[0][1].league_name);
-		}
-	}, [czechRefetch, foreignRefetch, APIDate]);
-
-	/* END OF API FETCHING */
 	return React.createElement(
 		"section",
 		{ className: "mainScoreboard" },
@@ -165,7 +153,7 @@ var MainScoreboard = function MainScoreboard(props) {
 		) : "",
 		React.createElement(
 			"header",
-			{ className: "mainScoreboard-header" + (fakeData ? " noData" : "") },
+			{ className: "mainScoreboard-header" },
 			React.createElement(
 				"div",
 				{ className: "header-date" },
@@ -197,7 +185,7 @@ var MainScoreboard = function MainScoreboard(props) {
 					React.createElement("img", { src: "../img/ArrowRightGrey.svg", alt: "" })
 				)
 			),
-			czechQuery.isSuccess || foreignQuery.isSuccess && !fakeData ? React.createElement(
+			czechQuery.isSuccess || foreignQuery.isSuccess ? React.createElement(
 				"div",
 				{ className: "header-tabs" },
 				czechQuery.data != undefined && Object.entries(czechQuery.data).map(function (_ref) {
@@ -229,29 +217,27 @@ var MainScoreboard = function MainScoreboard(props) {
 					var isFake = value.matches.every(function (match) {
 						return APIDate != match.date;
 					});
-					if (isFake) {
-						setFakeData(true);
-						setForeignRefetch(false);
-					}
-					return React.createElement(
-						"div",
-						{
-							className: "tab-container " + (value.league_name == activeLeagueTab ? "active" : ""),
-							onClick: function onClick() {
-								setActiveLeagueTab(value.league_name);
+					if (!isFake) {
+						return React.createElement(
+							"div",
+							{
+								className: "tab-container " + (value.league_name == activeLeagueTab ? "active" : ""),
+								onClick: function onClick() {
+									setActiveLeagueTab(value.league_name);
+								},
+								key: value.league_name
 							},
-							key: value.league_name
-						},
-						React.createElement(
-							"p",
-							null,
-							value.league_name
-						)
-					);
+							React.createElement(
+								"p",
+								null,
+								value.league_name
+							)
+						);
+					}
 				})
 			) : React.createElement("div", null)
 		),
-		czechQuery.isSuccess || foreignQuery.isSuccess && !fakeData ? React.createElement(
+		czechQuery.isSuccess || foreignQuery.isSuccess ? React.createElement(
 			"div",
 			{ className: "mainScoreBoard-body" },
 			czechQuery.data != undefined && Object.entries(czechQuery.data).map(function (_ref5) {

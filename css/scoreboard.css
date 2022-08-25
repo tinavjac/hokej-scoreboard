@@ -258,6 +258,7 @@ body {
 	padding: 12px 6px;
 	cursor: pointer;
 	transition: background-color 200ms ease-in-out;
+	text-decoration: none;
 }
 .body-match:hover {
 	background-color: var(--color-gray-light);

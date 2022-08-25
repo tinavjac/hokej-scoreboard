@@ -171,7 +171,7 @@ const MainScoreboard = (props) => {
 											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
 											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
 											return (
-												<div className="body-match" key={match.onlajny_id}>
+												<a className="body-match" key={match.onlajny_id}>
 													<div className="match-infoContainer">
 														<div className="match-team match-team--left">
 															<h3>{match.home.short_name != "" ? match.home.short_name : match.home.name}</h3>
@@ -286,7 +286,7 @@ const MainScoreboard = (props) => {
 															</a>
 														)}
 													</div>
-												</div>
+												</a>
 											)
 										})}
 									</div>
@@ -304,7 +304,7 @@ const MainScoreboard = (props) => {
 
 											if (APIDate == match.date) {
 												return (
-													<div className="body-match" key={match.onlajny_id}>
+													<a href={`/zapas/${match.hokejcz_id}/`} className="body-match" key={match.onlajny_id}>
 														<div className="match-infoContainer">
 															<div className="match-team match-team--left">
 																<h3>{match.home.short_name != "" ? match.home.short_name : match.home.name}</h3>
@@ -406,7 +406,7 @@ const MainScoreboard = (props) => {
 																</a>
 															)}
 														</div>
-													</div>
+													</a>
 												)
 											}
 										})}

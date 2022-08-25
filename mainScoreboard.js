@@ -260,7 +260,7 @@ var MainScoreboard = function MainScoreboard(props) {
 							var homeLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.home.onlajny_id;
 							var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.onlajny_id;
 							return React.createElement(
-								"div",
+								"a",
 								{ className: "body-match", key: match.onlajny_id },
 								React.createElement(
 									"div",
@@ -484,8 +484,8 @@ var MainScoreboard = function MainScoreboard(props) {
 
 							if (APIDate == match.date) {
 								return React.createElement(
-									"div",
-									{ className: "body-match", key: match.onlajny_id },
+									"a",
+									{ href: "/zapas/" + match.hokejcz_id + "/", className: "body-match", key: match.onlajny_id },
 									React.createElement(
 										"div",
 										{ className: "match-infoContainer" },

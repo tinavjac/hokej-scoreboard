@@ -49,15 +49,15 @@ const TopScoreboard = (props) => {
 						Object.entries(czechQuery.data).map(([key, value]) => {
 							return (
 								<section className="League" key={key}>
-									<a href="" className={"league-name" + (value.league_name.length > 14 ? " set-width" : "")}>
+									<div className={"league-name" + (value.league_name.length > 14 ? " set-width" : "")}>
 										<h3>{value.league_name}</h3>
 										<img src="../img/ArrowRightBlack.svg" alt="" />
-									</a>
+									</div>
 									{value.matches.map((match) => {
 										let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
 										let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
 										return (
-											<a href="" className="league-match" key={match.hokejcz_id}>
+											<a href={`/zapas/${match.hokejcz_id}/`} className="league-match" key={match.hokejcz_id}>
 												<div className="league-team">
 													<div className="team-container">
 														<img src={homeLogo} alt="" />
@@ -101,16 +101,16 @@ const TopScoreboard = (props) => {
 							) {
 								return (
 									<section className="League" key={key}>
-										<a href="" className={"league-name" + (value.league_name.length > 10 ? " set-width" : "")}>
+										<div className={"league-name" + (value.league_name.length > 10 ? " set-width" : "")}>
 											<h3>{value.league_name}</h3>
 											<img src="../img/ArrowRightBlack.svg" alt="" />
-										</a>
+										</div>
 										{value.matches.map((match) => {
 											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
 											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
 											if (APIDate == match.date) {
 												return (
-													<a href="" className="league-match" key={match.hokejcz_id}>
+													<a href={`/zapas/${match.hokejcz_id}/`} className="league-match" key={match.hokejcz_id}>
 														<div className="league-team">
 															<div className="team-container">
 																<img src={homeLogo} alt="" />

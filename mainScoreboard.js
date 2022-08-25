@@ -7,7 +7,8 @@ var _ReactQuery = ReactQuery,
 var _React = React,
     useState = _React.useState,
     useEffect = _React.useEffect,
-    createRoot = _React.createRoot;
+    createRoot = _React.createRoot,
+    useRef = _React.useRef;
 
 
 var queryClient = new QueryClient();
@@ -106,7 +107,6 @@ var MainScoreboard = function MainScoreboard(props) {
 		refetchIntervalInBackground: true,
 		onSuccess: function onSuccess(res) {
 			setForeignRefetch(5000);
-			setActiveLeagueTab(Object.entries(res)[0][1].league_name);
 		},
 		onError: function onError(res) {
 			return setForeignRefetch(false);
@@ -126,18 +126,25 @@ var MainScoreboard = function MainScoreboard(props) {
 		refetchIntervalInBackground: true,
 		onSuccess: function onSuccess(res) {
 			setCzechRefetch(5000);
-			setActiveLeagueTab(Object.entries(res)[0][1].league_name);
 		},
 		onError: function onError(res) {
 			return setCzechRefetch(false);
 		},
 		enabled: APIDate == today ? true : false
 	});
+	var LeagueTabs = useRef(null);
 
 	useEffect(function () {
 		czechQuery.refetch();
 		foreignQuery.refetch();
 	}, [APIDate]);
+
+	useEffect(function () {
+		if (LeagueTabs.current) {
+			var firstTab = LeagueTabs.current.firstChild.innerHTML.replace("<p>", "").replace("</p>", "");
+			setActiveLeagueTab(firstTab);
+		}
+	}, [LeagueTabs.current]);
 
 	return React.createElement(
 		"section",
@@ -187,7 +194,7 @@ var MainScoreboard = function MainScoreboard(props) {
 			),
 			czechQuery.isSuccess || foreignQuery.isSuccess ? React.createElement(
 				"div",
-				{ className: "header-tabs" },
+				{ ref: LeagueTabs, className: "header-tabs" },
 				czechQuery.data != undefined && Object.entries(czechQuery.data).map(function (_ref) {
 					var _ref2 = _slicedToArray(_ref, 2),
 					    key = _ref2[0],

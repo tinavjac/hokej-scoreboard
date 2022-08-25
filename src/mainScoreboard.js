@@ -1,5 +1,5 @@
 const { QueryClient, QueryClientProvider, useQuery } = ReactQuery
-const { useState, useEffect, createRoot } = React
+const { useState, useEffect, createRoot, useRef } = React
 
 const queryClient = new QueryClient()
 
@@ -66,7 +66,6 @@ const MainScoreboard = (props) => {
 		refetchIntervalInBackground: true,
 		onSuccess: (res) => {
 			setForeignRefetch(5000)
-			setActiveLeagueTab(Object.entries(res)[0][1].league_name)
 		},
 		onError: (res) => setForeignRefetch(false),
 		enabled: APIDate == today ? true : false,
@@ -80,16 +79,23 @@ const MainScoreboard = (props) => {
 		refetchIntervalInBackground: true,
 		onSuccess: (res) => {
 			setCzechRefetch(5000)
-			setActiveLeagueTab(Object.entries(res)[0][1].league_name)
 		},
 		onError: (res) => setCzechRefetch(false),
 		enabled: APIDate == today ? true : false,
 	})
+	const LeagueTabs = useRef(null)
 
 	useEffect(() => {
 		czechQuery.refetch()
 		foreignQuery.refetch()
 	}, [APIDate])
+
+	useEffect(() => {
+		if (LeagueTabs.current) {
+			let firstTab = LeagueTabs.current.firstChild.innerHTML.replace("<p>", "").replace("</p>", "")
+			setActiveLeagueTab(firstTab)
+		}
+	}, [LeagueTabs.current])
 
 	return (
 		<section className="mainScoreboard">
@@ -115,7 +121,7 @@ const MainScoreboard = (props) => {
 					</div>
 				</div>
 				{czechQuery.isSuccess || foreignQuery.isSuccess ? (
-					<div className={"header-tabs"}>
+					<div ref={LeagueTabs} className={"header-tabs"}>
 						{czechQuery.data != undefined &&
 							Object.entries(czechQuery.data).map(([key, value]) => {
 								return (

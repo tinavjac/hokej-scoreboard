@@ -261,7 +261,7 @@ var MainScoreboard = function MainScoreboard(props) {
 							var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.onlajny_id;
 							return React.createElement(
 								"a",
-								{ className: "body-match", key: match.onlajny_id },
+								{ href: "/zapas/" + match.hokejcz_id + "/", className: "body-match", key: match.onlajny_id },
 								React.createElement(
 									"div",
 									{ className: "match-infoContainer" },
@@ -367,7 +367,7 @@ var MainScoreboard = function MainScoreboard(props) {
 									{ className: "match-tabsContainer" },
 									value.league_name == "Tipsport extraliga" && match.match_status == "před zápasem" && React.createElement(
 										"a",
-										{ href: "#", className: "match-tab" },
+										{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/preview", className: "match-tab" },
 										React.createElement("img", { src: "../img/icoTextGray.svg", alt: "" }),
 										React.createElement(
 											"p",
@@ -423,9 +423,19 @@ var MainScoreboard = function MainScoreboard(props) {
 											"Lives\xE1zka"
 										)
 									),
-									match.match_status == "live" && (value.league_name == "CHANCE LIGA" || value.league_name == "Tipsport extraliga") && React.createElement(
+									match.match_status == "live" && value.league_name == "CHANCE LIGA" && React.createElement(
 										"a",
-										{ href: "#", target: "_blank", className: "match-tab" },
+										{ href: "https://www.hokej.cz/tv/hokejka/chl?matchId=" + match.hokejcz_id + "/", target: "_blank", className: "match-tab" },
+										React.createElement("img", { src: "../img/icoPlay.svg", alt: "" }),
+										React.createElement(
+											"p",
+											null,
+											"\u017Div\u011B"
+										)
+									),
+									match.match_status == "live" && value.league_name == "Tipsport extraliga" && React.createElement(
+										"a",
+										{ href: "https://www.hokej.cz/tv/hokejka/elh?matchId=" + match.hokejcz_id + "/", target: "_blank", className: "match-tab" },
 										React.createElement("img", { src: "../img/icoPlay.svg", alt: "" }),
 										React.createElement(
 											"p",
@@ -435,7 +445,7 @@ var MainScoreboard = function MainScoreboard(props) {
 									),
 									match.match_status == "live" && React.createElement(
 										"a",
-										{ href: "", target: "_blank", className: "match-tab" },
+										{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/on-line", target: "_blank", className: "match-tab" },
 										React.createElement("img", { src: "../img/icoText.svg", alt: "" }),
 										React.createElement(
 											"p",
@@ -443,9 +453,19 @@ var MainScoreboard = function MainScoreboard(props) {
 											"Text"
 										)
 									),
-									match.match_status == "po zápase" && (value.league_name == "CHANCE LIGA" || value.league_name == "Tipsport extraliga") && React.createElement(
+									match.match_status == "po zápase" && value.league_name == "Tipsport extraliga" && React.createElement(
 										"a",
-										{ href: "#", target: "_blank", className: "match-tab" },
+										{ href: "https://www.hokej.cz/tv/hokejka/category/14", target: "_blank", className: "match-tab" },
+										React.createElement("img", { src: "../img/icoPlayBlack.svg", alt: "" }),
+										React.createElement(
+											"p",
+											null,
+											"Z\xE1znam"
+										)
+									),
+									match.match_status == "po zápase" && value.league_name == "CHANCE LIGA" && React.createElement(
+										"a",
+										{ href: "https://www.hokej.cz/tv/hokejka/category/23", target: "_blank", className: "match-tab" },
 										React.createElement("img", { src: "../img/icoPlayBlack.svg", alt: "" }),
 										React.createElement(
 											"p",
@@ -455,7 +475,7 @@ var MainScoreboard = function MainScoreboard(props) {
 									),
 									match.match_status == "po zápase" && React.createElement(
 										"a",
-										{ href: "#", className: "match-tab" },
+										{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "match-tab" },
 										React.createElement("img", { src: "../img/icoSummary.svg", alt: "" }),
 										React.createElement(
 											"p",
@@ -485,7 +505,7 @@ var MainScoreboard = function MainScoreboard(props) {
 							if (APIDate == match.date) {
 								return React.createElement(
 									"a",
-									{ href: "/zapas/" + match.hokejcz_id + "/", className: "body-match", key: match.onlajny_id },
+									{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "body-match", key: match.onlajny_id },
 									React.createElement(
 										"div",
 										{ className: "match-infoContainer" },
@@ -647,7 +667,7 @@ var MainScoreboard = function MainScoreboard(props) {
 										),
 										match.match_status == "live" && React.createElement(
 											"a",
-											{ href: "", target: "_blank", className: "match-tab" },
+											{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/on-line", target: "_blank", className: "match-tab" },
 											React.createElement("img", { src: "../img/icoText.svg", alt: "" }),
 											React.createElement(
 												"p",
@@ -657,7 +677,7 @@ var MainScoreboard = function MainScoreboard(props) {
 										),
 										match.match_status == "po zápase" && React.createElement(
 											"a",
-											{ href: "#", className: "match-tab" },
+											{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "match-tab" },
 											React.createElement("img", { src: "../img/icoSummary.svg", alt: "" }),
 											React.createElement(
 												"p",

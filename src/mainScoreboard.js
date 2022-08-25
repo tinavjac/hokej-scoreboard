@@ -171,7 +171,7 @@ const MainScoreboard = (props) => {
 											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
 											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
 											return (
-												<a className="body-match" key={match.onlajny_id}>
+												<a href={`/zapas/${match.hokejcz_id}/`} className="body-match" key={match.onlajny_id}>
 													<div className="match-infoContainer">
 														<div className="match-team match-team--left">
 															<h3>{match.home.short_name != "" ? match.home.short_name : match.home.name}</h3>
@@ -228,7 +228,7 @@ const MainScoreboard = (props) => {
 
 													<div className="match-tabsContainer">
 														{value.league_name == "Tipsport extraliga" && match.match_status == "před zápasem" && (
-															<a href="#" className="match-tab">
+															<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/preview`} className="match-tab">
 																<img src="../img/icoTextGray.svg" alt="" />
 																<p>Preview</p>
 															</a>
@@ -260,27 +260,38 @@ const MainScoreboard = (props) => {
 																<p>Livesázka</p>
 															</a>
 														)}
-														{match.match_status == "live" && (value.league_name == "CHANCE LIGA" || value.league_name == "Tipsport extraliga") && (
-															<a href="#" target="_blank" className="match-tab">
+														{match.match_status == "live" && value.league_name == "CHANCE LIGA" && (
+															<a href={`https://www.hokej.cz/tv/hokejka/chl?matchId=${match.hokejcz_id}/`} target="_blank" className="match-tab">
+																<img src="../img/icoPlay.svg" alt="" />
+																<p>Živě</p>
+															</a>
+														)}
+														{match.match_status == "live" && value.league_name == "Tipsport extraliga" && (
+															<a href={`https://www.hokej.cz/tv/hokejka/elh?matchId=${match.hokejcz_id}/`} target="_blank" className="match-tab">
 																<img src="../img/icoPlay.svg" alt="" />
 																<p>Živě</p>
 															</a>
 														)}
 														{match.match_status == "live" && (
-															<a href="" target="_blank" className="match-tab">
+															<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`} target="_blank" className="match-tab">
 																<img src="../img/icoText.svg" alt="" />
 																<p>Text</p>
 															</a>
 														)}
-														{match.match_status == "po zápase" &&
-															(value.league_name == "CHANCE LIGA" || value.league_name == "Tipsport extraliga") && (
-																<a href="#" target="_blank" className="match-tab">
-																	<img src="../img/icoPlayBlack.svg" alt="" />
-																	<p>Záznam</p>
-																</a>
-															)}
+														{match.match_status == "po zápase" && value.league_name == "Tipsport extraliga" && (
+															<a href="https://www.hokej.cz/tv/hokejka/category/14" target="_blank" className="match-tab">
+																<img src="../img/icoPlayBlack.svg" alt="" />
+																<p>Záznam</p>
+															</a>
+														)}
+														{match.match_status == "po zápase" && value.league_name == "CHANCE LIGA" && (
+															<a href="https://www.hokej.cz/tv/hokejka/category/23" target="_blank" className="match-tab">
+																<img src="../img/icoPlayBlack.svg" alt="" />
+																<p>Záznam</p>
+															</a>
+														)}
 														{match.match_status == "po zápase" && (
-															<a href="#" className="match-tab">
+															<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="match-tab">
 																<img src="../img/icoSummary.svg" alt="" />
 																<p>Zápis</p>
 															</a>
@@ -304,7 +315,7 @@ const MainScoreboard = (props) => {
 
 											if (APIDate == match.date) {
 												return (
-													<a href={`/zapas/${match.hokejcz_id}/`} className="body-match" key={match.onlajny_id}>
+													<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="body-match" key={match.onlajny_id}>
 														<div className="match-infoContainer">
 															<div className="match-team match-team--left">
 																<h3>{match.home.short_name != "" ? match.home.short_name : match.home.name}</h3>
@@ -394,13 +405,13 @@ const MainScoreboard = (props) => {
 																</a>
 															)}
 															{match.match_status == "live" && (
-																<a href="" target="_blank" className="match-tab">
+																<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`} target="_blank" className="match-tab">
 																	<img src="../img/icoText.svg" alt="" />
 																	<p>Text</p>
 																</a>
 															)}
 															{match.match_status == "po zápase" && (
-																<a href="#" className="match-tab">
+																<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="match-tab">
 																	<img src="../img/icoSummary.svg" alt="" />
 																	<p>Zápis</p>
 																</a>

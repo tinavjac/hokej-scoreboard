@@ -106,7 +106,7 @@ var TopScoreboard = function TopScoreboard(props) {
 						var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.onlajny_id;
 						return React.createElement(
 							"a",
-							{ href: "/zapas/" + match.hokejcz_id + "/", className: "league-match", key: match.hokejcz_id },
+							{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "league-match", key: match.hokejcz_id },
 							React.createElement(
 								"div",
 								{ className: "league-team" },
@@ -180,7 +180,7 @@ var TopScoreboard = function TopScoreboard(props) {
 							if (APIDate == match.date) {
 								return React.createElement(
 									"a",
-									{ href: "/zapas/" + match.hokejcz_id + "/", className: "league-match", key: match.hokejcz_id },
+									{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "league-match", key: match.hokejcz_id },
 									React.createElement(
 										"div",
 										{ className: "league-team" },

@@ -88,9 +88,15 @@ var TopScoreboard = function TopScoreboard(props) {
 				    key = _ref2[0],
 				    value = _ref2[1];
 
+				var priority = void 0;
+				Object.entries(scoreboardLeagues).map(function (value) {
+					if (value[1].id == key) {
+						priority = value[1].priority;
+					}
+				});
 				return React.createElement(
 					"section",
-					{ className: "League", key: key },
+					{ className: "League", key: key, style: { order: -priority } },
 					React.createElement(
 						"div",
 						{ className: "league-name" + (value.league_name.length > 14 ? " set-width" : "") },
@@ -158,12 +164,18 @@ var TopScoreboard = function TopScoreboard(props) {
 				    key = _ref4[0],
 				    value = _ref4[1];
 
+				var priority = void 0;
+				Object.entries(scoreboardLeagues).map(function (value) {
+					if (value[1].id == key) {
+						priority = value[1].priority;
+					}
+				});
 				if (value.matches.some(function (match) {
 					return match.date == APIDate;
 				})) {
 					return React.createElement(
 						"section",
-						{ className: "League", key: key },
+						{ className: "League", key: key, style: { order: -priority } },
 						React.createElement(
 							"div",
 							{ className: "league-name" + (value.league_name.length > 10 ? " set-width" : "") },

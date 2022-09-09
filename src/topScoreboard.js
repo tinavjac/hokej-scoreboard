@@ -47,8 +47,14 @@ const TopScoreboard = (props) => {
 				<section className="topScoreboard">
 					{czechQuery.data != undefined &&
 						Object.entries(czechQuery.data).map(([key, value]) => {
+							let priority
+							Object.entries(scoreboardLeagues).map((value) => {
+								if (value[1].id == key) {
+									priority = value[1].priority
+								}
+							})
 							return (
-								<section className="League" key={key}>
+								<section className="League" key={key} style={{ order: -priority }}>
 									<div className={"league-name" + (value.league_name.length > 14 ? " set-width" : "")}>
 										<h3>{value.league_name}</h3>
 										<img src="../img/ArrowRightBlack.svg" alt="" />
@@ -94,13 +100,19 @@ const TopScoreboard = (props) => {
 						})}
 					{foreignQuery.data != undefined &&
 						Object.entries(foreignQuery.data).map(([key, value]) => {
+							let priority
+							Object.entries(scoreboardLeagues).map((value) => {
+								if (value[1].id == key) {
+									priority = value[1].priority
+								}
+							})
 							if (
 								value.matches.some(function (match) {
 									return match.date == APIDate
 								})
 							) {
 								return (
-									<section className="League" key={key}>
+									<section className="League" key={key} style={{ order: -priority }}>
 										<div className={"league-name" + (value.league_name.length > 10 ? " set-width" : "")}>
 											<h3>{value.league_name}</h3>
 											<img src="../img/ArrowRightBlack.svg" alt="" />

@@ -309,7 +309,7 @@ const MainScoreboard = (props) => {
 																</div>
 															)}
 														{match.bets.tipsport.link != null && match.match_status == "live" && (
-															<a href={match.bets.tipsport.link} target="_blank" className="match-tab">
+															<a href="https://www.tipsport.cz/live" target="_blank" className="match-tab">
 																<img src="../img/icoTipsport.svg" alt="" />
 																<p>Livesázka</p>
 															</a>
@@ -453,7 +453,7 @@ const MainScoreboard = (props) => {
 																</a>
 															)}
 															{match.bets.tipsport.link != null && match.match_status == "live" && (
-																<a href={match.bets.tipsport.link} target="_blank" className="match-tab">
+																<a href="https://www.tipsport.cz/live" target="_blank" className="match-tab">
 																	<img src="../img/icoTipsport.svg" alt="" />
 																	<p>Livesázka</p>
 																</a>

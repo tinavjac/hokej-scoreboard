@@ -482,7 +482,7 @@ var MainScoreboard = function MainScoreboard(props) {
 									),
 									match.bets.tipsport.link != null && match.match_status == "live" && React.createElement(
 										"a",
-										{ href: match.bets.tipsport.link, target: "_blank", className: "match-tab" },
+										{ href: "https://www.tipsport.cz/live", target: "_blank", className: "match-tab" },
 										React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
 										React.createElement(
 											"p",
@@ -724,7 +724,7 @@ var MainScoreboard = function MainScoreboard(props) {
 										),
 										match.bets.tipsport.link != null && match.match_status == "live" && React.createElement(
 											"a",
-											{ href: match.bets.tipsport.link, target: "_blank", className: "match-tab" },
+											{ href: "https://www.tipsport.cz/live", target: "_blank", className: "match-tab" },
 											React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
 											React.createElement(
 												"p",

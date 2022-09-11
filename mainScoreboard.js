@@ -228,29 +228,35 @@ var MainScoreboard = function MainScoreboard(props) {
 					    value = _ref2[1];
 
 					var priority = void 0;
+					var render = false;
 					Object.entries(scoreboardLeagues).map(function (value) {
 						if (value[1].id == key) {
 							priority = value[1].priority;
+							if (value[1].sourceOnlajny === false) {
+								render = true;
+							}
 						}
 					});
-					return React.createElement(
-						"div",
-						{
-							className: "tab-container " + (key == activeLeagueTab ? "active" : ""),
-							id: key,
-							onClick: function onClick() {
-								setActiveLeagueTab(key);
+					if (render) {
+						return React.createElement(
+							"div",
+							{
+								className: "tab-container " + (key == activeLeagueTab ? "active" : ""),
+								id: key,
+								onClick: function onClick() {
+									setActiveLeagueTab(key);
+								},
+								key: key,
+								"data-order": priority,
+								style: { order: -priority }
 							},
-							key: key,
-							"data-order": priority,
-							style: { order: -priority }
-						},
-						React.createElement(
-							"p",
-							null,
-							value.league_name
-						)
-					);
+							React.createElement(
+								"p",
+								null,
+								value.league_name
+							)
+						);
+					}
 				}),
 				foreignQuery.data != undefined && Object.entries(foreignQuery.data).map(function (_ref3) {
 					var _ref4 = _slicedToArray(_ref3, 2),
@@ -260,13 +266,17 @@ var MainScoreboard = function MainScoreboard(props) {
 					var isFake = value.matches.every(function (match) {
 						return APIDate != match.date;
 					});
+					var render = false;
 					var priority = void 0;
 					Object.entries(scoreboardLeagues).map(function (value) {
 						if (value[1].id == key) {
 							priority = value[1].priority;
+							if (value[1].sourceOnlajny === true) {
+								render = true;
+							}
 						}
 					});
-					if (!isFake) {
+					if (!isFake && render) {
 						return React.createElement(
 							"div",
 							{

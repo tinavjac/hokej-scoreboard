@@ -144,38 +144,48 @@ const MainScoreboard = (props) => {
 						{czechQuery.data != undefined &&
 							Object.entries(czechQuery.data).map(([key, value]) => {
 								let priority
+								let render = false
 								Object.entries(scoreboardLeagues).map((value) => {
 									if (value[1].id == key) {
 										priority = value[1].priority
+										if (value[1].sourceOnlajny === false) {
+											render = true
+										}
 									}
 								})
-								return (
-									<div
-										className={"tab-container " + (key == activeLeagueTab ? "active" : "")}
-										id={key}
-										onClick={() => {
-											setActiveLeagueTab(key)
-										}}
-										key={key}
-										data-order={priority}
-										style={{ order: -priority }}
-									>
-										<p>{value.league_name}</p>
-									</div>
-								)
+								if (render) {
+									return (
+										<div
+											className={"tab-container " + (key == activeLeagueTab ? "active" : "")}
+											id={key}
+											onClick={() => {
+												setActiveLeagueTab(key)
+											}}
+											key={key}
+											data-order={priority}
+											style={{ order: -priority }}
+										>
+											<p>{value.league_name}</p>
+										</div>
+									)
+								}
 							})}
 						{foreignQuery.data != undefined &&
 							Object.entries(foreignQuery.data).map(([key, value]) => {
 								let isFake = value.matches.every((match) => {
 									return APIDate != match.date
 								})
+								let render = false
 								let priority
 								Object.entries(scoreboardLeagues).map((value) => {
 									if (value[1].id == key) {
 										priority = value[1].priority
+										if (value[1].sourceOnlajny === true) {
+											render = true
+										}
 									}
 								})
-								if (!isFake) {
+								if (!isFake && render) {
 									return (
 										<div
 											className={"tab-container " + (key == activeLeagueTab ? "active" : "")}

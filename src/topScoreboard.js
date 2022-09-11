@@ -47,69 +47,80 @@ const TopScoreboard = (props) => {
 				<section className="topScoreboard">
 					{czechQuery.data != undefined &&
 						Object.entries(czechQuery.data).map(([key, value]) => {
+							let render = false
 							let priority
 							Object.entries(scoreboardLeagues).map((value) => {
 								if (value[1].id == key) {
 									priority = value[1].priority
+									if (value[1].sourceOnlajny === false) {
+										render = true
+									}
 								}
 							})
-							return (
-								<section className="League" key={key} style={{ order: -priority }}>
-									<div className={"league-name" + (value.league_name.length > 14 ? " set-width" : "")}>
-										<h3>{value.league_name}</h3>
-										<img src="../img/ArrowRightBlack.svg" alt="" />
-									</div>
-									{value.matches.map((match) => {
-										let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
-										let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
-										return (
-											<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="league-match" key={match.hokejcz_id}>
-												<div className="league-team">
-													<div className="team-container">
-														<img src={homeLogo} alt="" />
-														<p className="team-name">{match.home.shortcut}</p>
+							if (render) {
+								return (
+									<section className="League" key={key} style={{ order: -priority }}>
+										<div className={"league-name" + (value.league_name.length > 14 ? " set-width" : "")}>
+											<h3>{value.league_name}</h3>
+											<img src="../img/ArrowRightBlack.svg" alt="" />
+										</div>
+										{value.matches.map((match) => {
+											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
+											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
+											return (
+												<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="league-match" key={match.hokejcz_id}>
+													<div className="league-team">
+														<div className="team-container">
+															<img src={homeLogo} alt="" />
+															<p className="team-name">{match.home.shortcut}</p>
+														</div>
+														<div
+															className={
+																"team-score " +
+																(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+															}
+														>
+															{match.score_home}
+														</div>
 													</div>
-													<div
-														className={
-															"team-score " +
-															(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
-														}
-													>
-														{match.score_home}
+													<div className="league-team">
+														<div className="team-container">
+															<img src={visitorsLogo} alt="" />
+															<p className="team-name">{match.visitor.shortcut}</p>
+														</div>
+														<div
+															className={
+																"team-score " +
+																(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+															}
+														>
+															{match.score_visitor}
+														</div>
 													</div>
-												</div>
-												<div className="league-team">
-													<div className="team-container">
-														<img src={visitorsLogo} alt="" />
-														<p className="team-name">{match.visitor.shortcut}</p>
-													</div>
-													<div
-														className={
-															"team-score " +
-															(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
-														}
-													>
-														{match.score_visitor}
-													</div>
-												</div>
-											</a>
-										)
-									})}
-								</section>
-							)
+												</a>
+											)
+										})}
+									</section>
+								)
+							}
 						})}
 					{foreignQuery.data != undefined &&
 						Object.entries(foreignQuery.data).map(([key, value]) => {
+							let render = false
 							let priority
 							Object.entries(scoreboardLeagues).map((value) => {
 								if (value[1].id == key) {
 									priority = value[1].priority
+									if (value[1].sourceOnlajny === true) {
+										render = true
+									}
 								}
 							})
 							if (
 								value.matches.some(function (match) {
 									return match.date == APIDate
-								})
+								}) &&
+								render
 							) {
 								return (
 									<section className="League" key={key} style={{ order: -priority }}>

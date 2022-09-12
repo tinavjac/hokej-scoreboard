@@ -481,20 +481,6 @@ var MainScoreboard = function MainScoreboard(props) {
 											)
 										)
 									),
-									value.league_name == "Tipsport extraliga" && (match.match_status == "před zápasem" || match.match_status == "live") && React.createElement(
-										"div",
-										{ className: "mediaTab-container" },
-										React.createElement(
-											"a",
-											{ href: "#", target: "_blank", className: "match-tab--imgOnly" },
-											React.createElement("img", { src: "../img/logoCT@2x.png", alt: "" })
-										),
-										React.createElement(
-											"a",
-											{ href: "#", target: "_blank", className: "match-tab--imgOnly" },
-											React.createElement("img", { src: "../img/logoO2@2x.png", alt: "" })
-										)
-									),
 									match.bets.tipsport.link != null && match.match_status == "live" && React.createElement(
 										"a",
 										{ href: "https://www.tipsport.cz/live", target: "_blank", className: "match-tab" },
@@ -505,7 +491,7 @@ var MainScoreboard = function MainScoreboard(props) {
 											"Lives\xE1zka"
 										)
 									),
-									match.match_status == "live" && value.league_name == "CHANCE LIGA" && React.createElement(
+									(match.match_status == "live" || match.match_status == "před zápasem") && value.league_name == "CHANCE LIGA" && React.createElement(
 										"a",
 										{ href: "https://www.hokej.cz/tv/hokejka/chl?matchId=" + match.hokejcz_id + "/", target: "_blank", className: "match-tab" },
 										React.createElement("img", { src: "../img/icoPlay.svg", alt: "" }),
@@ -515,9 +501,13 @@ var MainScoreboard = function MainScoreboard(props) {
 											"\u017Div\u011B"
 										)
 									),
-									match.match_status == "live" && value.league_name == "Tipsport extraliga" && React.createElement(
+									(match.match_status == "live" || match.match_status == "před zápasem") && value.league_name == "Tipsport extraliga" && React.createElement(
 										"a",
-										{ href: "https://www.hokej.cz/tv/hokejka/elh?matchId=" + match.hokejcz_id + "/", target: "_blank", className: "match-tab" },
+										{
+											href: "https://www.hokej.cz/tv/hokejka/elh?matchId=" + match.hokejcz_id + "/",
+											target: "_blank",
+											className: "match-tab"
+										},
 										React.createElement("img", { src: "../img/icoPlay.svg", alt: "" }),
 										React.createElement(
 											"p",
@@ -533,6 +523,20 @@ var MainScoreboard = function MainScoreboard(props) {
 											"p",
 											null,
 											"Text"
+										)
+									),
+									(value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") && (match.match_status == "před zápasem" || match.match_status == "live") && React.createElement(
+										"div",
+										{ className: "mediaTab-container" },
+										match.stream_url == "ct" && React.createElement(
+											"a",
+											{ href: "#", target: "_blank", className: "match-tab--imgOnly" },
+											React.createElement("img", { src: "../img/logoCT@2x.png", alt: "" })
+										),
+										match.stream_url == "o2" && React.createElement(
+											"a",
+											{ href: "#", target: "_blank", className: "match-tab--imgOnly" },
+											React.createElement("img", { src: "../img/logoO2@2x.png", alt: "" })
 										)
 									),
 									match.match_status == "po zápase" && value.league_name == "Tipsport extraliga" && React.createElement(

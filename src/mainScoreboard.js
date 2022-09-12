@@ -312,41 +312,50 @@ const MainScoreboard = (props) => {
 																</div>
 															</a>
 														)}
-														{value.league_name == "Tipsport extraliga" &&
-															(match.match_status == "před zápasem" || match.match_status == "live") && (
-																<div className="mediaTab-container">
-																	<a href="#" target="_blank" className="match-tab--imgOnly">
-																		<img src="../img/logoCT@2x.png" alt="" />
-																	</a>
-																	<a href="#" target="_blank" className="match-tab--imgOnly">
-																		<img src="../img/logoO2@2x.png" alt="" />
-																	</a>
-																</div>
-															)}
 														{match.bets.tipsport.link != null && match.match_status == "live" && (
 															<a href="https://www.tipsport.cz/live" target="_blank" className="match-tab">
 																<img src="../img/icoTipsport.svg" alt="" />
 																<p>Livesázka</p>
 															</a>
 														)}
-														{match.match_status == "live" && value.league_name == "CHANCE LIGA" && (
+														{(match.match_status == "live" || match.match_status == "před zápasem") && value.league_name == "CHANCE LIGA" && (
 															<a href={`https://www.hokej.cz/tv/hokejka/chl?matchId=${match.hokejcz_id}/`} target="_blank" className="match-tab">
 																<img src="../img/icoPlay.svg" alt="" />
 																<p>Živě</p>
 															</a>
 														)}
-														{match.match_status == "live" && value.league_name == "Tipsport extraliga" && (
-															<a href={`https://www.hokej.cz/tv/hokejka/elh?matchId=${match.hokejcz_id}/`} target="_blank" className="match-tab">
-																<img src="../img/icoPlay.svg" alt="" />
-																<p>Živě</p>
-															</a>
-														)}
+														{(match.match_status == "live" || match.match_status == "před zápasem") &&
+															value.league_name == "Tipsport extraliga" && (
+																<a
+																	href={`https://www.hokej.cz/tv/hokejka/elh?matchId=${match.hokejcz_id}/`}
+																	target="_blank"
+																	className="match-tab"
+																>
+																	<img src="../img/icoPlay.svg" alt="" />
+																	<p>Živě</p>
+																</a>
+															)}
 														{match.match_status == "live" && (
 															<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`} target="_blank" className="match-tab">
 																<img src="../img/icoText.svg" alt="" />
 																<p>Text</p>
 															</a>
 														)}
+														{(value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") &&
+															(match.match_status == "před zápasem" || match.match_status == "live") && (
+																<div className="mediaTab-container">
+																	{match.stream_url == "ct" && (
+																		<a href="#" target="_blank" className="match-tab--imgOnly">
+																			<img src="../img/logoCT@2x.png" alt="" />
+																		</a>
+																	)}
+																	{match.stream_url == "o2" && (
+																		<a href="#" target="_blank" className="match-tab--imgOnly">
+																			<img src="../img/logoO2@2x.png" alt="" />
+																		</a>
+																	)}
+																</div>
+															)}
 														{match.match_status == "po zápase" && value.league_name == "Tipsport extraliga" && (
 															<a href="https://www.hokej.cz/tv/hokejka/category/14" target="_blank" className="match-tab">
 																<img src="../img/icoPlayBlack.svg" alt="" />

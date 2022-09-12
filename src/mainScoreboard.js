@@ -24,6 +24,7 @@ const MainScoreboard = (props) => {
 		setDayClicks(dayClicks - 1)
 		setForeignRefetch(false)
 		setCzechRefetch(false)
+		setNoData(true)
 
 		date = new Date(new Date().setDate(new Date().getDate() + (dayClicks - 1)))
 		year = date.getFullYear()
@@ -39,6 +40,7 @@ const MainScoreboard = (props) => {
 		setDayClicks(dayClicks + 1)
 		setForeignRefetch(false)
 		setCzechRefetch(false)
+		setNoData(true)
 
 		date = new Date(new Date().setDate(new Date().getDate() + (dayClicks + 1)))
 		year = date.getFullYear()
@@ -56,7 +58,7 @@ const MainScoreboard = (props) => {
 	const [foreignRefetch, setForeignRefetch] = useState(false)
 	const [activeLeagueTab, setActiveLeagueTab] = useState("")
 	const [buttonsUrl, setButtonsUrl] = useState(null)
-	const [data, setData] = useState([])
+	const [noData, setNoData] = useState(true)
 
 	const urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/"
 	const urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/"
@@ -105,7 +107,10 @@ const MainScoreboard = (props) => {
 			leagues.sort((a, b) => {
 				return b.priority - a.priority
 			})
-			setActiveLeagueTab(leagues[0].id)
+			if (leagues.length > 0) {
+				setNoData(false)
+				setActiveLeagueTab(leagues[0].id)
+			}
 		}
 	}, [czechRefetch, foreignRefetch, czechQuery.isSuccess, foreignQuery.isSuccess])
 
@@ -118,7 +123,7 @@ const MainScoreboard = (props) => {
 	})
 	return (
 		<section className="mainScoreboard">
-			{foreignQuery.isLoading || czechQuery.isLoading == true ? (
+			{foreignQuery.isFetching || czechQuery.isFetching == true ? (
 				<div className="loadContainer">
 					<h3>Loading...</h3>
 				</div>
@@ -207,7 +212,7 @@ const MainScoreboard = (props) => {
 					<div></div>
 				)}
 			</header>
-			{czechQuery.isSuccess || foreignQuery.isSuccess ? (
+			{(czechQuery.isSuccess || foreignQuery.isSuccess) && !noData ? (
 				<div className="mainScoreBoard-body">
 					{czechQuery.data != undefined &&
 						Object.entries(czechQuery.data).map(([key, value]) => {

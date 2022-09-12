@@ -49,6 +49,7 @@ var MainScoreboard = function MainScoreboard(props) {
 		setDayClicks(dayClicks - 1);
 		setForeignRefetch(false);
 		setCzechRefetch(false);
+		setNoData(true);
 
 		date = new Date(new Date().setDate(new Date().getDate() + (dayClicks - 1)));
 		year = date.getFullYear();
@@ -64,6 +65,7 @@ var MainScoreboard = function MainScoreboard(props) {
 		setDayClicks(dayClicks + 1);
 		setForeignRefetch(false);
 		setCzechRefetch(false);
+		setNoData(true);
 
 		date = new Date(new Date().setDate(new Date().getDate() + (dayClicks + 1)));
 		year = date.getFullYear();
@@ -98,10 +100,10 @@ var MainScoreboard = function MainScoreboard(props) {
 	    buttonsUrl = _useState16[0],
 	    setButtonsUrl = _useState16[1];
 
-	var _useState17 = useState([]),
+	var _useState17 = useState(true),
 	    _useState18 = _slicedToArray(_useState17, 2),
-	    data = _useState18[0],
-	    setData = _useState18[1];
+	    noData = _useState18[0],
+	    setNoData = _useState18[1];
 
 	var urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/";
 	var urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/";
@@ -162,7 +164,10 @@ var MainScoreboard = function MainScoreboard(props) {
 			leagues.sort(function (a, b) {
 				return b.priority - a.priority;
 			});
-			setActiveLeagueTab(leagues[0].id);
+			if (leagues.length > 0) {
+				setNoData(false);
+				setActiveLeagueTab(leagues[0].id);
+			}
 		}
 	}, [czechRefetch, foreignRefetch, czechQuery.isSuccess, foreignQuery.isSuccess]);
 
@@ -176,7 +181,7 @@ var MainScoreboard = function MainScoreboard(props) {
 	return React.createElement(
 		"section",
 		{ className: "mainScoreboard" },
-		foreignQuery.isLoading || czechQuery.isLoading == true ? React.createElement(
+		foreignQuery.isFetching || czechQuery.isFetching == true ? React.createElement(
 			"div",
 			{ className: "loadContainer" },
 			React.createElement(
@@ -299,7 +304,7 @@ var MainScoreboard = function MainScoreboard(props) {
 				})
 			) : React.createElement("div", null)
 		),
-		czechQuery.isSuccess || foreignQuery.isSuccess ? React.createElement(
+		(czechQuery.isSuccess || foreignQuery.isSuccess) && !noData ? React.createElement(
 			"div",
 			{ className: "mainScoreBoard-body" },
 			czechQuery.data != undefined && Object.entries(czechQuery.data).map(function (_ref5) {

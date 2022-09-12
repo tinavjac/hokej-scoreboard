@@ -67,6 +67,12 @@ var MainScoreboard = function MainScoreboard(props) {
 		setCzechRefetch(false);
 		setNoData(true);
 
+		if (dayClicks >= 6) {
+			setMaxDate(true);
+		} else {
+			setMaxDate(false);
+		}
+
 		date = new Date(new Date().setDate(new Date().getDate() + (dayClicks + 1)));
 		year = date.getFullYear();
 		month = date.getMonth() + 1;
@@ -104,6 +110,11 @@ var MainScoreboard = function MainScoreboard(props) {
 	    _useState18 = _slicedToArray(_useState17, 2),
 	    noData = _useState18[0],
 	    setNoData = _useState18[1];
+
+	var _useState19 = useState(false),
+	    _useState20 = _slicedToArray(_useState19, 2),
+	    maxDate = _useState20[0],
+	    setMaxDate = _useState20[1];
 
 	var urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/";
 	var urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/";
@@ -224,7 +235,7 @@ var MainScoreboard = function MainScoreboard(props) {
 					React.createElement("img", { src: "../img/ArrowRightGrey.svg", alt: "" })
 				)
 			),
-			czechQuery.isSuccess || foreignQuery.isSuccess ? React.createElement(
+			(czechQuery.isSuccess || foreignQuery.isSuccess) && !maxDate ? React.createElement(
 				"div",
 				{ ref: LeagueTabs, className: "header-tabs" },
 				czechQuery.data != undefined && Object.entries(czechQuery.data).map(function (_ref) {
@@ -304,7 +315,7 @@ var MainScoreboard = function MainScoreboard(props) {
 				})
 			) : React.createElement("div", null)
 		),
-		(czechQuery.isSuccess || foreignQuery.isSuccess) && !noData ? React.createElement(
+		(czechQuery.isSuccess || foreignQuery.isSuccess) && !noData && !maxDate ? React.createElement(
 			"div",
 			{ className: "mainScoreBoard-body" },
 			czechQuery.data != undefined && Object.entries(czechQuery.data).map(function (_ref5) {
@@ -492,27 +503,79 @@ var MainScoreboard = function MainScoreboard(props) {
 										)
 									),
 									(match.match_status == "live" || match.match_status == "před zápasem") && value.league_name == "CHANCE LIGA" && React.createElement(
-										"a",
-										{ href: "https://www.hokej.cz/tv/hokejka/chl?matchId=" + match.hokejcz_id + "/", target: "_blank", className: "match-tab" },
-										React.createElement("img", { src: "../img/icoPlay.svg", alt: "" }),
-										React.createElement(
-											"p",
-											null,
-											"\u017Div\u011B"
+										"div",
+										null,
+										match.stream_url == "ct" && React.createElement(
+											"a",
+											{ href: "https://sport.ceskatelevize.cz/#live", target: "_blank", className: "match-tab" },
+											React.createElement("img", { src: "../img/icoPlay.svg", alt: "" }),
+											React.createElement(
+												"p",
+												null,
+												"\u017Div\u011B"
+											)
+										),
+										match.stream_url == "o2" && React.createElement(
+											"a",
+											{ href: "https://www.o2tv.cz/", target: "_blank", className: "match-tab" },
+											React.createElement("img", { src: "../img/icoPlay.svg", alt: "" }),
+											React.createElement(
+												"p",
+												null,
+												"\u017Div\u011B"
+											)
+										),
+										match.stream_url == null && React.createElement(
+											"a",
+											{
+												href: "https://www.hokej.cz/tv/hokejka/chl?matchId=" + match.hokejcz_id + "/",
+												target: "_blank",
+												className: "match-tab"
+											},
+											React.createElement("img", { src: "../img/icoPlay.svg", alt: "" }),
+											React.createElement(
+												"p",
+												null,
+												"\u017Div\u011B"
+											)
 										)
 									),
 									(match.match_status == "live" || match.match_status == "před zápasem") && value.league_name == "Tipsport extraliga" && React.createElement(
-										"a",
-										{
-											href: "https://www.hokej.cz/tv/hokejka/elh?matchId=" + match.hokejcz_id + "/",
-											target: "_blank",
-											className: "match-tab"
-										},
-										React.createElement("img", { src: "../img/icoPlay.svg", alt: "" }),
-										React.createElement(
-											"p",
-											null,
-											"\u017Div\u011B"
+										"div",
+										null,
+										match.stream_url == "ct" && React.createElement(
+											"a",
+											{ href: "https://sport.ceskatelevize.cz/#live", target: "_blank", className: "match-tab" },
+											React.createElement("img", { src: "../img/icoPlay.svg", alt: "" }),
+											React.createElement(
+												"p",
+												null,
+												"\u017Div\u011B"
+											)
+										),
+										match.stream_url == "o2" && React.createElement(
+											"a",
+											{ href: "https://www.o2tv.cz/", target: "_blank", className: "match-tab" },
+											React.createElement("img", { src: "../img/icoPlay.svg", alt: "" }),
+											React.createElement(
+												"p",
+												null,
+												"\u017Div\u011B"
+											)
+										),
+										match.stream_url == null && React.createElement(
+											"a",
+											{
+												href: "https://www.hokej.cz/tv/hokejka/chl?matchId=" + match.hokejcz_id + "/",
+												target: "_blank",
+												className: "match-tab"
+											},
+											React.createElement("img", { src: "../img/icoPlay.svg", alt: "" }),
+											React.createElement(
+												"p",
+												null,
+												"\u017Div\u011B"
+											)
 										)
 									),
 									match.match_status == "live" && React.createElement(
@@ -530,12 +593,12 @@ var MainScoreboard = function MainScoreboard(props) {
 										{ className: "mediaTab-container" },
 										match.stream_url == "ct" && React.createElement(
 											"a",
-											{ href: "#", target: "_blank", className: "match-tab--imgOnly" },
+											{ href: "https://sport.ceskatelevize.cz/#live", target: "_blank", className: "match-tab--imgOnly" },
 											React.createElement("img", { src: "../img/logoCT@2x.png", alt: "" })
 										),
 										match.stream_url == "o2" && React.createElement(
 											"a",
-											{ href: "#", target: "_blank", className: "match-tab--imgOnly" },
+											{ href: "https://www.o2tv.cz/", target: "_blank", className: "match-tab--imgOnly" },
 											React.createElement("img", { src: "../img/logoO2@2x.png", alt: "" })
 										)
 									),

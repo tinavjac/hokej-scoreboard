@@ -42,6 +42,12 @@ const MainScoreboard = (props) => {
 		setCzechRefetch(false)
 		setNoData(true)
 
+		if (dayClicks >= 6) {
+			setMaxDate(true)
+		} else {
+			setMaxDate(false)
+		}
+
 		date = new Date(new Date().setDate(new Date().getDate() + (dayClicks + 1)))
 		year = date.getFullYear()
 		month = date.getMonth() + 1
@@ -59,6 +65,7 @@ const MainScoreboard = (props) => {
 	const [activeLeagueTab, setActiveLeagueTab] = useState("")
 	const [buttonsUrl, setButtonsUrl] = useState(null)
 	const [noData, setNoData] = useState(true)
+	const [maxDate, setMaxDate] = useState(false)
 
 	const urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/"
 	const urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/"
@@ -144,7 +151,7 @@ const MainScoreboard = (props) => {
 						<img src="../img/ArrowRightGrey.svg" alt="" />
 					</div>
 				</div>
-				{czechQuery.isSuccess || foreignQuery.isSuccess ? (
+				{(czechQuery.isSuccess || foreignQuery.isSuccess) && !maxDate ? (
 					<div ref={LeagueTabs} className={"header-tabs"}>
 						{czechQuery.data != undefined &&
 							Object.entries(czechQuery.data).map(([key, value]) => {
@@ -212,7 +219,7 @@ const MainScoreboard = (props) => {
 					<div></div>
 				)}
 			</header>
-			{(czechQuery.isSuccess || foreignQuery.isSuccess) && !noData ? (
+			{(czechQuery.isSuccess || foreignQuery.isSuccess) && !noData && !maxDate ? (
 				<div className="mainScoreBoard-body">
 					{czechQuery.data != undefined &&
 						Object.entries(czechQuery.data).map(([key, value]) => {
@@ -319,21 +326,57 @@ const MainScoreboard = (props) => {
 															</a>
 														)}
 														{(match.match_status == "live" || match.match_status == "před zápasem") && value.league_name == "CHANCE LIGA" && (
-															<a href={`https://www.hokej.cz/tv/hokejka/chl?matchId=${match.hokejcz_id}/`} target="_blank" className="match-tab">
-																<img src="../img/icoPlay.svg" alt="" />
-																<p>Živě</p>
-															</a>
+															<div>
+																{match.stream_url == "ct" && (
+																	<a href="https://sport.ceskatelevize.cz/#live" target="_blank" className="match-tab">
+																		<img src="../img/icoPlay.svg" alt="" />
+																		<p>Živě</p>
+																	</a>
+																)}
+																{match.stream_url == "o2" && (
+																	<a href="https://www.o2tv.cz/" target="_blank" className="match-tab">
+																		<img src="../img/icoPlay.svg" alt="" />
+																		<p>Živě</p>
+																	</a>
+																)}
+																{match.stream_url == null && (
+																	<a
+																		href={`https://www.hokej.cz/tv/hokejka/chl?matchId=${match.hokejcz_id}/`}
+																		target="_blank"
+																		className="match-tab"
+																	>
+																		<img src="../img/icoPlay.svg" alt="" />
+																		<p>Živě</p>
+																	</a>
+																)}
+															</div>
 														)}
 														{(match.match_status == "live" || match.match_status == "před zápasem") &&
 															value.league_name == "Tipsport extraliga" && (
-																<a
-																	href={`https://www.hokej.cz/tv/hokejka/elh?matchId=${match.hokejcz_id}/`}
-																	target="_blank"
-																	className="match-tab"
-																>
-																	<img src="../img/icoPlay.svg" alt="" />
-																	<p>Živě</p>
-																</a>
+																<div>
+																	{match.stream_url == "ct" && (
+																		<a href="https://sport.ceskatelevize.cz/#live" target="_blank" className="match-tab">
+																			<img src="../img/icoPlay.svg" alt="" />
+																			<p>Živě</p>
+																		</a>
+																	)}
+																	{match.stream_url == "o2" && (
+																		<a href="https://www.o2tv.cz/" target="_blank" className="match-tab">
+																			<img src="../img/icoPlay.svg" alt="" />
+																			<p>Živě</p>
+																		</a>
+																	)}
+																	{match.stream_url == null && (
+																		<a
+																			href={`https://www.hokej.cz/tv/hokejka/chl?matchId=${match.hokejcz_id}/`}
+																			target="_blank"
+																			className="match-tab"
+																		>
+																			<img src="../img/icoPlay.svg" alt="" />
+																			<p>Živě</p>
+																		</a>
+																	)}
+																</div>
 															)}
 														{match.match_status == "live" && (
 															<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`} target="_blank" className="match-tab">
@@ -345,12 +388,12 @@ const MainScoreboard = (props) => {
 															(match.match_status == "před zápasem" || match.match_status == "live") && (
 																<div className="mediaTab-container">
 																	{match.stream_url == "ct" && (
-																		<a href="#" target="_blank" className="match-tab--imgOnly">
+																		<a href="https://sport.ceskatelevize.cz/#live" target="_blank" className="match-tab--imgOnly">
 																			<img src="../img/logoCT@2x.png" alt="" />
 																		</a>
 																	)}
 																	{match.stream_url == "o2" && (
-																		<a href="#" target="_blank" className="match-tab--imgOnly">
+																		<a href="https://www.o2tv.cz/" target="_blank" className="match-tab--imgOnly">
 																			<img src="../img/logoO2@2x.png" alt="" />
 																		</a>
 																	)}

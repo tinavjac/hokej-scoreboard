@@ -155,6 +155,9 @@ const MainScoreboard = (props) => {
 					<div ref={LeagueTabs} className={"header-tabs"}>
 						{czechQuery.data != undefined &&
 							Object.entries(czechQuery.data).map(([key, value]) => {
+								let isFake = value.matches.every((match) => {
+									return displayDate != match.date.replaceAll("-", ".")
+								})
 								let priority
 								let render = false
 								Object.entries(scoreboardLeagues).map((value) => {
@@ -165,7 +168,7 @@ const MainScoreboard = (props) => {
 										}
 									}
 								})
-								if (render) {
+								if (!isFake && render) {
 									return (
 										<div
 											className={"tab-container " + (key == activeLeagueTab ? "active" : "")}
@@ -233,8 +236,7 @@ const MainScoreboard = (props) => {
 												<a href={`/zapas/${match.hokejcz_id}/`} className="body-match" key={match.hokejcz_id}>
 													<div className="match-infoContainer">
 														<div className="match-team match-team--left">
-															<h3>{match.home.short_name != "" ? match.home.short_name : match.home.name}</h3>
-															<h3 className="small-name">{match.home.shortcut}</h3>
+															<h3>{match.home.shortcut}</h3>
 															<img src={homeLogo} alt="" />
 														</div>
 														<div className="match-scoreContainer">
@@ -297,8 +299,8 @@ const MainScoreboard = (props) => {
 														</div>
 														<div className="match-team">
 															<img src={visitorsLogo} alt="" />
-															<h3>{match.visitor.short_name != "" ? match.visitor.short_name : match.visitor.name}</h3>
-															<h3 className="small-name">{match.visitor.shortcut}</h3>
+
+															<h3>{match.visitor.shortcut}</h3>
 														</div>
 													</div>
 
@@ -439,8 +441,7 @@ const MainScoreboard = (props) => {
 													<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="body-match" key={match.hokejcz_id}>
 														<div className="match-infoContainer">
 															<div className="match-team match-team--left">
-																<h3>{match.home.short_name != "" ? match.home.short_name : match.home.name}</h3>
-																<h3 className="small-name">{match.home.shortcut}</h3>
+																<h3>{match.home.shortcut}</h3>
 																<img src={homeLogo} alt="" />
 															</div>
 															<div className="match-scoreContainer">
@@ -503,8 +504,7 @@ const MainScoreboard = (props) => {
 															</div>
 															<div className="match-team">
 																<img src={visitorsLogo} alt="" />
-																<h3>{match.visitor.short_name != "" ? match.visitor.short_name : match.visitor.name}</h3>
-																<h3 className="small-name">{match.visitor.shortcut}</h3>
+																<h3>{match.visitor.shortcut}</h3>
 															</div>
 														</div>
 

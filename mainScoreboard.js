@@ -243,6 +243,9 @@ var MainScoreboard = function MainScoreboard(props) {
 					    key = _ref2[0],
 					    value = _ref2[1];
 
+					var isFake = value.matches.every(function (match) {
+						return displayDate != match.date.replaceAll("-", ".");
+					});
 					var priority = void 0;
 					var render = false;
 					Object.entries(scoreboardLeagues).map(function (value) {
@@ -253,7 +256,7 @@ var MainScoreboard = function MainScoreboard(props) {
 							}
 						}
 					});
-					if (render) {
+					if (!isFake && render) {
 						return React.createElement(
 							"div",
 							{
@@ -342,11 +345,6 @@ var MainScoreboard = function MainScoreboard(props) {
 										React.createElement(
 											"h3",
 											null,
-											match.home.short_name != "" ? match.home.short_name : match.home.name
-										),
-										React.createElement(
-											"h3",
-											{ className: "small-name" },
 											match.home.shortcut
 										),
 										React.createElement("img", { src: homeLogo, alt: "" })
@@ -446,11 +444,6 @@ var MainScoreboard = function MainScoreboard(props) {
 										React.createElement(
 											"h3",
 											null,
-											match.visitor.short_name != "" ? match.visitor.short_name : match.visitor.name
-										),
-										React.createElement(
-											"h3",
-											{ className: "small-name" },
 											match.visitor.shortcut
 										)
 									)
@@ -664,11 +657,6 @@ var MainScoreboard = function MainScoreboard(props) {
 											React.createElement(
 												"h3",
 												null,
-												match.home.short_name != "" ? match.home.short_name : match.home.name
-											),
-											React.createElement(
-												"h3",
-												{ className: "small-name" },
 												match.home.shortcut
 											),
 											React.createElement("img", { src: homeLogo, alt: "" })
@@ -768,11 +756,6 @@ var MainScoreboard = function MainScoreboard(props) {
 											React.createElement(
 												"h3",
 												null,
-												match.visitor.short_name != "" ? match.visitor.short_name : match.visitor.name
-											),
-											React.createElement(
-												"h3",
-												{ className: "small-name" },
 												match.visitor.shortcut
 											)
 										)

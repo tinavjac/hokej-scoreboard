@@ -5,7 +5,8 @@ var _ReactQuery = ReactQuery,
     QueryClientProvider = _ReactQuery.QueryClientProvider,
     useQuery = _ReactQuery.useQuery;
 var _React = React,
-    useState = _React.useState;
+    useState = _React.useState,
+    useRef = _React.useRef;
 
 
 var queryClient = new QueryClient();
@@ -77,12 +78,55 @@ var TopScoreboard = function TopScoreboard(props) {
 		}
 	});
 	/* END API FETCHING */
+	var scrollContainer = useRef(null);
+
+	var _useState7 = useState({
+		pointerEvents: true,
+		isScrolling: false,
+		left: 0,
+		x: 0
+	}),
+	    _useState8 = _slicedToArray(_useState7, 2),
+	    scroll = _useState8[0],
+	    setScroll = _useState8[1];
+
+	var mouseDownHandler = function mouseDownHandler(e) {
+		scrollContainer.current.style.cursor = "grabbing";
+		scrollContainer.current.style.userSelect = "none";
+		setScroll({
+			pointerEvents: true,
+			isScrolling: true,
+			left: scrollContainer.current.scrollLeft,
+			x: e.clientX
+		});
+	};
+	var mouseMoveHandler = function mouseMoveHandler(e) {
+		e.stopPropagation();
+		if (scroll.isScrolling) {
+			setScroll(Object.assign({}, scroll, { pointerEvents: false }));
+			var dx = e.clientX - scroll.x;
+			scrollContainer.current.scrollLeft = scroll.left - dx;
+		}
+	};
+	var mouseUpHandler = function mouseUpHandler(e) {
+		scrollContainer.current.style.cursor = "grab";
+		scrollContainer.current.style.removeProperty("user-select");
+		setScroll(Object.assign({}, scroll, { isScrolling: false, pointerEvents: true }));
+		e.stopPropagation();
+	};
+
 	return React.createElement(
 		"div",
 		{ className: "topScoreboard-container" },
 		foreignQuery.isSuccess || czechQuery.isSuccess ? React.createElement(
 			"section",
-			{ className: "topScoreboard" },
+			{
+				className: "topScoreboard",
+				ref: scrollContainer,
+				onMouseDown: mouseDownHandler,
+				onMouseMove: mouseMoveHandler,
+				onMouseUp: mouseUpHandler
+			},
 			czechQuery.data != undefined && Object.entries(czechQuery.data).map(function (_ref) {
 				var _ref2 = _slicedToArray(_ref, 2),
 				    key = _ref2[0],
@@ -101,7 +145,7 @@ var TopScoreboard = function TopScoreboard(props) {
 				if (render) {
 					return React.createElement(
 						"section",
-						{ className: "League", key: key, style: { order: -priority } },
+						{ className: "League", key: key, style: { order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" } },
 						React.createElement(
 							"div",
 							{ className: "league-name" + (value.league_name.length > 14 ? " set-width" : "") },
@@ -185,7 +229,7 @@ var TopScoreboard = function TopScoreboard(props) {
 				}) && render) {
 					return React.createElement(
 						"section",
-						{ className: "League", key: key, style: { order: -priority } },
+						{ className: "League", key: key, style: { order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" } },
 						React.createElement(
 							"div",
 							{ className: "league-name" + (value.league_name.length > 10 ? " set-width" : "") },

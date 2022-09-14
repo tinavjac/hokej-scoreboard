@@ -45,6 +45,15 @@ var MainScoreboard = function MainScoreboard(props) {
 	    APIDate = _useState8[0],
 	    setAPIDate = _useState8[1];
 
+	var _useState9 = useState({
+		isScrolling: false,
+		clientX: 0,
+		scrollX: 0
+	}),
+	    _useState10 = _slicedToArray(_useState9, 2),
+	    dragScroll = _useState10[0],
+	    setDragScroll = _useState10[1];
+
 	var prevDate = function prevDate() {
 		setDayClicks(dayClicks - 1);
 		setForeignRefetch(false);
@@ -92,35 +101,35 @@ var MainScoreboard = function MainScoreboard(props) {
 
 	/* API FETCHING */
 
-	var _useState9 = useState(false),
-	    _useState10 = _slicedToArray(_useState9, 2),
-	    czechRefetch = _useState10[0],
-	    setCzechRefetch = _useState10[1];
-
 	var _useState11 = useState(false),
 	    _useState12 = _slicedToArray(_useState11, 2),
-	    foreignRefetch = _useState12[0],
-	    setForeignRefetch = _useState12[1];
+	    czechRefetch = _useState12[0],
+	    setCzechRefetch = _useState12[1];
 
-	var _useState13 = useState(""),
+	var _useState13 = useState(false),
 	    _useState14 = _slicedToArray(_useState13, 2),
-	    activeLeagueTab = _useState14[0],
-	    setActiveLeagueTab = _useState14[1];
+	    foreignRefetch = _useState14[0],
+	    setForeignRefetch = _useState14[1];
 
-	var _useState15 = useState(null),
+	var _useState15 = useState(""),
 	    _useState16 = _slicedToArray(_useState15, 2),
-	    buttonsUrl = _useState16[0],
-	    setButtonsUrl = _useState16[1];
+	    activeLeagueTab = _useState16[0],
+	    setActiveLeagueTab = _useState16[1];
 
-	var _useState17 = useState(true),
+	var _useState17 = useState(null),
 	    _useState18 = _slicedToArray(_useState17, 2),
-	    noData = _useState18[0],
-	    setNoData = _useState18[1];
+	    buttonsUrl = _useState18[0],
+	    setButtonsUrl = _useState18[1];
 
-	var _useState19 = useState(false),
+	var _useState19 = useState(true),
 	    _useState20 = _slicedToArray(_useState19, 2),
-	    maxDate = _useState20[0],
-	    setMaxDate = _useState20[1];
+	    noData = _useState20[0],
+	    setNoData = _useState20[1];
+
+	var _useState21 = useState(false),
+	    _useState22 = _slicedToArray(_useState21, 2),
+	    maxDate = _useState22[0],
+	    setMaxDate = _useState22[1];
 
 	var urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/";
 	var urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/";
@@ -164,6 +173,42 @@ var MainScoreboard = function MainScoreboard(props) {
 		enabled: APIDate == today ? true : false
 	});
 	var LeagueTabs = useRef(null);
+
+	var _useState23 = useState({
+		pointerEvents: true,
+		isScrolling: false,
+		left: 0,
+		x: 0
+	}),
+	    _useState24 = _slicedToArray(_useState23, 2),
+	    scroll = _useState24[0],
+	    setScroll = _useState24[1];
+
+	var mouseDownHandler = function mouseDownHandler(e) {
+		LeagueTabs.current.style.cursor = "grabbing";
+		LeagueTabs.current.style.userSelect = "none";
+		setScroll({
+			pointerEvents: true,
+			isScrolling: true,
+			left: LeagueTabs.current.scrollLeft,
+			x: e.clientX
+		});
+	};
+	var mouseMoveHandler = function mouseMoveHandler(e) {
+		e.stopPropagation();
+		if (scroll.isScrolling) {
+			setScroll(Object.assign({}, scroll, { pointerEvents: false }));
+			var dx = e.clientX - scroll.x;
+			LeagueTabs.current.scrollLeft = scroll.left - dx;
+		}
+	};
+	var mouseUpHandler = function mouseUpHandler(e) {
+		LeagueTabs.current.style.cursor = "grab";
+		LeagueTabs.current.style.removeProperty("user-select");
+		setScroll(Object.assign({}, scroll, { isScrolling: false, pointerEvents: true }));
+		e.stopPropagation();
+	};
+
 	useEffect(function () {
 		czechQuery.refetch();
 		foreignQuery.refetch();
@@ -235,7 +280,13 @@ var MainScoreboard = function MainScoreboard(props) {
 			),
 			(czechQuery.isSuccess || foreignQuery.isSuccess) && !maxDate ? React.createElement(
 				"div",
-				{ ref: LeagueTabs, className: "header-tabs" },
+				{
+					onMouseDown: mouseDownHandler,
+					onMouseMove: mouseMoveHandler,
+					onMouseUp: mouseUpHandler,
+					ref: LeagueTabs,
+					className: "header-tabs"
+				},
 				czechQuery.data != undefined && Object.entries(czechQuery.data).map(function (_ref) {
 					var _ref2 = _slicedToArray(_ref, 2),
 					    key = _ref2[0],
@@ -265,7 +316,7 @@ var MainScoreboard = function MainScoreboard(props) {
 								},
 								key: key,
 								"data-order": priority,
-								style: { order: -priority }
+								style: { order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" }
 							},
 							React.createElement(
 								"p",
@@ -304,7 +355,7 @@ var MainScoreboard = function MainScoreboard(props) {
 								},
 								key: key,
 								"data-order": priority,
-								style: { order: -priority }
+								style: { order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" }
 							},
 							React.createElement(
 								"p",

@@ -43,6 +43,11 @@ body {
 	display: flex;
 	flex-flow: row nowrap;
 	overflow-x: auto;
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+}
+.topScoreboard::-webkit-scrollbar {
+	display: none;
 }
 .topScoreboard a {
 	text-decoration: none;
@@ -219,6 +224,11 @@ body {
 	width: 100%;
 	overflow-x: auto;
 	padding-bottom: 6px;
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+}
+.header-tabs::-webkit-scrollbar {
+	display: none;
 }
 .tab-container {
 	padding: 12px 16px;
@@ -245,14 +255,13 @@ body {
 
 .mainScoreBoard-body {
 	margin-top: 18px;
-	min-height: 200px;
 }
 .mainScoreBoard-body--noData {
 	margin-top: 18px;
 	margin-bottom: 18px;
 	display: grid;
 	place-items: center;
-	min-height: 200px;
+	min-height: 150px;
 	border: 1px solid var(--color-gray);
 	border-radius: var(--default-border-radius);
 }
@@ -436,6 +445,9 @@ body {
 	}
 	.match-tabsContainer {
 		margin-left: 0;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 8px;
 	}
 	.mainScoreBoard-body--noData h1 {
 		font-size: 24px;
@@ -448,5 +460,11 @@ body {
 	}
 	.mainScoreBoard-body--noData h1 {
 		font-size: 20px;
+	}
+	.match-team img {
+		height: 22px;
+	}
+	.match-team.match-team--left {
+		width: 70px;
 	}
 }

@@ -1,5 +1,5 @@
 const { QueryClient, QueryClientProvider, useQuery } = ReactQuery
-const { useState } = React
+const { useState, useRef } = React
 
 const queryClient = new QueryClient()
 
@@ -41,10 +41,50 @@ const TopScoreboard = (props) => {
 		onError: (res) => setCzechRefetch(false),
 	})
 	/* END API FETCHING */
+	const scrollContainer = useRef(null)
+
+	const [scroll, setScroll] = useState({
+		pointerEvents: true,
+		isScrolling: false,
+		left: 0,
+		x: 0,
+	})
+
+	const mouseDownHandler = function (e) {
+		scrollContainer.current.style.cursor = "grabbing"
+		scrollContainer.current.style.userSelect = "none"
+		setScroll({
+			pointerEvents: true,
+			isScrolling: true,
+			left: scrollContainer.current.scrollLeft,
+			x: e.clientX,
+		})
+	}
+	const mouseMoveHandler = function (e) {
+		e.stopPropagation()
+		if (scroll.isScrolling) {
+			setScroll({ ...scroll, pointerEvents: false })
+			const dx = e.clientX - scroll.x
+			scrollContainer.current.scrollLeft = scroll.left - dx
+		}
+	}
+	const mouseUpHandler = function (e) {
+		scrollContainer.current.style.cursor = "grab"
+		scrollContainer.current.style.removeProperty("user-select")
+		setScroll({ ...scroll, isScrolling: false, pointerEvents: true })
+		e.stopPropagation()
+	}
+
 	return (
 		<div className="topScoreboard-container">
 			{foreignQuery.isSuccess || czechQuery.isSuccess ? (
-				<section className="topScoreboard">
+				<section
+					className="topScoreboard"
+					ref={scrollContainer}
+					onMouseDown={mouseDownHandler}
+					onMouseMove={mouseMoveHandler}
+					onMouseUp={mouseUpHandler}
+				>
 					{czechQuery.data != undefined &&
 						Object.entries(czechQuery.data).map(([key, value]) => {
 							let render = false
@@ -59,7 +99,7 @@ const TopScoreboard = (props) => {
 							})
 							if (render) {
 								return (
-									<section className="League" key={key} style={{ order: -priority }}>
+									<section className="League" key={key} style={{ order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" }}>
 										<div className={"league-name" + (value.league_name.length > 14 ? " set-width" : "")}>
 											<h3>{value.league_name}</h3>
 											<img src="../img/ArrowRightBlack.svg" alt="" />
@@ -123,7 +163,7 @@ const TopScoreboard = (props) => {
 								render
 							) {
 								return (
-									<section className="League" key={key} style={{ order: -priority }}>
+									<section className="League" key={key} style={{ order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" }}>
 										<div className={"league-name" + (value.league_name.length > 10 ? " set-width" : "")}>
 											<h3>{value.league_name}</h3>
 											<img src="../img/ArrowRightBlack.svg" alt="" />

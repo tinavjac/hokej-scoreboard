@@ -19,6 +19,11 @@ const MainScoreboard = (props) => {
 	const [dayName, setDayName] = useState(days[date.getDay()])
 	const [displayDate, setDisplayDate] = useState(day + "." + month + "." + year)
 	const [APIDate, setAPIDate] = useState(year + "-" + month + "-" + day)
+	const [dragScroll, setDragScroll] = useState({
+		isScrolling: false,
+		clientX: 0,
+		scrollX: 0,
+	})
 
 	const prevDate = () => {
 		setDayClicks(dayClicks - 1)
@@ -103,6 +108,39 @@ const MainScoreboard = (props) => {
 		enabled: APIDate == today ? true : false,
 	})
 	const LeagueTabs = useRef(null)
+
+	const [scroll, setScroll] = useState({
+		pointerEvents: true,
+		isScrolling: false,
+		left: 0,
+		x: 0,
+	})
+
+	const mouseDownHandler = function (e) {
+		LeagueTabs.current.style.cursor = "grabbing"
+		LeagueTabs.current.style.userSelect = "none"
+		setScroll({
+			pointerEvents: true,
+			isScrolling: true,
+			left: LeagueTabs.current.scrollLeft,
+			x: e.clientX,
+		})
+	}
+	const mouseMoveHandler = function (e) {
+		e.stopPropagation()
+		if (scroll.isScrolling) {
+			setScroll({ ...scroll, pointerEvents: false })
+			const dx = e.clientX - scroll.x
+			LeagueTabs.current.scrollLeft = scroll.left - dx
+		}
+	}
+	const mouseUpHandler = function (e) {
+		LeagueTabs.current.style.cursor = "grab"
+		LeagueTabs.current.style.removeProperty("user-select")
+		setScroll({ ...scroll, isScrolling: false, pointerEvents: true })
+		e.stopPropagation()
+	}
+
 	useEffect(() => {
 		czechQuery.refetch()
 		foreignQuery.refetch()
@@ -152,7 +190,13 @@ const MainScoreboard = (props) => {
 					</div>
 				</div>
 				{(czechQuery.isSuccess || foreignQuery.isSuccess) && !maxDate ? (
-					<div ref={LeagueTabs} className={"header-tabs"}>
+					<div
+						onMouseDown={mouseDownHandler}
+						onMouseMove={mouseMoveHandler}
+						onMouseUp={mouseUpHandler}
+						ref={LeagueTabs}
+						className={"header-tabs"}
+					>
 						{czechQuery.data != undefined &&
 							Object.entries(czechQuery.data).map(([key, value]) => {
 								let isFake = value.matches.every((match) => {
@@ -178,7 +222,7 @@ const MainScoreboard = (props) => {
 											}}
 											key={key}
 											data-order={priority}
-											style={{ order: -priority }}
+											style={{ order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" }}
 										>
 											<p>{value.league_name}</p>
 										</div>
@@ -210,7 +254,7 @@ const MainScoreboard = (props) => {
 											}}
 											key={key}
 											data-order={priority}
-											style={{ order: -priority }}
+											style={{ order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" }}
 										>
 											<p>{value.league_name}</p>
 										</div>

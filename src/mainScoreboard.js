@@ -26,6 +26,12 @@ const MainScoreboard = (props) => {
 		setCzechRefetch(false)
 		setNoData(true)
 
+		if (dayClicks >= 6) {
+			setMaxDate(true)
+		} else {
+			setMaxDate(false)
+		}
+
 		date = new Date(new Date().setDate(new Date().getDate() + (dayClicks - 1)))
 		year = date.getFullYear()
 		month = date.getMonth() + 1
@@ -130,13 +136,7 @@ const MainScoreboard = (props) => {
 	})
 	return (
 		<section className="mainScoreboard">
-			{foreignQuery.isFetching || czechQuery.isFetching == true ? (
-				<div className="loadContainer">
-					<h3>Loading...</h3>
-				</div>
-			) : (
-				""
-			)}
+			{foreignQuery.isFetching || czechQuery.isFetching == true ? <div className="loadContainer"></div> : ""}
 			<header className={"mainScoreboard-header"}>
 				<div className="header-date">
 					<div className="date-dayChanger" onClick={prevDate}>
@@ -552,14 +552,16 @@ const MainScoreboard = (props) => {
 					<h1>Žádné zápasy k zobrazení</h1>
 				</div>
 			)}
-			<div className="scoreBoard-buttonsContainer">
-				<a href={buttonsUrl ? buttonsUrl.url.matches : "#"} className="scoreBoard-button">
-					Rozpis zápasů
-				</a>
-				<a href={buttonsUrl ? buttonsUrl.url.table : "#"} className="scoreBoard-button">
-					Tabulka soutěže
-				</a>
-			</div>
+			{(czechQuery.isSuccess || foreignQuery.isSuccess) && !noData && !maxDate && (
+				<div className="scoreBoard-buttonsContainer">
+					<a href={buttonsUrl ? buttonsUrl.url.matches : "#"} className="scoreBoard-button">
+						Rozpis zápasů
+					</a>
+					<a href={buttonsUrl ? buttonsUrl.url.table : "#"} className="scoreBoard-button">
+						Tabulka soutěže
+					</a>
+				</div>
+			)}
 		</section>
 	)
 }

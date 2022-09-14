@@ -148,15 +148,26 @@ body {
 	position: absolute;
 	left: 0;
 	right: 0;
-	top: 50px;
-	bottom: 50px;
-	background-color: rgba(0, 0, 0, 0.85);
-	display: grid;
-	place-items: center;
+	top: 0;
+	height: 10px;
 }
-.loadContainer h3 {
-	font-size: 34px;
-	color: var(--color-gray-light);
+.loadContainer::after {
+	position: absolute;
+	content: "";
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 0%;
+	background-color: #00aeef;
+	animation: loadingAnim 400ms;
+}
+@keyframes loadingAnim {
+	0% {
+		width: 0%;
+	}
+	100% {
+		width: 100%;
+	}
 }
 .mainScoreboard-header {
 	background-color: var(--color-gray-light);

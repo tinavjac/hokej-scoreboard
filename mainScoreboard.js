@@ -51,6 +51,12 @@ var MainScoreboard = function MainScoreboard(props) {
 		setCzechRefetch(false);
 		setNoData(true);
 
+		if (dayClicks >= 6) {
+			setMaxDate(true);
+		} else {
+			setMaxDate(false);
+		}
+
 		date = new Date(new Date().setDate(new Date().getDate() + (dayClicks - 1)));
 		year = date.getFullYear();
 		month = date.getMonth() + 1;
@@ -192,15 +198,7 @@ var MainScoreboard = function MainScoreboard(props) {
 	return React.createElement(
 		"section",
 		{ className: "mainScoreboard" },
-		foreignQuery.isFetching || czechQuery.isFetching == true ? React.createElement(
-			"div",
-			{ className: "loadContainer" },
-			React.createElement(
-				"h3",
-				null,
-				"Loading..."
-			)
-		) : "",
+		foreignQuery.isFetching || czechQuery.isFetching == true ? React.createElement("div", { className: "loadContainer" }) : "",
 		React.createElement(
 			"header",
 			{ className: "mainScoreboard-header" },
@@ -833,7 +831,7 @@ var MainScoreboard = function MainScoreboard(props) {
 				"\u017D\xE1dn\xE9 z\xE1pasy k zobrazen\xED"
 			)
 		),
-		React.createElement(
+		(czechQuery.isSuccess || foreignQuery.isSuccess) && !noData && !maxDate && React.createElement(
 			"div",
 			{ className: "scoreBoard-buttonsContainer" },
 			React.createElement(

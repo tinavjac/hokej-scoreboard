@@ -19,11 +19,6 @@ const MainScoreboard = (props) => {
 	const [dayName, setDayName] = useState(days[date.getDay()])
 	const [displayDate, setDisplayDate] = useState(day + "." + month + "." + year)
 	const [APIDate, setAPIDate] = useState(year + "-" + month + "-" + day)
-	const [dragScroll, setDragScroll] = useState({
-		isScrolling: false,
-		clientX: 0,
-		scrollX: 0,
-	})
 
 	const prevDate = () => {
 		setDayClicks(dayClicks - 1)
@@ -177,14 +172,14 @@ const MainScoreboard = (props) => {
 			{foreignQuery.isFetching || czechQuery.isFetching == true ? <div className="loadContainer"></div> : ""}
 			<header className={"mainScoreboard-header"}>
 				<div className="header-date">
-					<div className="date-dayChanger" onClick={prevDate}>
+					<div className="date-dayChanger prev" onClick={prevDate}>
 						<img src="../img/ArrowLeftGrey.svg" alt="" />
 						<h5>Předchozí den</h5>
 					</div>
 					<h1 className="date-currentDay">
-						{dayName} {displayDate}
+						{dayName} {displayDate.replaceAll(".", ". ")}
 					</h1>
-					<div className="date-dayChanger" onClick={nextDate}>
+					<div className="date-dayChanger next" onClick={nextDate}>
 						<h5>Následující den</h5>
 						<img src="../img/ArrowRightGrey.svg" alt="" />
 					</div>
@@ -281,7 +276,9 @@ const MainScoreboard = (props) => {
 													<div className="match-infoContainer">
 														<div className="match-team match-team--left">
 															<h3>{match.home.shortcut}</h3>
-															<img src={homeLogo} alt="" />
+															<div className="match-team--img">
+																<img src={homeLogo} alt="" />
+															</div>
 														</div>
 														<div className="match-scoreContainer">
 															<div
@@ -342,13 +339,28 @@ const MainScoreboard = (props) => {
 															</div>
 														</div>
 														<div className="match-team">
-															<img src={visitorsLogo} alt="" />
-
+															<div className="match-team--img">
+																<img src={visitorsLogo} alt="" />
+															</div>
 															<h3>{match.visitor.shortcut}</h3>
 														</div>
 													</div>
-
 													<div className="match-tabsContainer">
+														{(value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") &&
+															(match.match_status == "před zápasem" || match.match_status == "live") && (
+																<div className="mediaTab-container">
+																	{match.stream_url == "ct" && (
+																		<a href="https://sport.ceskatelevize.cz/#live" target="_blank" className="match-tab--imgOnly">
+																			<img src="../img/logoCT@2x.png" alt="" />
+																		</a>
+																	)}
+																	{match.stream_url == "o2" && (
+																		<a href="https://www.o2tv.cz/" target="_blank" className="match-tab--imgOnly">
+																			<img src="../img/logoO2@2x.png" alt="" />
+																		</a>
+																	)}
+																</div>
+															)}
 														{value.league_name == "Tipsport extraliga" && match.match_status == "před zápasem" && (
 															<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/preview`} className="match-tab">
 																<img src="../img/icoTextGray.svg" alt="" />
@@ -414,7 +426,7 @@ const MainScoreboard = (props) => {
 																	)}
 																	{match.stream_url == null && (
 																		<a
-																			href={`https://www.hokej.cz/tv/hokejka/chl?matchId=${match.hokejcz_id}/`}
+																			href={`https://www.hokej.cz/tv/hokejka/elh?matchId=${match.hokejcz_id}/`}
 																			target="_blank"
 																			className="match-tab"
 																		>
@@ -430,21 +442,6 @@ const MainScoreboard = (props) => {
 																<p>Text</p>
 															</a>
 														)}
-														{(value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") &&
-															(match.match_status == "před zápasem" || match.match_status == "live") && (
-																<div className="mediaTab-container">
-																	{match.stream_url == "ct" && (
-																		<a href="https://sport.ceskatelevize.cz/#live" target="_blank" className="match-tab--imgOnly">
-																			<img src="../img/logoCT@2x.png" alt="" />
-																		</a>
-																	)}
-																	{match.stream_url == "o2" && (
-																		<a href="https://www.o2tv.cz/" target="_blank" className="match-tab--imgOnly">
-																			<img src="../img/logoO2@2x.png" alt="" />
-																		</a>
-																	)}
-																</div>
-															)}
 														{match.match_status == "po zápase" && value.league_name == "Tipsport extraliga" && (
 															<a href="https://www.hokej.cz/tv/hokejka/category/14" target="_blank" className="match-tab">
 																<img src="../img/icoPlayBlack.svg" alt="" />
@@ -486,7 +483,9 @@ const MainScoreboard = (props) => {
 														<div className="match-infoContainer">
 															<div className="match-team match-team--left">
 																<h3>{match.home.shortcut}</h3>
-																<img src={homeLogo} alt="" />
+																<div className="match-team--img">
+																	<img src={homeLogo} alt="" />
+																</div>
 															</div>
 															<div className="match-scoreContainer">
 																<div
@@ -547,11 +546,12 @@ const MainScoreboard = (props) => {
 																</div>
 															</div>
 															<div className="match-team">
-																<img src={visitorsLogo} alt="" />
+																<div className="match-team--img">
+																	<img src={visitorsLogo} alt="" />
+																</div>
 																<h3>{match.visitor.shortcut}</h3>
 															</div>
 														</div>
-
 														<div className="match-tabsContainer">
 															{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
 																<a href={match.bets.tipsport.link} target="_blank" className="match-tab">

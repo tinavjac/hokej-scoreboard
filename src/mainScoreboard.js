@@ -316,7 +316,7 @@ const MainScoreboard = (props) => {
 															)}
 															{match.match_status == "live" && (
 																<div className="match-date active-match">
-																	<p>{match.match_actual_time_alias} tř.</p>
+																	<p>{match.match_actual_time_alias}. tř.</p>
 
 																	{match.score_periods != undefined && (
 																		<p>
@@ -526,7 +526,7 @@ const MainScoreboard = (props) => {
 																)}
 																{match.match_status == "live" && (
 																	<div className="match-date active-match">
-																		<p>{match.match_actual_time_name} tř.</p>
+																		<p>{match.match_actual_time_name}. tř.</p>
 																		{match.score_periods != undefined && (
 																			<p>
 																				{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}

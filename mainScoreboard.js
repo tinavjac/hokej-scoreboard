@@ -459,7 +459,7 @@ var MainScoreboard = function MainScoreboard(props) {
 												"p",
 												null,
 												match.match_actual_time_alias,
-												" t\u0159."
+												". t\u0159."
 											),
 											match.score_periods != undefined && React.createElement(
 												"p",
@@ -790,7 +790,7 @@ var MainScoreboard = function MainScoreboard(props) {
 													"p",
 													null,
 													match.match_actual_time_name,
-													" t\u0159."
+													". t\u0159."
 												),
 												match.score_periods != undefined && React.createElement(
 													"p",

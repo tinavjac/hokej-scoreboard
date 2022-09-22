@@ -108,7 +108,7 @@ body {
 	gap: 8px;
 }
 .team-container img {
-	width: 20px;
+	width: auto;
 	height: 20px;
 }
 .team-name {
@@ -160,7 +160,7 @@ body {
 	left: 0;
 	right: 0;
 	top: 0;
-	height: 10px;
+	height: 6px;
 }
 .loadContainer::after {
 	position: absolute;
@@ -308,17 +308,19 @@ body {
 	font-size: 14px;
 	font-weight: var(--font-bold);
 }
-.match-team--img {
-	height: 26px;
-	width: 26px;
+.match-team h3:not(.shortName) {
+	display: none;
 }
-.match-team--img img {
-	width: 100%;
-	height: 100%;
+.match-team img {
+	width: 26px;
+	height: auto;
 }
 .match-team.match-team--left {
-	width: 66px;
+	width: 110px;
 	justify-content: flex-end;
+}
+.match-team.match-team--left h3 {
+	text-align: right;
 }
 .match-scoreContainer {
 	margin-inline: 12px;
@@ -464,6 +466,15 @@ body {
 	.mainScoreBoard-body--noData h1 {
 		font-size: 24px;
 	}
+	.match-team.match-team--left {
+		width: 66px;
+	}
+	.match-team h3:not(.shortName) {
+		display: block;
+	}
+	.match-team h3.shortName {
+		display: none;
+	}
 }
 /* SM LAYOUT */
 @media screen and (max-width: 750px) {
@@ -474,6 +485,12 @@ body {
 	.match-tabsContainer {
 		margin-left: 0;
 		flex-wrap: wrap;
+		justify-content: center;
+	}
+	.mediaTab-container {
+		order: 100;
+		flex-basis: 100%;
+		display: flex;
 		justify-content: center;
 	}
 }

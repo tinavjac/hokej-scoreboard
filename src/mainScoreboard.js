@@ -266,6 +266,7 @@ const MainScoreboard = (props) => {
 					{czechQuery.data != undefined &&
 						Object.entries(czechQuery.data).map(([key, value]) => {
 							if (key == activeLeagueTab) {
+								console.log(value)
 								return (
 									<div key={key}>
 										{value.matches.map((match) => {
@@ -275,6 +276,7 @@ const MainScoreboard = (props) => {
 												<a href={`/zapas/${match.hokejcz_id}/`} className="body-match" key={match.hokejcz_id}>
 													<div className="match-infoContainer">
 														<div className="match-team match-team--left">
+															<h3 className="shortName">{match.home.short_name ? match.home.short_name : match.home.shortcut}</h3>
 															<h3>{match.home.shortcut}</h3>
 															<div className="match-team--img">
 																<img src={homeLogo} alt="" />
@@ -314,7 +316,7 @@ const MainScoreboard = (props) => {
 															)}
 															{match.match_status == "live" && (
 																<div className="match-date active-match">
-																	<p>{match.match_actual_time_alias}</p>
+																	<p>{match.match_actual_time_alias} tř.</p>
 
 																	{match.score_periods != undefined && (
 																		<p>
@@ -342,6 +344,7 @@ const MainScoreboard = (props) => {
 															<div className="match-team--img">
 																<img src={visitorsLogo} alt="" />
 															</div>
+															<h3 className="shortName">{match.visitor.short_name ? match.visitor.short_name : match.visitor.shortcut}</h3>
 															<h3>{match.visitor.shortcut}</h3>
 														</div>
 													</div>
@@ -361,28 +364,6 @@ const MainScoreboard = (props) => {
 																	)}
 																</div>
 															)}
-														{value.league_name == "Tipsport extraliga" && match.match_status == "před zápasem" && (
-															<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/preview`} className="match-tab">
-																<img src="../img/icoTextGray.svg" alt="" />
-																<p>Preview</p>
-															</a>
-														)}
-														{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
-															<a href={match.bets.tipsport.link} target="_blank" className="match-tab">
-																<img src="../img/icoTipsport.svg" alt="" />
-																<div className="tab-tipsportData">
-																	<p>{match.bets.tipsport.home_win}</p>
-																	<p>{match.bets.tipsport.draw}</p>
-																	<p>{match.bets.tipsport.away_win}</p>
-																</div>
-															</a>
-														)}
-														{match.bets.tipsport.link != null && match.match_status == "live" && (
-															<a href="https://www.tipsport.cz/live" target="_blank" className="match-tab">
-																<img src="../img/icoTipsport.svg" alt="" />
-																<p>Livesázka</p>
-															</a>
-														)}
 														{(match.match_status == "live" || match.match_status == "před zápasem") && value.league_name == "CHANCE LIGA" && (
 															<div>
 																{match.stream_url == "ct" && (
@@ -442,6 +423,28 @@ const MainScoreboard = (props) => {
 																<p>Text</p>
 															</a>
 														)}
+														{value.league_name == "Tipsport extraliga" && match.match_status == "před zápasem" && (
+															<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/preview`} className="match-tab">
+																<img src="../img/icoTextGray.svg" alt="" />
+																<p>Preview</p>
+															</a>
+														)}
+														{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
+															<a href={match.bets.tipsport.link} target="_blank" className="match-tab">
+																<img src="../img/icoTipsport.svg" alt="" />
+																<div className="tab-tipsportData">
+																	<p>{match.bets.tipsport.home_win}</p>
+																	<p>{match.bets.tipsport.draw}</p>
+																	<p>{match.bets.tipsport.away_win}</p>
+																</div>
+															</a>
+														)}
+														{match.bets.tipsport.link != null && match.match_status == "live" && (
+															<a href="https://www.tipsport.cz/live" target="_blank" className="match-tab">
+																<img src="../img/icoTipsport.svg" alt="" />
+																<p>Livesázka</p>
+															</a>
+														)}
 														{match.match_status == "po zápase" && value.league_name == "Tipsport extraliga" && (
 															<a href="https://www.hokej.cz/tv/hokejka/category/14" target="_blank" className="match-tab">
 																<img src="../img/icoPlayBlack.svg" alt="" />
@@ -482,6 +485,7 @@ const MainScoreboard = (props) => {
 													<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="body-match" key={match.hokejcz_id}>
 														<div className="match-infoContainer">
 															<div className="match-team match-team--left">
+																<h3 className="shortName">{match.home.short_name ? match.home.short_name : match.home.shortcut}</h3>
 																<h3>{match.home.shortcut}</h3>
 																<div className="match-team--img">
 																	<img src={homeLogo} alt="" />
@@ -522,7 +526,7 @@ const MainScoreboard = (props) => {
 																)}
 																{match.match_status == "live" && (
 																	<div className="match-date active-match">
-																		<p>{match.match_actual_time_name}</p>
+																		<p>{match.match_actual_time_name} tř.</p>
 																		{match.score_periods != undefined && (
 																			<p>
 																				{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
@@ -549,10 +553,17 @@ const MainScoreboard = (props) => {
 																<div className="match-team--img">
 																	<img src={visitorsLogo} alt="" />
 																</div>
+																<h3 className="shortName">{match.visitor.short_name ? match.visitor.short_name : match.visitor.shortcut}</h3>
 																<h3>{match.visitor.shortcut}</h3>
 															</div>
 														</div>
 														<div className="match-tabsContainer">
+															{match.match_status == "live" && (
+																<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`} target="_blank" className="match-tab">
+																	<img src="../img/icoText.svg" alt="" />
+																	<p>Text</p>
+																</a>
+															)}
 															{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
 																<a href={match.bets.tipsport.link} target="_blank" className="match-tab">
 																	<img src="../img/icoTipsport.svg" alt="" />
@@ -567,12 +578,6 @@ const MainScoreboard = (props) => {
 																<a href="https://www.tipsport.cz/live" target="_blank" className="match-tab">
 																	<img src="../img/icoTipsport.svg" alt="" />
 																	<p>Livesázka</p>
-																</a>
-															)}
-															{match.match_status == "live" && (
-																<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`} target="_blank" className="match-tab">
-																	<img src="../img/icoText.svg" alt="" />
-																	<p>Text</p>
 																</a>
 															)}
 															{match.match_status == "po zápase" && (

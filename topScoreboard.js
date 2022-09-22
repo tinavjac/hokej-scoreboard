@@ -20,20 +20,17 @@ var TopScoreboard = function TopScoreboard(props) {
 	if (day < 10) day = "0" + day;
 	if (month < 10) month = "0" + month;
 
-	var _useState = useState(year + "-" + month + "-" + day),
+	var APIDate = year + "-" + month + "-" + day;
+
+	var _useState = useState(false),
 	    _useState2 = _slicedToArray(_useState, 2),
-	    APIDate = _useState2[0],
-	    setAPIDate = _useState2[1];
+	    czechRefetch = _useState2[0],
+	    setCzechRefetch = _useState2[1];
 
 	var _useState3 = useState(false),
 	    _useState4 = _slicedToArray(_useState3, 2),
-	    czechRefetch = _useState4[0],
-	    setCzechRefetch = _useState4[1];
-
-	var _useState5 = useState(false),
-	    _useState6 = _slicedToArray(_useState5, 2),
-	    foreignRefetch = _useState6[0],
-	    setForeignRefetch = _useState6[1];
+	    foreignRefetch = _useState4[0],
+	    setForeignRefetch = _useState4[1];
 
 	/* API FETCHING */
 
@@ -80,15 +77,15 @@ var TopScoreboard = function TopScoreboard(props) {
 	/* END API FETCHING */
 	var scrollContainer = useRef(null);
 
-	var _useState7 = useState({
+	var _useState5 = useState({
 		pointerEvents: true,
 		isScrolling: false,
 		left: 0,
 		x: 0
 	}),
-	    _useState8 = _slicedToArray(_useState7, 2),
-	    scroll = _useState8[0],
-	    setScroll = _useState8[1];
+	    _useState6 = _slicedToArray(_useState5, 2),
+	    scroll = _useState6[0],
+	    setScroll = _useState6[1];
 
 	var mouseDownHandler = function mouseDownHandler(e) {
 		scrollContainer.current.style.cursor = "grabbing";
@@ -148,10 +145,10 @@ var TopScoreboard = function TopScoreboard(props) {
 						{ className: "League", key: key, style: { order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" } },
 						React.createElement(
 							"div",
-							{ className: "league-name" + (value.league_name.length > 14 ? " set-width" : "") },
+							{ className: "league-name" },
 							React.createElement(
 								"h3",
-								null,
+								{ style: { minWidth: value.league_name.length >= 20 ? 90 : "unset" } },
 								value.league_name
 							),
 							React.createElement("img", { src: "../img/ArrowRightBlack.svg", alt: "" })
@@ -232,10 +229,10 @@ var TopScoreboard = function TopScoreboard(props) {
 						{ className: "League", key: key, style: { order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" } },
 						React.createElement(
 							"div",
-							{ className: "league-name" + (value.league_name.length > 10 ? " set-width" : "") },
+							{ className: "league-name" },
 							React.createElement(
 								"h3",
-								null,
+								{ style: { minWidth: value.league_name.length >= 20 ? 90 : "unset" } },
 								value.league_name
 							),
 							React.createElement("img", { src: "../img/ArrowRightBlack.svg", alt: "" })

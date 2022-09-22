@@ -12,7 +12,8 @@ const TopScoreboard = (props) => {
 	if (day < 10) day = "0" + day
 	if (month < 10) month = "0" + month
 
-	const [APIDate, setAPIDate] = useState(year + "-" + month + "-" + day)
+	const APIDate = year + "-" + month + "-" + day
+
 	const [czechRefetch, setCzechRefetch] = useState(false)
 	const [foreignRefetch, setForeignRefetch] = useState(false)
 
@@ -100,8 +101,8 @@ const TopScoreboard = (props) => {
 							if (render) {
 								return (
 									<section className="League" key={key} style={{ order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" }}>
-										<div className={"league-name" + (value.league_name.length > 14 ? " set-width" : "")}>
-											<h3>{value.league_name}</h3>
+										<div className={"league-name"}>
+											<h3 style={{ minWidth: value.league_name.length >= 20 ? 90 : "unset" }}>{value.league_name}</h3>
 											<img src="../img/ArrowRightBlack.svg" alt="" />
 										</div>
 										{value.matches.map((match) => {
@@ -164,8 +165,8 @@ const TopScoreboard = (props) => {
 							) {
 								return (
 									<section className="League" key={key} style={{ order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" }}>
-										<div className={"league-name" + (value.league_name.length > 10 ? " set-width" : "")}>
-											<h3>{value.league_name}</h3>
+										<div className={"league-name"}>
+											<h3 style={{ minWidth: value.league_name.length >= 20 ? 90 : "unset" }}>{value.league_name}</h3>
 											<img src="../img/ArrowRightBlack.svg" alt="" />
 										</div>
 										{value.matches.map((match) => {

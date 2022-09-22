@@ -45,15 +45,6 @@ var MainScoreboard = function MainScoreboard(props) {
 	    APIDate = _useState8[0],
 	    setAPIDate = _useState8[1];
 
-	var _useState9 = useState({
-		isScrolling: false,
-		clientX: 0,
-		scrollX: 0
-	}),
-	    _useState10 = _slicedToArray(_useState9, 2),
-	    dragScroll = _useState10[0],
-	    setDragScroll = _useState10[1];
-
 	var prevDate = function prevDate() {
 		setDayClicks(dayClicks - 1);
 		setForeignRefetch(false);
@@ -101,35 +92,35 @@ var MainScoreboard = function MainScoreboard(props) {
 
 	/* API FETCHING */
 
+	var _useState9 = useState(false),
+	    _useState10 = _slicedToArray(_useState9, 2),
+	    czechRefetch = _useState10[0],
+	    setCzechRefetch = _useState10[1];
+
 	var _useState11 = useState(false),
 	    _useState12 = _slicedToArray(_useState11, 2),
-	    czechRefetch = _useState12[0],
-	    setCzechRefetch = _useState12[1];
+	    foreignRefetch = _useState12[0],
+	    setForeignRefetch = _useState12[1];
 
-	var _useState13 = useState(false),
+	var _useState13 = useState(""),
 	    _useState14 = _slicedToArray(_useState13, 2),
-	    foreignRefetch = _useState14[0],
-	    setForeignRefetch = _useState14[1];
+	    activeLeagueTab = _useState14[0],
+	    setActiveLeagueTab = _useState14[1];
 
-	var _useState15 = useState(""),
+	var _useState15 = useState(null),
 	    _useState16 = _slicedToArray(_useState15, 2),
-	    activeLeagueTab = _useState16[0],
-	    setActiveLeagueTab = _useState16[1];
+	    buttonsUrl = _useState16[0],
+	    setButtonsUrl = _useState16[1];
 
-	var _useState17 = useState(null),
+	var _useState17 = useState(true),
 	    _useState18 = _slicedToArray(_useState17, 2),
-	    buttonsUrl = _useState18[0],
-	    setButtonsUrl = _useState18[1];
+	    noData = _useState18[0],
+	    setNoData = _useState18[1];
 
-	var _useState19 = useState(true),
+	var _useState19 = useState(false),
 	    _useState20 = _slicedToArray(_useState19, 2),
-	    noData = _useState20[0],
-	    setNoData = _useState20[1];
-
-	var _useState21 = useState(false),
-	    _useState22 = _slicedToArray(_useState21, 2),
-	    maxDate = _useState22[0],
-	    setMaxDate = _useState22[1];
+	    maxDate = _useState20[0],
+	    setMaxDate = _useState20[1];
 
 	var urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/";
 	var urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/";
@@ -174,15 +165,15 @@ var MainScoreboard = function MainScoreboard(props) {
 	});
 	var LeagueTabs = useRef(null);
 
-	var _useState23 = useState({
+	var _useState21 = useState({
 		pointerEvents: true,
 		isScrolling: false,
 		left: 0,
 		x: 0
 	}),
-	    _useState24 = _slicedToArray(_useState23, 2),
-	    scroll = _useState24[0],
-	    setScroll = _useState24[1];
+	    _useState22 = _slicedToArray(_useState21, 2),
+	    scroll = _useState22[0],
+	    setScroll = _useState22[1];
 
 	var mouseDownHandler = function mouseDownHandler(e) {
 		LeagueTabs.current.style.cursor = "grabbing";
@@ -252,7 +243,7 @@ var MainScoreboard = function MainScoreboard(props) {
 				{ className: "header-date" },
 				React.createElement(
 					"div",
-					{ className: "date-dayChanger", onClick: prevDate },
+					{ className: "date-dayChanger prev", onClick: prevDate },
 					React.createElement("img", { src: "../img/ArrowLeftGrey.svg", alt: "" }),
 					React.createElement(
 						"h5",
@@ -265,11 +256,11 @@ var MainScoreboard = function MainScoreboard(props) {
 					{ className: "date-currentDay" },
 					dayName,
 					" ",
-					displayDate
+					displayDate.replaceAll(".", ". ")
 				),
 				React.createElement(
 					"div",
-					{ className: "date-dayChanger", onClick: nextDate },
+					{ className: "date-dayChanger next", onClick: nextDate },
 					React.createElement(
 						"h5",
 						null,
@@ -396,7 +387,11 @@ var MainScoreboard = function MainScoreboard(props) {
 											null,
 											match.home.shortcut
 										),
-										React.createElement("img", { src: homeLogo, alt: "" })
+										React.createElement(
+											"div",
+											{ className: "match-team--img" },
+											React.createElement("img", { src: homeLogo, alt: "" })
+										)
 									),
 									React.createElement(
 										"div",
@@ -489,7 +484,11 @@ var MainScoreboard = function MainScoreboard(props) {
 									React.createElement(
 										"div",
 										{ className: "match-team" },
-										React.createElement("img", { src: visitorsLogo, alt: "" }),
+										React.createElement(
+											"div",
+											{ className: "match-team--img" },
+											React.createElement("img", { src: visitorsLogo, alt: "" })
+										),
 										React.createElement(
 											"h3",
 											null,
@@ -500,6 +499,20 @@ var MainScoreboard = function MainScoreboard(props) {
 								React.createElement(
 									"div",
 									{ className: "match-tabsContainer" },
+									(value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") && (match.match_status == "před zápasem" || match.match_status == "live") && React.createElement(
+										"div",
+										{ className: "mediaTab-container" },
+										match.stream_url == "ct" && React.createElement(
+											"a",
+											{ href: "https://sport.ceskatelevize.cz/#live", target: "_blank", className: "match-tab--imgOnly" },
+											React.createElement("img", { src: "../img/logoCT@2x.png", alt: "" })
+										),
+										match.stream_url == "o2" && React.createElement(
+											"a",
+											{ href: "https://www.o2tv.cz/", target: "_blank", className: "match-tab--imgOnly" },
+											React.createElement("img", { src: "../img/logoO2@2x.png", alt: "" })
+										)
+									),
 									value.league_name == "Tipsport extraliga" && match.match_status == "před zápasem" && React.createElement(
 										"a",
 										{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/preview", className: "match-tab" },
@@ -608,7 +621,7 @@ var MainScoreboard = function MainScoreboard(props) {
 										match.stream_url == null && React.createElement(
 											"a",
 											{
-												href: "https://www.hokej.cz/tv/hokejka/chl?matchId=" + match.hokejcz_id + "/",
+												href: "https://www.hokej.cz/tv/hokejka/elh?matchId=" + match.hokejcz_id + "/",
 												target: "_blank",
 												className: "match-tab"
 											},
@@ -628,20 +641,6 @@ var MainScoreboard = function MainScoreboard(props) {
 											"p",
 											null,
 											"Text"
-										)
-									),
-									(value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") && (match.match_status == "před zápasem" || match.match_status == "live") && React.createElement(
-										"div",
-										{ className: "mediaTab-container" },
-										match.stream_url == "ct" && React.createElement(
-											"a",
-											{ href: "https://sport.ceskatelevize.cz/#live", target: "_blank", className: "match-tab--imgOnly" },
-											React.createElement("img", { src: "../img/logoCT@2x.png", alt: "" })
-										),
-										match.stream_url == "o2" && React.createElement(
-											"a",
-											{ href: "https://www.o2tv.cz/", target: "_blank", className: "match-tab--imgOnly" },
-											React.createElement("img", { src: "../img/logoO2@2x.png", alt: "" })
 										)
 									),
 									match.match_status == "po zápase" && value.league_name == "Tipsport extraliga" && React.createElement(
@@ -708,7 +707,11 @@ var MainScoreboard = function MainScoreboard(props) {
 												null,
 												match.home.shortcut
 											),
-											React.createElement("img", { src: homeLogo, alt: "" })
+											React.createElement(
+												"div",
+												{ className: "match-team--img" },
+												React.createElement("img", { src: homeLogo, alt: "" })
+											)
 										),
 										React.createElement(
 											"div",
@@ -801,7 +804,11 @@ var MainScoreboard = function MainScoreboard(props) {
 										React.createElement(
 											"div",
 											{ className: "match-team" },
-											React.createElement("img", { src: visitorsLogo, alt: "" }),
+											React.createElement(
+												"div",
+												{ className: "match-team--img" },
+												React.createElement("img", { src: visitorsLogo, alt: "" })
+											),
 											React.createElement(
 												"h3",
 												null,

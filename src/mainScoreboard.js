@@ -316,8 +316,18 @@ const MainScoreboard = (props) => {
 															)}
 															{match.match_status == "live" && (
 																<div className="match-date active-match">
-																	<p>{match.match_actual_time_alias}. tř.</p>
-
+																	<p>
+																		{match.match_actual_time_alias == "0"
+																			? "1"
+																			: match.match_actual_time_alias == "10"
+																			? "1"
+																			: match.match_actual_time_alias == "20"
+																			? "2"
+																			: match.match_actual_time_alias == "30"
+																			? "3"
+																			: match.match_actual_time_alias}
+																		. tř.
+																	</p>
 																	{match.score_periods != undefined && (
 																		<p>
 																			{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
@@ -526,7 +536,18 @@ const MainScoreboard = (props) => {
 																)}
 																{match.match_status == "live" && (
 																	<div className="match-date active-match">
-																		<p>{match.match_actual_time_name}. tř.</p>
+																		<p>
+																			{match.match_actual_time_alias == "0"
+																				? "1"
+																				: match.match_actual_time_alias == "10"
+																				? "1"
+																				: match.match_actual_time_alias == "20"
+																				? "2"
+																				: match.match_actual_time_alias == "30"
+																				? "3"
+																				: match.match_actual_time_alias}
+																			. tř.
+																		</p>
 																		{match.score_periods != undefined && (
 																			<p>
 																				{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}

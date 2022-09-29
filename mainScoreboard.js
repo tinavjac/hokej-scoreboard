@@ -458,7 +458,7 @@ var MainScoreboard = function MainScoreboard(props) {
 											React.createElement(
 												"p",
 												null,
-												match.match_actual_time_alias,
+												match.match_actual_time_alias == "0" ? "1" : match.match_actual_time_alias == "10" ? "1" : match.match_actual_time_alias == "20" ? "2" : match.match_actual_time_alias == "30" ? "3" : match.match_actual_time_alias,
 												". t\u0159."
 											),
 											match.score_periods != undefined && React.createElement(
@@ -789,7 +789,7 @@ var MainScoreboard = function MainScoreboard(props) {
 												React.createElement(
 													"p",
 													null,
-													match.match_actual_time_name,
+													match.match_actual_time_alias == "0" ? "1" : match.match_actual_time_alias == "10" ? "1" : match.match_actual_time_alias == "20" ? "2" : match.match_actual_time_alias == "30" ? "3" : match.match_actual_time_alias,
 													". t\u0159."
 												),
 												match.score_periods != undefined && React.createElement(

@@ -266,14 +266,13 @@ const MainScoreboard = (props) => {
 					{czechQuery.data != undefined &&
 						Object.entries(czechQuery.data).map(([key, value]) => {
 							if (key == activeLeagueTab) {
-								console.log(value)
 								return (
 									<div key={key}>
 										{value.matches.map((match) => {
 											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
 											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
 											return (
-												<a href={`/zapas/${match.hokejcz_id}/`} className="body-match" key={match.hokejcz_id}>
+												<a href={`/zapas/${match.hokejcz_id}/`} className="body-match" key={match.onlajny_id}>
 													<div className="match-infoContainer">
 														<div className="match-team match-team--left">
 															<h3 className="shortName">{match.home.short_name ? match.home.short_name : match.home.shortcut}</h3>
@@ -483,7 +482,7 @@ const MainScoreboard = (props) => {
 						})}
 					{foreignQuery.data != undefined &&
 						Object.entries(foreignQuery.data).map(([key, value]) => {
-							if (key == activeLeagueTab) {
+							if (key == activeLeagueTab && value.league_name != "NHL") {
 								return (
 									<div key={key}>
 										{value.matches.map((match) => {
@@ -492,7 +491,7 @@ const MainScoreboard = (props) => {
 
 											if (APIDate == match.date) {
 												return (
-													<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="body-match" key={match.hokejcz_id}>
+													<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="body-match" key={match.onlajny_id}>
 														<div className="match-infoContainer">
 															<div className="match-team match-team--left">
 																<h3 className="shortName">{match.home.short_name ? match.home.short_name : match.home.shortcut}</h3>

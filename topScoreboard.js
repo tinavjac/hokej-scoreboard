@@ -140,6 +140,7 @@ var TopScoreboard = function TopScoreboard(props) {
 					}
 				});
 				if (render) {
+					var leagueName = value.league_name.split(" ");
 					return React.createElement(
 						"section",
 						{ className: "League", key: key, style: { order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" } },
@@ -148,8 +149,14 @@ var TopScoreboard = function TopScoreboard(props) {
 							{ className: "league-name" },
 							React.createElement(
 								"h3",
-								{ style: { minWidth: value.league_name.length >= 20 ? 90 : "unset" } },
-								value.league_name
+								null,
+								leagueName.map(function (word, index) {
+									if (index == Math.ceil(leagueName.length / 2)) {
+										return "\n" + word;
+									} else {
+										return word + " ";
+									}
+								})
 							),
 							React.createElement("img", { src: "../img/ArrowRightBlack.svg", alt: "" })
 						),
@@ -224,6 +231,7 @@ var TopScoreboard = function TopScoreboard(props) {
 				if (value.matches.some(function (match) {
 					return match.date == APIDate;
 				}) && render && value.league_name != "NHL") {
+					var leagueName = value.league_name.split(" ");
 					return React.createElement(
 						"section",
 						{ className: "League", key: key, style: { order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" } },
@@ -232,8 +240,14 @@ var TopScoreboard = function TopScoreboard(props) {
 							{ className: "league-name" },
 							React.createElement(
 								"h3",
-								{ style: { minWidth: value.league_name.length >= 20 ? 90 : "unset" } },
-								value.league_name
+								null,
+								leagueName.map(function (word, index) {
+									if (index == Math.ceil(leagueName.length / 2)) {
+										return "\n" + word;
+									} else {
+										return word + " ";
+									}
+								})
 							),
 							React.createElement("img", { src: "../img/ArrowRightBlack.svg", alt: "" })
 						),

@@ -99,10 +99,19 @@ const TopScoreboard = (props) => {
 								}
 							})
 							if (render) {
+								let leagueName = value.league_name.split(" ")
 								return (
 									<section className="League" key={key} style={{ order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" }}>
 										<div className={"league-name"}>
-											<h3 style={{ minWidth: value.league_name.length >= 20 ? 90 : "unset" }}>{value.league_name}</h3>
+											<h3>
+												{leagueName.map((word, index) => {
+													if (index == Math.ceil(leagueName.length / 2)) {
+														return "\n" + word
+													} else {
+														return word + " "
+													}
+												})}
+											</h3>
 											<img src="../img/ArrowRightBlack.svg" alt="" />
 										</div>
 										{value.matches.map((match) => {
@@ -164,10 +173,19 @@ const TopScoreboard = (props) => {
 								render &&
 								value.league_name != "NHL"
 							) {
+								let leagueName = value.league_name.split(" ")
 								return (
 									<section className="League" key={key} style={{ order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" }}>
 										<div className={"league-name"}>
-											<h3 style={{ minWidth: value.league_name.length >= 20 ? 90 : "unset" }}>{value.league_name}</h3>
+											<h3>
+												{leagueName.map((word, index) => {
+													if (index == Math.ceil(leagueName.length / 2)) {
+														return "\n" + word
+													} else {
+														return word + " "
+													}
+												})}
+											</h3>
 											<img src="../img/ArrowRightBlack.svg" alt="" />
 										</div>
 										{value.matches.map((match) => {

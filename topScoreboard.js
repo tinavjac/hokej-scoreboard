@@ -252,8 +252,8 @@ var TopScoreboard = function TopScoreboard(props) {
 							React.createElement("img", { src: "../img/ArrowRightBlack.svg", alt: "" })
 						),
 						value.matches.map(function (match) {
-							var homeLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.home.onlajny_id;
-							var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.onlajny_id;
+							var homeLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.home.logo_id;
+							var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.logo_id;
 							if (APIDate == match.date) {
 								return React.createElement(
 									"a",

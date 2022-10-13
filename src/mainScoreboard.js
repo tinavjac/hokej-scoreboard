@@ -269,6 +269,7 @@ const MainScoreboard = (props) => {
 								return (
 									<div key={key}>
 										{value.matches.map((match) => {
+											//console.log(match)
 											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
 											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
 											return (
@@ -486,8 +487,9 @@ const MainScoreboard = (props) => {
 								return (
 									<div key={key}>
 										{value.matches.map((match) => {
-											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
-											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
+											console.log(match)
+											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.logo_id}`
+											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.logo_id}`
 
 											if (APIDate == match.date) {
 												return (

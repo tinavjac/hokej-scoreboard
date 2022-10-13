@@ -317,7 +317,7 @@ body {
 	height: auto;
 }
 .match-team.match-team--left {
-	width: 110px;
+	width: 150px;
 	justify-content: flex-end;
 }
 .match-team.match-team--left h3 {
@@ -468,7 +468,7 @@ body {
 		font-size: 24px;
 	}
 	.match-team.match-team--left {
-		width: 66px;
+		width: 88px;
 	}
 	.match-team h3:not(.shortName) {
 		display: block;

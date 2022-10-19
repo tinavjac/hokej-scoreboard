@@ -409,13 +409,22 @@ var MainScoreboard = function MainScoreboard(props) {
 											},
 											match.score_home
 										),
+										match.match_status == "zrušeno" && React.createElement(
+											"div",
+											{ className: "match-date" },
+											React.createElement(
+												"p",
+												null,
+												"Odlo\u017Eeno"
+											)
+										),
 										match.match_status == "po zápase" && React.createElement(
 											"div",
 											{ className: "match-date" },
 											React.createElement(
 												"p",
 												null,
-												"Konec"
+												match.match_actual_time_alias == "KP" ? "Po prodloužení" : match.match_actual_time_alias == "KN" ? "Po nájezdech" : "Konec"
 											),
 											match.score_periods != undefined && React.createElement(
 												"p",
@@ -458,8 +467,7 @@ var MainScoreboard = function MainScoreboard(props) {
 											React.createElement(
 												"p",
 												null,
-												match.match_actual_time_alias == "0" ? "1" : match.match_actual_time_alias == "10" ? "1" : match.match_actual_time_alias == "20" ? "2" : match.match_actual_time_alias == "30" ? "3" : match.match_actual_time_alias,
-												". t\u0159."
+												match.match_actual_time_alias == "0" ? "1. tř." : match.match_actual_time_alias == "10" ? "1. tř." : match.match_actual_time_alias == "20" ? "2. tř." : match.match_actual_time_alias == "30" ? "3. tř." : match.match_actual_time_alias == "P" ? "P" : match.match_actual_time_alias == "N" ? "SN" : match.match_actual_time_alias
 											),
 											match.score_periods != undefined && React.createElement(
 												"p",

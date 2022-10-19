@@ -384,6 +384,7 @@ body {
 	display: none;
 }
 .match-tab {
+	height: 32px;
 	padding: 10px 8px;
 	border-radius: var(--default-border-radius);
 	border: 1px solid var(--top-border-color);

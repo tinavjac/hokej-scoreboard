@@ -291,9 +291,20 @@ const MainScoreboard = (props) => {
 															>
 																{match.score_home}
 															</div>
+															{match.match_status == "zrušeno" && (
+																<div className="match-date">
+																	<p>Odloženo</p>
+																</div>
+															)}
 															{match.match_status == "po zápase" && (
 																<div className="match-date">
-																	<p>Konec</p>
+																	<p>
+																		{match.match_actual_time_alias == "KP"
+																			? "Po prodloužení"
+																			: match.match_actual_time_alias == "KN"
+																			? "Po nájezdech"
+																			: "Konec"}
+																	</p>
 																	{match.score_periods != undefined && (
 																		<p>
 																			{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
@@ -318,15 +329,18 @@ const MainScoreboard = (props) => {
 																<div className="match-date active-match">
 																	<p>
 																		{match.match_actual_time_alias == "0"
-																			? "1"
+																			? "1. tř."
 																			: match.match_actual_time_alias == "10"
-																			? "1"
+																			? "1. tř."
 																			: match.match_actual_time_alias == "20"
-																			? "2"
+																			? "2. tř."
 																			: match.match_actual_time_alias == "30"
-																			? "3"
+																			? "3. tř."
+																			: match.match_actual_time_alias == "P"
+																			? "P"
+																			: match.match_actual_time_alias == "N"
+																			? "SN"
 																			: match.match_actual_time_alias}
-																		. tř.
 																	</p>
 																	{match.score_periods != undefined && (
 																		<p>

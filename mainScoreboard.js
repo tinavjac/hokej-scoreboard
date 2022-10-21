@@ -433,7 +433,8 @@ var MainScoreboard = function MainScoreboard(props) {
 												", ",
 												match.score_periods[1],
 												", ",
-												match.score_periods[2]
+												match.score_periods[2],
+												match.match_actual_time_alias == "KN" && " - " + match.score_home + ":" + match.score_visitor
 											),
 											match.score_period != undefined && React.createElement(
 												"p",
@@ -442,7 +443,8 @@ var MainScoreboard = function MainScoreboard(props) {
 												", ",
 												match.score_period[1],
 												", ",
-												match.score_period[2]
+												match.score_period[2],
+												match.match_actual_time_alias == "KN" && " - " + match.score_home + ":" + match.score_visitor
 											)
 										),
 										match.match_status == "před zápasem" && React.createElement(
@@ -467,7 +469,7 @@ var MainScoreboard = function MainScoreboard(props) {
 											React.createElement(
 												"p",
 												null,
-												match.match_actual_time_alias == "0" ? "1. tř." : match.match_actual_time_alias == "10" ? "1. tř." : match.match_actual_time_alias == "20" ? "2. tř." : match.match_actual_time_alias == "30" ? "3. tř." : match.match_actual_time_alias == "P" ? "P" : match.match_actual_time_alias == "N" ? "SN" : match.match_actual_time_alias
+												match.match_actual_time_alias == "0" ? "1. př." : match.match_actual_time_alias == "10" ? "1. př." : match.match_actual_time_alias == "20" ? "2. př." : match.match_actual_time_alias == "30" ? "3. př." : match.match_actual_time_alias == "P" ? "P" : match.match_actual_time_alias == "N" ? "SN" : match.match_actual_time_alias + ". t\u0159."
 											),
 											match.score_periods != undefined && React.createElement(
 												"p",
@@ -476,7 +478,8 @@ var MainScoreboard = function MainScoreboard(props) {
 												", ",
 												match.score_periods[1],
 												", ",
-												match.score_periods[2]
+												match.score_periods[2],
+												match.match_actual_time_alias == "KN" && " - " + match.score_home + ":" + match.score_visitor
 											),
 											match.score_period != undefined && React.createElement(
 												"p",
@@ -485,7 +488,9 @@ var MainScoreboard = function MainScoreboard(props) {
 												", ",
 												match.score_period[1],
 												", ",
-												match.score_period[2]
+												match.score_period[2],
+												" ",
+												match.match_actual_time_alias == "KN" && " - " + match.score_home + ":" + match.score_visitor
 											)
 										),
 										React.createElement(
@@ -749,13 +754,22 @@ var MainScoreboard = function MainScoreboard(props) {
 												},
 												match.score_home
 											),
+											match.match_status == "zrušeno" && React.createElement(
+												"div",
+												{ className: "match-date" },
+												React.createElement(
+													"p",
+													null,
+													"Odlo\u017Eeno"
+												)
+											),
 											match.match_status == "po zápase" && React.createElement(
 												"div",
 												{ className: "match-date" },
 												React.createElement(
 													"p",
 													null,
-													"Konec"
+													match.match_actual_time_alias == "KP" ? "Po prodloužení" : match.match_actual_time_alias == "KN" ? "Po nájezdech" : "Konec"
 												),
 												match.score_periods != undefined && React.createElement(
 													"p",
@@ -764,7 +778,8 @@ var MainScoreboard = function MainScoreboard(props) {
 													", ",
 													match.score_periods[1],
 													", ",
-													match.score_periods[2]
+													match.score_periods[2],
+													match.match_actual_time_alias == "KN" && " - " + match.score_home + ":" + match.score_visitor
 												),
 												match.score_period != undefined && React.createElement(
 													"p",
@@ -773,7 +788,8 @@ var MainScoreboard = function MainScoreboard(props) {
 													", ",
 													match.score_period[1],
 													", ",
-													match.score_period[2]
+													match.score_period[2],
+													match.match_actual_time_alias == "KN" && " - " + match.score_home + ":" + match.score_visitor
 												)
 											),
 											match.match_status == "před zápasem" && React.createElement(
@@ -782,7 +798,7 @@ var MainScoreboard = function MainScoreboard(props) {
 												React.createElement(
 													"p",
 													null,
-													APIDate == match.date ? dayName : "Zítra ráno"
+													dayName
 												),
 												React.createElement(
 													"p",
@@ -798,8 +814,7 @@ var MainScoreboard = function MainScoreboard(props) {
 												React.createElement(
 													"p",
 													null,
-													match.match_actual_time_alias == "0" ? "1" : match.match_actual_time_alias == "10" ? "1" : match.match_actual_time_alias == "20" ? "2" : match.match_actual_time_alias == "30" ? "3" : match.match_actual_time_alias,
-													". t\u0159."
+													match.match_actual_time_alias == "0" ? "1. př." : match.match_actual_time_alias == "10" ? "1. př." : match.match_actual_time_alias == "20" ? "2. př." : match.match_actual_time_alias == "30" ? "3. př." : match.match_actual_time_alias == "P" ? "P" : match.match_actual_time_alias == "N" ? "SN" : match.match_actual_time_alias + ". t\u0159."
 												),
 												match.score_periods != undefined && React.createElement(
 													"p",
@@ -808,7 +823,8 @@ var MainScoreboard = function MainScoreboard(props) {
 													", ",
 													match.score_periods[1],
 													", ",
-													match.score_periods[2]
+													match.score_periods[2],
+													match.match_actual_time_alias == "KN" && " - " + match.score_home + ":" + match.score_visitor
 												),
 												match.score_period != undefined && React.createElement(
 													"p",
@@ -817,7 +833,8 @@ var MainScoreboard = function MainScoreboard(props) {
 													", ",
 													match.score_period[1],
 													", ",
-													match.score_period[2]
+													match.score_period[2],
+													match.match_actual_time_alias == "KN" && " - " + match.score_home + ":" + match.score_visitor
 												)
 											),
 											React.createElement(

@@ -308,11 +308,13 @@ const MainScoreboard = (props) => {
 																	{match.score_periods != undefined && (
 																		<p>
 																			{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
+																			{match.match_actual_time_alias == "KN" && ` - ${match.score_home}:${match.score_visitor}`}
 																		</p>
 																	)}
 																	{match.score_period != undefined && (
 																		<p>
 																			{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}
+																			{match.match_actual_time_alias == "KN" && ` - ${match.score_home}:${match.score_visitor}`}
 																		</p>
 																	)}
 																</div>
@@ -329,27 +331,29 @@ const MainScoreboard = (props) => {
 																<div className="match-date active-match">
 																	<p>
 																		{match.match_actual_time_alias == "0"
-																			? "1. tř."
+																			? "1. př."
 																			: match.match_actual_time_alias == "10"
-																			? "1. tř."
+																			? "1. př."
 																			: match.match_actual_time_alias == "20"
-																			? "2. tř."
+																			? "2. př."
 																			: match.match_actual_time_alias == "30"
-																			? "3. tř."
+																			? "3. př."
 																			: match.match_actual_time_alias == "P"
 																			? "P"
 																			: match.match_actual_time_alias == "N"
 																			? "SN"
-																			: match.match_actual_time_alias}
+																			: `${match.match_actual_time_alias}. tř.`}
 																	</p>
 																	{match.score_periods != undefined && (
 																		<p>
 																			{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
+																			{match.match_actual_time_alias == "KN" && ` - ${match.score_home}:${match.score_visitor}`}
 																		</p>
 																	)}
 																	{match.score_period != undefined && (
 																		<p>
-																			{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}
+																			{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}{" "}
+																			{match.match_actual_time_alias == "KN" && ` - ${match.score_home}:${match.score_visitor}`}
 																		</p>
 																	)}
 																</div>
@@ -525,25 +529,37 @@ const MainScoreboard = (props) => {
 																>
 																	{match.score_home}
 																</div>
+																{match.match_status == "zrušeno" && (
+																	<div className="match-date">
+																		<p>Odloženo</p>
+																	</div>
+																)}
 																{match.match_status == "po zápase" && (
 																	<div className="match-date">
-																		<p>Konec</p>
-
+																		<p>
+																			{match.match_actual_time_alias == "KP"
+																				? "Po prodloužení"
+																				: match.match_actual_time_alias == "KN"
+																				? "Po nájezdech"
+																				: "Konec"}
+																		</p>
 																		{match.score_periods != undefined && (
 																			<p>
 																				{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
+																				{match.match_actual_time_alias == "KN" && ` - ${match.score_home}:${match.score_visitor}`}
 																			</p>
 																		)}
 																		{match.score_period != undefined && (
 																			<p>
 																				{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}
+																				{match.match_actual_time_alias == "KN" && ` - ${match.score_home}:${match.score_visitor}`}
 																			</p>
 																		)}
 																	</div>
 																)}
 																{match.match_status == "před zápasem" && (
 																	<div className="match-date future-match">
-																		<p>{APIDate == match.date ? dayName : "Zítra ráno"}</p>
+																		<p>{dayName}</p>
 																		<p>
 																			{match.date.replace(/-/gi, ".")} • {match.time}
 																		</p>
@@ -553,24 +569,29 @@ const MainScoreboard = (props) => {
 																	<div className="match-date active-match">
 																		<p>
 																			{match.match_actual_time_alias == "0"
-																				? "1"
+																				? "1. př."
 																				: match.match_actual_time_alias == "10"
-																				? "1"
+																				? "1. př."
 																				: match.match_actual_time_alias == "20"
-																				? "2"
+																				? "2. př."
 																				: match.match_actual_time_alias == "30"
-																				? "3"
-																				: match.match_actual_time_alias}
-																			. tř.
+																				? "3. př."
+																				: match.match_actual_time_alias == "P"
+																				? "P"
+																				: match.match_actual_time_alias == "N"
+																				? "SN"
+																				: `${match.match_actual_time_alias}. tř.`}
 																		</p>
 																		{match.score_periods != undefined && (
 																			<p>
 																				{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
+																				{match.match_actual_time_alias == "KN" && ` - ${match.score_home}:${match.score_visitor}`}
 																			</p>
 																		)}
 																		{match.score_period != undefined && (
 																			<p>
 																				{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}
+																				{match.match_actual_time_alias == "KN" && ` - ${match.score_home}:${match.score_visitor}`}
 																			</p>
 																		)}
 																	</div>

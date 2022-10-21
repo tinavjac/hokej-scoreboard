@@ -308,13 +308,21 @@ const MainScoreboard = (props) => {
 																	{match.score_periods != undefined && (
 																		<p>
 																			{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
-																			{match.match_actual_time_alias == "KN" && ` - ${match.score_home}:${match.score_visitor}`}
+																			{match.match_actual_time_alias == "KP" &&
+																				` - ${
+																					match.score_home > match.score_visitor ? "1:0" : match.score_home < match.score_visitor ? "0:1" : "0:0"
+																				}`}
+																			{match.match_actual_time_alias == "KN" && " - 0:0"}
 																		</p>
 																	)}
 																	{match.score_period != undefined && (
 																		<p>
 																			{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}
-																			{match.match_actual_time_alias == "KN" && ` - ${match.score_home}:${match.score_visitor}`}
+																			{match.match_actual_time_alias == "KP" &&
+																				` - ${
+																					match.score_home > match.score_visitor ? "1:0" : match.score_home < match.score_visitor ? "0:1" : "0:0"
+																				}`}
+																			{match.match_actual_time_alias == "KN" && " - 0:0"}
 																		</p>
 																	)}
 																</div>
@@ -347,13 +355,21 @@ const MainScoreboard = (props) => {
 																	{match.score_periods != undefined && (
 																		<p>
 																			{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
-																			{match.match_actual_time_alias == "KN" && ` - ${match.score_home}:${match.score_visitor}`}
+																			{match.match_actual_time_alias == "KP" &&
+																				` - ${
+																					match.score_home > match.score_visitor ? "1:0" : match.score_home < match.score_visitor ? "0:1" : "0:0"
+																				}`}
+																			{match.match_actual_time_alias == "KN" && " - 0:0"}
 																		</p>
 																	)}
 																	{match.score_period != undefined && (
 																		<p>
 																			{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}{" "}
-																			{match.match_actual_time_alias == "KN" && ` - ${match.score_home}:${match.score_visitor}`}
+																			{match.match_actual_time_alias == "KP" &&
+																				` - ${
+																					match.score_home > match.score_visitor ? "1:0" : match.score_home < match.score_visitor ? "0:1" : "0:0"
+																				}`}
+																			{match.match_actual_time_alias == "KN" && " - 0:0"}
 																		</p>
 																	)}
 																</div>
@@ -546,13 +562,15 @@ const MainScoreboard = (props) => {
 																		{match.score_periods != undefined && (
 																			<p>
 																				{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
-																				{match.match_actual_time_alias == "KN" && ` - ${match.score_home}:${match.score_visitor}`}
+																				{match.match_actual_time_alias == "KP" && ` - ${match.score_home > match.score_visitor ? "1:0" : "0:1"}`}
+																				{match.match_actual_time_alias == "KN" && " - 0:0"}
 																			</p>
 																		)}
 																		{match.score_period != undefined && (
 																			<p>
 																				{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}
-																				{match.match_actual_time_alias == "KN" && ` - ${match.score_home}:${match.score_visitor}`}
+																				{match.match_actual_time_alias == "KP" && ` - ${match.score_home > match.score_visitor ? "1:0" : "0:1"}`}
+																				{match.match_actual_time_alias == "KN" && " - 0:0"}
 																			</p>
 																		)}
 																	</div>
@@ -585,13 +603,16 @@ const MainScoreboard = (props) => {
 																		{match.score_periods != undefined && (
 																			<p>
 																				{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
-																				{match.match_actual_time_alias == "KN" && ` - ${match.score_home}:${match.score_visitor}`}
+																				{match.match_actual_time_alias == "KP" && ` - ${match.score_home > match.score_visitor ? "1:0" : "0:1"}`}
+																				{match.match_actual_time_alias == "KN" && " - 0:0"}
 																			</p>
 																		)}
 																		{match.score_period != undefined && (
 																			<p>
 																				{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}
-																				{match.match_actual_time_alias == "KN" && ` - ${match.score_home}:${match.score_visitor}`}
+																				{match.match_actual_time_alias == "KP" && ` - ${match.score_home > match.score_visitor ? "1:0" : "0:1"}`}
+																				{match.match_actual_time_alias == "KN" && " - 0:0"}
+																				{match.match_actual_time_alias == "KN" && " - 0:0"}
 																			</p>
 																		)}
 																	</div>

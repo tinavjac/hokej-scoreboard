@@ -461,7 +461,7 @@ const MainScoreboard = (props) => {
 																	)}
 																</div>
 															)}
-														{match.match_status == "live" && (
+														{match.match_status == "live" && (value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") && (
 															<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`} target="_blank" className="match-tab">
 																<img src="../img/icoText.svg" alt="" />
 																<p>Text</p>

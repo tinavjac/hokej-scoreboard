@@ -618,7 +618,7 @@ var MainScoreboard = function MainScoreboard(props) {
 											)
 										)
 									),
-									match.match_status == "live" && React.createElement(
+									match.match_status == "live" && (value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") && React.createElement(
 										"a",
 										{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/on-line", target: "_blank", className: "match-tab" },
 										React.createElement("img", { src: "../img/icoText.svg", alt: "" }),

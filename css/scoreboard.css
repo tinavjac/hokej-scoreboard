@@ -81,7 +81,6 @@ body {
 	font-weight: var(--font-extra-bold);
 	text-transform: uppercase;
 	text-align: right;
-	white-space: pre-line;
 }
 .league-name img {
 	width: 16px;
@@ -183,7 +182,7 @@ body {
 }
 .mainScoreboard-header {
 	background-color: var(--color-gray-light);
-	padding: 12px;
+	padding: 12px 24px;
 	border-radius: var(--default-border-radius);
 }
 .header-date {
@@ -285,7 +284,7 @@ body {
 	flex-flow: row nowrap;
 	align-items: center;
 	border-bottom: 1px solid var(--top-border-color);
-	padding: 6px;
+	padding: 6px 24px;
 	cursor: pointer;
 	transition: background-color 200ms ease-in-out;
 	text-decoration: none;
@@ -469,13 +468,23 @@ body {
 		font-size: 24px;
 	}
 	.match-team.match-team--left {
-		width: 88px;
+		width: 75px;
 	}
 	.match-team h3:not(.shortName) {
 		display: block;
 	}
 	.match-team h3.shortName {
 		display: none;
+	}
+	.match-date {
+		min-width: 100px;
+		padding: 0;
+	}
+	.match-scoreContainer {
+		margin-inline: 4px;
+	}
+	.match-team {
+		gap: 4px;
 	}
 }
 /* SM LAYOUT */
@@ -506,16 +515,6 @@ body {
 	}
 	.match-team.match-team--left {
 		width: 58px;
-	}
-	.match-date {
-		min-width: 100px;
-		padding: 0;
-	}
-	.match-scoreContainer {
-		margin-inline: 4px;
-	}
-	.match-team {
-		gap: 4px;
 	}
 }
 

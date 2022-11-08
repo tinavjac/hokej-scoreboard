@@ -288,9 +288,11 @@ var MainScoreboard = function MainScoreboard(props) {
 					});
 					var priority = void 0;
 					var render = false;
+					var leaguName = void 0;
 					Object.entries(scoreboardLeagues).map(function (value) {
 						if (value[1].id == key) {
 							priority = value[1].priority;
+							leaguName = value[1].name;
 							if (value[1].sourceOnlajny === false) {
 								render = true;
 							}
@@ -312,7 +314,7 @@ var MainScoreboard = function MainScoreboard(props) {
 							React.createElement(
 								"p",
 								null,
-								value.league_name
+								leaguName
 							)
 						);
 					}
@@ -327,9 +329,11 @@ var MainScoreboard = function MainScoreboard(props) {
 					});
 					var render = false;
 					var priority = void 0;
+					var leagueName = void 0;
 					Object.entries(scoreboardLeagues).map(function (value) {
 						if (value[1].id == key) {
 							priority = value[1].priority;
+							leagueName = value[1].name;
 							if (value[1].sourceOnlajny === true) {
 								render = true;
 							}
@@ -351,7 +355,7 @@ var MainScoreboard = function MainScoreboard(props) {
 							React.createElement(
 								"p",
 								null,
-								value.league_name
+								leagueName
 							)
 						);
 					}
@@ -371,7 +375,6 @@ var MainScoreboard = function MainScoreboard(props) {
 						"div",
 						{ key: key },
 						value.matches.map(function (match) {
-							//console.log(match)
 							var homeLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.home.onlajny_id;
 							var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.onlajny_id;
 							return React.createElement(
@@ -718,7 +721,6 @@ var MainScoreboard = function MainScoreboard(props) {
 						"div",
 						{ key: key },
 						value.matches.map(function (match) {
-							console.log(match);
 							var homeLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.home.logo_id;
 							var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.logo_id;
 

@@ -131,16 +131,18 @@ var TopScoreboard = function TopScoreboard(props) {
 
 				var render = false;
 				var priority = void 0;
+				var leagueName = void 0;
 				Object.entries(scoreboardLeagues).map(function (value) {
 					if (value[1].id == key) {
 						priority = value[1].priority;
+						leagueName = value[1].name.split(" ");
 						if (value[1].sourceOnlajny === false) {
 							render = true;
 						}
 					}
 				});
 				if (render) {
-					var leagueName = value.league_name.split(" ");
+					//let leagueName = value.league_name.split(" ")
 					return React.createElement(
 						"section",
 						{ className: "League", key: key, style: { order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" } },
@@ -152,7 +154,7 @@ var TopScoreboard = function TopScoreboard(props) {
 								null,
 								leagueName.map(function (word, index) {
 									if (index == Math.ceil(leagueName.length / 2)) {
-										return "\n" + word;
+										return "\n" + word + " ";
 									} else {
 										return word + " ";
 									}
@@ -220,9 +222,11 @@ var TopScoreboard = function TopScoreboard(props) {
 
 				var render = false;
 				var priority = void 0;
+				var leagueName = void 0;
 				Object.entries(scoreboardLeagues).map(function (value) {
 					if (value[1].id == key) {
 						priority = value[1].priority;
+						leagueName = value[1].name.split(" ");
 						if (value[1].sourceOnlajny === true) {
 							render = true;
 						}
@@ -231,7 +235,7 @@ var TopScoreboard = function TopScoreboard(props) {
 				if (value.matches.some(function (match) {
 					return match.date == APIDate;
 				}) && render && value.league_name != "NHL") {
-					var leagueName = value.league_name.split(" ");
+					//let leagueName = value.league_name.split(" ")
 					return React.createElement(
 						"section",
 						{ className: "League", key: key, style: { order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" } },
@@ -242,8 +246,8 @@ var TopScoreboard = function TopScoreboard(props) {
 								"h3",
 								null,
 								leagueName.map(function (word, index) {
-									if (index == Math.ceil(leagueName.length / 2)) {
-										return "\n" + word;
+									if (index == Math.ceil(leagueName.length / 2) && isNaN(word)) {
+										return "\n" + word + " ";
 									} else {
 										return word + " ";
 									}

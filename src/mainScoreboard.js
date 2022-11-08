@@ -199,9 +199,11 @@ const MainScoreboard = (props) => {
 								})
 								let priority
 								let render = false
+								let leaguName
 								Object.entries(scoreboardLeagues).map((value) => {
 									if (value[1].id == key) {
 										priority = value[1].priority
+										leaguName = value[1].name
 										if (value[1].sourceOnlajny === false) {
 											render = true
 										}
@@ -219,7 +221,7 @@ const MainScoreboard = (props) => {
 											data-order={priority}
 											style={{ order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" }}
 										>
-											<p>{value.league_name}</p>
+											<p>{leaguName}</p>
 										</div>
 									)
 								}
@@ -231,9 +233,11 @@ const MainScoreboard = (props) => {
 								})
 								let render = false
 								let priority
+								let leagueName
 								Object.entries(scoreboardLeagues).map((value) => {
 									if (value[1].id == key) {
 										priority = value[1].priority
+										leagueName = value[1].name
 										if (value[1].sourceOnlajny === true) {
 											render = true
 										}
@@ -251,7 +255,7 @@ const MainScoreboard = (props) => {
 											data-order={priority}
 											style={{ order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" }}
 										>
-											<p>{value.league_name}</p>
+											<p>{leagueName}</p>
 										</div>
 									)
 								}
@@ -269,7 +273,6 @@ const MainScoreboard = (props) => {
 								return (
 									<div key={key}>
 										{value.matches.map((match) => {
-											//console.log(match)
 											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
 											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
 											return (
@@ -521,7 +524,6 @@ const MainScoreboard = (props) => {
 								return (
 									<div key={key}>
 										{value.matches.map((match) => {
-											console.log(match)
 											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.logo_id}`
 											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.logo_id}`
 

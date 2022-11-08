@@ -90,23 +90,25 @@ const TopScoreboard = (props) => {
 						Object.entries(czechQuery.data).map(([key, value]) => {
 							let render = false
 							let priority
+							let leagueName
 							Object.entries(scoreboardLeagues).map((value) => {
 								if (value[1].id == key) {
 									priority = value[1].priority
+									leagueName = value[1].name.split(" ")
 									if (value[1].sourceOnlajny === false) {
 										render = true
 									}
 								}
 							})
 							if (render) {
-								let leagueName = value.league_name.split(" ")
+								//let leagueName = value.league_name.split(" ")
 								return (
 									<section className="League" key={key} style={{ order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" }}>
 										<div className={"league-name"}>
 											<h3>
 												{leagueName.map((word, index) => {
 													if (index == Math.ceil(leagueName.length / 2)) {
-														return "\n" + word
+														return "\n" + word + " "
 													} else {
 														return word + " "
 													}
@@ -158,9 +160,11 @@ const TopScoreboard = (props) => {
 						Object.entries(foreignQuery.data).map(([key, value]) => {
 							let render = false
 							let priority
+							let leagueName
 							Object.entries(scoreboardLeagues).map((value) => {
 								if (value[1].id == key) {
 									priority = value[1].priority
+									leagueName = value[1].name.split(" ")
 									if (value[1].sourceOnlajny === true) {
 										render = true
 									}
@@ -173,19 +177,20 @@ const TopScoreboard = (props) => {
 								render &&
 								value.league_name != "NHL"
 							) {
-								let leagueName = value.league_name.split(" ")
+								//let leagueName = value.league_name.split(" ")
 								return (
 									<section className="League" key={key} style={{ order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" }}>
 										<div className={"league-name"}>
 											<h3>
 												{leagueName.map((word, index) => {
-													if (index == Math.ceil(leagueName.length / 2)) {
-														return "\n" + word
+													if (index == Math.ceil(leagueName.length / 2) && isNaN(word)) {
+														return "\n" + word + " "
 													} else {
 														return word + " "
 													}
 												})}
 											</h3>
+
 											<img src="../img/ArrowRightBlack.svg" alt="" />
 										</div>
 										{value.matches.map((match) => {

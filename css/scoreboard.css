@@ -81,6 +81,7 @@ body {
 	font-weight: var(--font-extra-bold);
 	text-transform: uppercase;
 	text-align: right;
+	white-space: pre;
 }
 .league-name img {
 	width: 16px;

@@ -136,6 +136,10 @@ const MainScoreboard = (props) => {
 		e.stopPropagation()
 	}
 
+	const handleMatchClick = (path) => {
+		window.location.href = path
+	}
+
 	useEffect(() => {
 		czechQuery.refetch()
 		foreignQuery.refetch()
@@ -276,7 +280,11 @@ const MainScoreboard = (props) => {
 											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
 											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
 											return (
-												<a href={`/zapas/${match.hokejcz_id}/`} className="body-match" key={match.onlajny_id}>
+												<div
+													onClick={() => handleMatchClick(`https://www.hokej.cz/zapas/${match.hokejcz_id}/`)}
+													className="body-match"
+													key={match.hokejcz_id}
+												>
 													<div className="match-infoContainer">
 														<div className="match-team match-team--left">
 															<h3 className="shortName">{match.home.short_name ? match.home.short_name : match.home.shortcut}</h3>
@@ -308,26 +316,15 @@ const MainScoreboard = (props) => {
 																			? "Po nájezdech"
 																			: "Konec"}
 																	</p>
-																	{match.score_periods != undefined && (
-																		<p>
-																			{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
-																			{match.match_actual_time_alias == "KP" &&
-																				` - ${
-																					match.score_home > match.score_visitor ? "1:0" : match.score_home < match.score_visitor ? "0:1" : "0:0"
-																				}`}
-																			{match.match_actual_time_alias == "KN" && " - 0:0"}
-																		</p>
-																	)}
-																	{match.score_period != undefined && (
-																		<p>
-																			{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}
-																			{match.match_actual_time_alias == "KP" &&
-																				` - ${
-																					match.score_home > match.score_visitor ? "1:0" : match.score_home < match.score_visitor ? "0:1" : "0:0"
-																				}`}
-																			{match.match_actual_time_alias == "KN" && " - 0:0"}
-																		</p>
-																	)}
+
+																	<p>
+																		{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
+																		{match.match_actual_time_alias == "KP" &&
+																			` - ${
+																				match.score_home > match.score_visitor ? "1:0" : match.score_home < match.score_visitor ? "0:1" : "0:0"
+																			}`}
+																		{match.match_actual_time_alias == "KN" && " - 0:0"}
+																	</p>
 																</div>
 															)}
 															{match.match_status == "před zápasem" && (
@@ -353,28 +350,23 @@ const MainScoreboard = (props) => {
 																			? "P"
 																			: match.match_actual_time_alias == "N"
 																			? "SN"
+																			: match.match_actual_time_alias == "1P"
+																			? "po 1. tř"
+																			: match.match_actual_time_alias == "2P"
+																			? "po 2. tř"
+																			: match.match_actual_time_alias == "3P"
+																			? "po 3. tř"
 																			: `${match.match_actual_time_alias}. tř.`}
 																	</p>
-																	{match.score_periods != undefined && (
-																		<p>
-																			{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
-																			{match.match_actual_time_alias == "KP" &&
-																				` - ${
-																					match.score_home > match.score_visitor ? "1:0" : match.score_home < match.score_visitor ? "0:1" : "0:0"
-																				}`}
-																			{match.match_actual_time_alias == "KN" && " - 0:0"}
-																		</p>
-																	)}
-																	{match.score_period != undefined && (
-																		<p>
-																			{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}{" "}
-																			{match.match_actual_time_alias == "KP" &&
-																				` - ${
-																					match.score_home > match.score_visitor ? "1:0" : match.score_home < match.score_visitor ? "0:1" : "0:0"
-																				}`}
-																			{match.match_actual_time_alias == "KN" && " - 0:0"}
-																		</p>
-																	)}
+
+																	<p>
+																		{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
+																		{match.match_actual_time_alias == "KP" &&
+																			` - ${
+																				match.score_home > match.score_visitor ? "1:0" : match.score_home < match.score_visitor ? "0:1" : "0:0"
+																			}`}
+																		{match.match_actual_time_alias == "KN" && " - 0:0"}
+																	</p>
 																</div>
 															)}
 
@@ -511,7 +503,7 @@ const MainScoreboard = (props) => {
 															</a>
 														)}
 													</div>
-												</a>
+												</div>
 											)
 										})}
 									</div>
@@ -529,7 +521,11 @@ const MainScoreboard = (props) => {
 
 											if (APIDate == match.date) {
 												return (
-													<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="body-match" key={match.onlajny_id}>
+													<div
+														onClick={() => handleMatchClick(`https://www.hokej.cz/zapas/${match.hokejcz_id}/`)}
+														className="body-match"
+														key={match.hokejcz_id}
+													>
 														<div className="match-infoContainer">
 															<div className="match-team match-team--left">
 																<h3 className="shortName">{match.home.short_name ? match.home.short_name : match.home.shortcut}</h3>
@@ -561,20 +557,12 @@ const MainScoreboard = (props) => {
 																				? "Po nájezdech"
 																				: "Konec"}
 																		</p>
-																		{match.score_periods != undefined && (
-																			<p>
-																				{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
-																				{match.match_actual_time_alias == "KP" && ` - ${match.score_home > match.score_visitor ? "1:0" : "0:1"}`}
-																				{match.match_actual_time_alias == "KN" && " - 0:0"}
-																			</p>
-																		)}
-																		{match.score_period != undefined && (
-																			<p>
-																				{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}
-																				{match.match_actual_time_alias == "KP" && ` - ${match.score_home > match.score_visitor ? "1:0" : "0:1"}`}
-																				{match.match_actual_time_alias == "KN" && " - 0:0"}
-																			</p>
-																		)}
+
+																		<p>
+																			{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}
+																			{match.match_actual_time_alias == "KP" && ` - ${match.score_home > match.score_visitor ? "1:0" : "0:1"}`}
+																			{match.match_actual_time_alias == "KN" && " - 0:0"}
+																		</p>
 																	</div>
 																)}
 																{match.match_status == "před zápasem" && (
@@ -596,27 +584,25 @@ const MainScoreboard = (props) => {
 																				? "2. př."
 																				: match.match_actual_time_alias == "30"
 																				? "3. př."
-																				: match.match_actual_time_alias == "P"
+																				: match.match_actual_time_alias == "4"
 																				? "P"
 																				: match.match_actual_time_alias == "N"
 																				? "SN"
+																				: match.match_actual_time_alias == "1P"
+																				? "po 1. tř"
+																				: match.match_actual_time_alias == "2P"
+																				? "po 2. tř"
+																				: match.match_actual_time_alias == "3P"
+																				? "po 3. tř"
 																				: `${match.match_actual_time_alias}. tř.`}
 																		</p>
-																		{match.score_periods != undefined && (
-																			<p>
-																				{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
-																				{match.match_actual_time_alias == "KP" && ` - ${match.score_home > match.score_visitor ? "1:0" : "0:1"}`}
-																				{match.match_actual_time_alias == "KN" && " - 0:0"}
-																			</p>
-																		)}
-																		{match.score_period != undefined && (
-																			<p>
-																				{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}
-																				{match.match_actual_time_alias == "KP" && ` - ${match.score_home > match.score_visitor ? "1:0" : "0:1"}`}
-																				{match.match_actual_time_alias == "KN" && " - 0:0"}
-																				{match.match_actual_time_alias == "KN" && " - 0:0"}
-																			</p>
-																		)}
+
+																		<p>
+																			{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}
+																			{match.match_actual_time_alias == "KP" && ` - ${match.score_home > match.score_visitor ? "1:0" : "0:1"}`}
+																			{match.match_actual_time_alias == "KN" && " - 0:0"}
+																			{match.match_actual_time_alias == "KN" && " - 0:0"}
+																		</p>
 																	</div>
 																)}
 
@@ -667,7 +653,7 @@ const MainScoreboard = (props) => {
 																</a>
 															)}
 														</div>
-													</a>
+													</div>
 												)
 											}
 										})}

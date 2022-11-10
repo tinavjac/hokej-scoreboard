@@ -200,6 +200,10 @@ var MainScoreboard = function MainScoreboard(props) {
 		e.stopPropagation();
 	};
 
+	var handleMatchClick = function handleMatchClick(path) {
+		window.location.href = path;
+	};
+
 	useEffect(function () {
 		czechQuery.refetch();
 		foreignQuery.refetch();
@@ -378,8 +382,14 @@ var MainScoreboard = function MainScoreboard(props) {
 							var homeLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.home.onlajny_id;
 							var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.onlajny_id;
 							return React.createElement(
-								"a",
-								{ href: "/zapas/" + match.hokejcz_id + "/", className: "body-match", key: match.onlajny_id },
+								"div",
+								{
+									onClick: function onClick() {
+										return handleMatchClick("https://www.hokej.cz/zapas/" + match.hokejcz_id + "/");
+									},
+									className: "body-match",
+									key: match.hokejcz_id
+								},
 								React.createElement(
 									"div",
 									{ className: "match-infoContainer" },
@@ -429,7 +439,7 @@ var MainScoreboard = function MainScoreboard(props) {
 												null,
 												match.match_actual_time_alias == "KP" ? "Po prodloužení" : match.match_actual_time_alias == "KN" ? "Po nájezdech" : "Konec"
 											),
-											match.score_periods != undefined && React.createElement(
+											React.createElement(
 												"p",
 												null,
 												match.score_periods[0],
@@ -437,17 +447,6 @@ var MainScoreboard = function MainScoreboard(props) {
 												match.score_periods[1],
 												", ",
 												match.score_periods[2],
-												match.match_actual_time_alias == "KP" && " - " + (match.score_home > match.score_visitor ? "1:0" : match.score_home < match.score_visitor ? "0:1" : "0:0"),
-												match.match_actual_time_alias == "KN" && " - 0:0"
-											),
-											match.score_period != undefined && React.createElement(
-												"p",
-												null,
-												match.score_period[0],
-												", ",
-												match.score_period[1],
-												", ",
-												match.score_period[2],
 												match.match_actual_time_alias == "KP" && " - " + (match.score_home > match.score_visitor ? "1:0" : match.score_home < match.score_visitor ? "0:1" : "0:0"),
 												match.match_actual_time_alias == "KN" && " - 0:0"
 											)
@@ -474,9 +473,9 @@ var MainScoreboard = function MainScoreboard(props) {
 											React.createElement(
 												"p",
 												null,
-												match.match_actual_time_alias == "0" ? "1. př." : match.match_actual_time_alias == "10" ? "1. př." : match.match_actual_time_alias == "20" ? "2. př." : match.match_actual_time_alias == "30" ? "3. př." : match.match_actual_time_alias == "P" ? "P" : match.match_actual_time_alias == "N" ? "SN" : match.match_actual_time_alias + ". t\u0159."
+												match.match_actual_time_alias == "0" ? "1. př." : match.match_actual_time_alias == "10" ? "1. př." : match.match_actual_time_alias == "20" ? "2. př." : match.match_actual_time_alias == "30" ? "3. př." : match.match_actual_time_alias == "P" ? "P" : match.match_actual_time_alias == "N" ? "SN" : match.match_actual_time_alias == "1P" ? "po 1. tř" : match.match_actual_time_alias == "2P" ? "po 2. tř" : match.match_actual_time_alias == "3P" ? "po 3. tř" : match.match_actual_time_alias + ". t\u0159."
 											),
-											match.score_periods != undefined && React.createElement(
+											React.createElement(
 												"p",
 												null,
 												match.score_periods[0],
@@ -484,18 +483,6 @@ var MainScoreboard = function MainScoreboard(props) {
 												match.score_periods[1],
 												", ",
 												match.score_periods[2],
-												match.match_actual_time_alias == "KP" && " - " + (match.score_home > match.score_visitor ? "1:0" : match.score_home < match.score_visitor ? "0:1" : "0:0"),
-												match.match_actual_time_alias == "KN" && " - 0:0"
-											),
-											match.score_period != undefined && React.createElement(
-												"p",
-												null,
-												match.score_period[0],
-												", ",
-												match.score_period[1],
-												", ",
-												match.score_period[2],
-												" ",
 												match.match_actual_time_alias == "KP" && " - " + (match.score_home > match.score_visitor ? "1:0" : match.score_home < match.score_visitor ? "0:1" : "0:0"),
 												match.match_actual_time_alias == "KN" && " - 0:0"
 											)
@@ -726,8 +713,14 @@ var MainScoreboard = function MainScoreboard(props) {
 
 							if (APIDate == match.date) {
 								return React.createElement(
-									"a",
-									{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "body-match", key: match.onlajny_id },
+									"div",
+									{
+										onClick: function onClick() {
+											return handleMatchClick("https://www.hokej.cz/zapas/" + match.hokejcz_id + "/");
+										},
+										className: "body-match",
+										key: match.hokejcz_id
+									},
 									React.createElement(
 										"div",
 										{ className: "match-infoContainer" },
@@ -777,18 +770,7 @@ var MainScoreboard = function MainScoreboard(props) {
 													null,
 													match.match_actual_time_alias == "KP" ? "Po prodloužení" : match.match_actual_time_alias == "KN" ? "Po nájezdech" : "Konec"
 												),
-												match.score_periods != undefined && React.createElement(
-													"p",
-													null,
-													match.score_periods[0],
-													", ",
-													match.score_periods[1],
-													", ",
-													match.score_periods[2],
-													match.match_actual_time_alias == "KP" && " - " + (match.score_home > match.score_visitor ? "1:0" : "0:1"),
-													match.match_actual_time_alias == "KN" && " - 0:0"
-												),
-												match.score_period != undefined && React.createElement(
+												React.createElement(
 													"p",
 													null,
 													match.score_period[0],
@@ -822,20 +804,9 @@ var MainScoreboard = function MainScoreboard(props) {
 												React.createElement(
 													"p",
 													null,
-													match.match_actual_time_alias == "0" ? "1. př." : match.match_actual_time_alias == "10" ? "1. př." : match.match_actual_time_alias == "20" ? "2. př." : match.match_actual_time_alias == "30" ? "3. př." : match.match_actual_time_alias == "P" ? "P" : match.match_actual_time_alias == "N" ? "SN" : match.match_actual_time_alias + ". t\u0159."
+													match.match_actual_time_alias == "0" ? "1. př." : match.match_actual_time_alias == "10" ? "1. př." : match.match_actual_time_alias == "20" ? "2. př." : match.match_actual_time_alias == "30" ? "3. př." : match.match_actual_time_alias == "4" ? "P" : match.match_actual_time_alias == "N" ? "SN" : match.match_actual_time_alias == "1P" ? "po 1. tř" : match.match_actual_time_alias == "2P" ? "po 2. tř" : match.match_actual_time_alias == "3P" ? "po 3. tř" : match.match_actual_time_alias + ". t\u0159."
 												),
-												match.score_periods != undefined && React.createElement(
-													"p",
-													null,
-													match.score_periods[0],
-													", ",
-													match.score_periods[1],
-													", ",
-													match.score_periods[2],
-													match.match_actual_time_alias == "KP" && " - " + (match.score_home > match.score_visitor ? "1:0" : "0:1"),
-													match.match_actual_time_alias == "KN" && " - 0:0"
-												),
-												match.score_period != undefined && React.createElement(
+												React.createElement(
 													"p",
 													null,
 													match.score_period[0],

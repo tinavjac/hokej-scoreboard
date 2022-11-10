@@ -120,7 +120,7 @@ const TopScoreboard = (props) => {
 											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
 											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
 											return (
-												<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="league-match" key={match.onlajny_id}>
+												<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="league-match" key={match.hokejcz_id}>
 													<div className="league-team">
 														<div className="team-container">
 															<img src={homeLogo} alt="" />
@@ -198,7 +198,7 @@ const TopScoreboard = (props) => {
 											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.logo_id}`
 											if (APIDate == match.date) {
 												return (
-													<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="league-match" key={match.onlajny_id}>
+													<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="league-match" key={match.hokejcz_id}>
 														<div className="league-team">
 															<div className="team-container">
 																<img src={homeLogo} alt="" />

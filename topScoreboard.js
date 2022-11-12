@@ -137,7 +137,13 @@ var TopScoreboard = function TopScoreboard(props) {
 						priority = value[1].priority;
 						leagueName = value[1].name.split(" ");
 						if (value[1].sourceOnlajny === false) {
-							render = true;
+							if (typeof shownLeagues != "undefined") {
+								if (shownLeagues.includes(key)) {
+									render = true;
+								}
+							} else {
+								render = true;
+							}
 						}
 					}
 				});
@@ -228,7 +234,13 @@ var TopScoreboard = function TopScoreboard(props) {
 						priority = value[1].priority;
 						leagueName = value[1].name.split(" ");
 						if (value[1].sourceOnlajny === true) {
-							render = true;
+							if (typeof shownLeagues != "undefined") {
+								if (shownLeagues.includes(key)) {
+									render = true;
+								}
+							} else {
+								render = true;
+							}
 						}
 					}
 				});

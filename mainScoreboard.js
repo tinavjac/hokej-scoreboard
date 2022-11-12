@@ -298,7 +298,13 @@ var MainScoreboard = function MainScoreboard(props) {
 							priority = value[1].priority;
 							leaguName = value[1].name;
 							if (value[1].sourceOnlajny === false) {
-								render = true;
+								if (typeof shownLeagues != "undefined") {
+									if (shownLeagues.includes(key)) {
+										render = true;
+									}
+								} else {
+									render = true;
+								}
 							}
 						}
 					});
@@ -339,7 +345,13 @@ var MainScoreboard = function MainScoreboard(props) {
 							priority = value[1].priority;
 							leagueName = value[1].name;
 							if (value[1].sourceOnlajny === true) {
-								render = true;
+								if (typeof shownLeagues != "undefined") {
+									if (shownLeagues.includes(key)) {
+										render = true;
+									}
+								} else {
+									render = true;
+								}
 							}
 						}
 					});

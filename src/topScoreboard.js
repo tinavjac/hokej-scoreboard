@@ -1,7 +1,7 @@
 const { QueryClient, QueryClientProvider, useQuery } = ReactQuery
 const { useState, useRef } = React
 
-const queryClient = new QueryClient()
+const queryClientTop = new QueryClient()
 
 const TopScoreboard = (props) => {
 	let date = new Date()
@@ -245,7 +245,7 @@ const TopScoreboard = (props) => {
 
 const Render = () => {
 	return (
-		<QueryClientProvider client={queryClient}>
+		<QueryClientProvider client={queryClientTop}>
 			<TopScoreboard />
 		</QueryClientProvider>
 	)

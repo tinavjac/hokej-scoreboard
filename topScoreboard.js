@@ -9,7 +9,7 @@ var _React = React,
     useRef = _React.useRef;
 
 
-var queryClient = new QueryClient();
+var queryClientTop = new QueryClient();
 
 var TopScoreboard = function TopScoreboard(props) {
 	var date = new Date();
@@ -317,7 +317,7 @@ var TopScoreboard = function TopScoreboard(props) {
 var Render = function Render() {
 	return React.createElement(
 		QueryClientProvider,
-		{ client: queryClient },
+		{ client: queryClientTop },
 		React.createElement(TopScoreboard, null)
 	);
 };

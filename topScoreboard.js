@@ -138,9 +138,11 @@ var TopScoreboard = function TopScoreboard(props) {
 						leagueName = value[1].name.split(" ");
 						if (value[1].sourceOnlajny === false) {
 							if (typeof shownLeagues != "undefined") {
-								if (shownLeagues.includes(key)) {
-									render = true;
-								}
+								shownLeagues.forEach(function (league) {
+									if (league == key) {
+										render = true;
+									}
+								});
 							} else {
 								render = true;
 							}
@@ -235,9 +237,11 @@ var TopScoreboard = function TopScoreboard(props) {
 						leagueName = value[1].name.split(" ");
 						if (value[1].sourceOnlajny === true) {
 							if (typeof shownLeagues != "undefined") {
-								if (shownLeagues.includes(key)) {
-									render = true;
-								}
+								shownLeagues.forEach(function (league) {
+									if (league == key) {
+										render = true;
+									}
+								});
 							} else {
 								render = true;
 							}

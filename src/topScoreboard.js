@@ -97,9 +97,11 @@ const TopScoreboard = (props) => {
 									leagueName = value[1].name.split(" ")
 									if (value[1].sourceOnlajny === false) {
 										if (typeof shownLeagues != "undefined") {
-											if (shownLeagues.includes(key)) {
-												render = true
-											}
+											shownLeagues.forEach((league) => {
+												if (league == key) {
+													render = true
+												}
+											})
 										} else {
 											render = true
 										}
@@ -173,9 +175,11 @@ const TopScoreboard = (props) => {
 									leagueName = value[1].name.split(" ")
 									if (value[1].sourceOnlajny === true) {
 										if (typeof shownLeagues != "undefined") {
-											if (shownLeagues.includes(key)) {
-												render = true
-											}
+											shownLeagues.forEach((league) => {
+												if (league == key) {
+													render = true
+												}
+											})
 										} else {
 											render = true
 										}

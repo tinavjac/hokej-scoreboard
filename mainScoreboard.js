@@ -164,6 +164,7 @@ var MainScoreboard = function MainScoreboard(props) {
 		enabled: APIDate == today ? true : false
 	});
 	var LeagueTabs = useRef(null);
+	var MainScoreboard = useRef(null);
 
 	var _useState21 = useState({
 		pointerEvents: true,
@@ -209,6 +210,18 @@ var MainScoreboard = function MainScoreboard(props) {
 		foreignQuery.refetch();
 	}, [APIDate]);
 
+	var _useState23 = useState(undefined),
+	    _useState24 = _slicedToArray(_useState23, 2),
+	    scoreboardWidth = _useState24[0],
+	    setScoreboardWidth = _useState24[1];
+
+	useEffect(function () {
+		if (MainScoreboard.current) {
+			setScoreboardWidth(MainScoreboard.current.clientWidth);
+			console.log(scoreboardWidth);
+		}
+	}, []);
+
 	useEffect(function () {
 		var leagues = [];
 		if (LeagueTabs.current) {
@@ -237,7 +250,7 @@ var MainScoreboard = function MainScoreboard(props) {
 	});
 	return React.createElement(
 		"section",
-		{ className: "mainScoreboard" },
+		{ className: "mainScoreboard" + (scoreboardWidth < 730 ? " small" : ""), ref: MainScoreboard },
 		foreignQuery.isFetching || czechQuery.isFetching == true ? React.createElement("div", { className: "loadContainer" }) : "",
 		React.createElement(
 			"header",
@@ -299,9 +312,11 @@ var MainScoreboard = function MainScoreboard(props) {
 							leaguName = value[1].name;
 							if (value[1].sourceOnlajny === false) {
 								if (typeof shownLeagues != "undefined") {
-									if (shownLeagues.includes(key)) {
-										render = true;
-									}
+									shownLeagues.forEach(function (league) {
+										if (league == key) {
+											render = true;
+										}
+									});
 								} else {
 									render = true;
 								}
@@ -346,9 +361,11 @@ var MainScoreboard = function MainScoreboard(props) {
 							leagueName = value[1].name;
 							if (value[1].sourceOnlajny === true) {
 								if (typeof shownLeagues != "undefined") {
-									if (shownLeagues.includes(key)) {
-										render = true;
-									}
+									shownLeagues.forEach(function (league) {
+										if (league == key) {
+											render = true;
+										}
+									});
 								} else {
 									render = true;
 								}

@@ -152,9 +152,30 @@ body {
 /* MAIN SCOREBOARD */
 .mainScoreboard {
 	position: relative;
+	max-width: 728px;
 }
 .mainScoreboard * {
 	font-family: "Public Sans", sans-serif;
+}
+
+.mainScoreboard.small .match-team.match-team--left {
+	width: 60px;
+}
+.mainScoreboard.small .match-team h3:not(.shortName) {
+	display: block;
+}
+.mainScoreboard.small .match-team h3.shortName {
+	display: none;
+}
+.mainScoreboard.small .match-date {
+	min-width: 100px;
+	padding: 0;
+}
+.mainScoreboard.small .match-scoreContainer {
+	margin-inline: 4px;
+}
+.mainScoreboard.small .match-team {
+	gap: 4px;
 }
 .loadContainer {
 	position: absolute;
@@ -469,7 +490,7 @@ body {
 		font-size: 24px;
 	}
 	.match-team.match-team--left {
-		width: 75px;
+		width: 60px;
 	}
 	.match-team h3:not(.shortName) {
 		display: block;
@@ -513,9 +534,6 @@ body {
 	}
 	.mainScoreBoard-body--noData h1 {
 		font-size: 20px;
-	}
-	.match-team.match-team--left {
-		width: 58px;
 	}
 }
 

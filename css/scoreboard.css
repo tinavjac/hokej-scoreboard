@@ -152,7 +152,6 @@ body {
 /* MAIN SCOREBOARD */
 .mainScoreboard {
 	position: relative;
-	max-width: 728px;
 }
 .mainScoreboard * {
 	font-family: "Public Sans", sans-serif;

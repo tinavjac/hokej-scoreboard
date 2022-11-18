@@ -29,12 +29,16 @@ const MainScoreboard = (props) => {
 
 	const isMladez = () => {
 		if (typeof shownLeagues != "undefined") {
-			shownLeagues.forEach((league) => {
-				if (!mladezLeagues.includes(league)) {
-					return false
-				}
-			})
-			return true
+			if (shownLeagues.length == mladezLeagues.length) {
+				shownLeagues.forEach((league) => {
+					if (!mladezLeagues.includes(league)) {
+						return false
+					}
+				})
+				return true
+			} else {
+				return false
+			}
 		} else {
 			return false
 		}
@@ -190,6 +194,7 @@ const MainScoreboard = (props) => {
 		if (MainScoreboard.current) {
 			setScoreboardWidth(MainScoreboard.current.clientWidth)
 		}
+		console.log(isMladez())
 	}, [])
 
 	useEffect(() => {

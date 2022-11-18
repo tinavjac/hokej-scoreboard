@@ -51,12 +51,16 @@ var MainScoreboard = function MainScoreboard(props) {
 
 	var isMladez = function isMladez() {
 		if (typeof shownLeagues != "undefined") {
-			shownLeagues.forEach(function (league) {
-				if (!mladezLeagues.includes(league)) {
-					return false;
-				}
-			});
-			return true;
+			if (shownLeagues.length == mladezLeagues.length) {
+				shownLeagues.forEach(function (league) {
+					if (!mladezLeagues.includes(league)) {
+						return false;
+					}
+				});
+				return true;
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
@@ -255,6 +259,7 @@ var MainScoreboard = function MainScoreboard(props) {
 		if (MainScoreboard.current) {
 			setScoreboardWidth(MainScoreboard.current.clientWidth);
 		}
+		console.log(isMladez());
 	}, []);
 
 	useEffect(function () {

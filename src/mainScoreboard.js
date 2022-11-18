@@ -25,6 +25,8 @@ const MainScoreboard = (props) => {
 		1258, 179, 856, 119, 63, 112, 110, 80, 174, 176, 198,
 	]
 
+	let womanLeagues = [658, 342, 3162, 2380, 3086]
+
 	const isMladez = () => {
 		if (typeof shownLeagues != "undefined") {
 			shownLeagues.forEach((league) => {
@@ -35,6 +37,25 @@ const MainScoreboard = (props) => {
 			return true
 		} else {
 			return false
+		}
+	}
+
+	const renderOnPage = () => {
+		if (typeof shownLeagues != "undefined") {
+			if (shownLeagues.length == 1 && shownLeagues.includes(147)) {
+				return false
+			} else if (shownLeagues.length == womanLeagues.length) {
+				shownLeagues.forEach((league) => {
+					if (!womanLeagues.includes(league)) {
+						return true
+					}
+				})
+				return false
+			} else {
+				return true
+			}
+		} else {
+			return true
 		}
 	}
 
@@ -198,528 +219,533 @@ const MainScoreboard = (props) => {
 		})
 	})
 	return (
-		<section className={"mainScoreboard" + (scoreboardWidth < 730 && !isMladez() ? " small" : "")} ref={MainScoreboard}>
-			{foreignQuery.isFetching || czechQuery.isFetching == true ? <div className="loadContainer"></div> : ""}
-			<header className={"mainScoreboard-header"}>
-				<div className="header-date">
-					<div className="date-dayChanger prev" onClick={prevDate}>
-						<img src="../img/ArrowLeftGrey.svg" alt="" />
-						<h5>Předchozí den</h5>
-					</div>
-					<h1 className="date-currentDay">
-						{dayName} {displayDate.replaceAll(".", ". ")}
-					</h1>
-					<div className="date-dayChanger next" onClick={nextDate}>
-						<h5>Následující den</h5>
-						<img src="../img/ArrowRightGrey.svg" alt="" />
-					</div>
-				</div>
-				{(czechQuery.isSuccess || foreignQuery.isSuccess) && !maxDate ? (
-					<div
-						onMouseDown={mouseDownHandler}
-						onMouseMove={mouseMoveHandler}
-						onMouseUp={mouseUpHandler}
-						ref={LeagueTabs}
-						className={"header-tabs"}
-					>
-						{czechQuery.data != undefined &&
-							Object.entries(czechQuery.data).map(([key, value]) => {
-								let isFake = value.matches.every((match) => {
-									return displayDate != match.date.replaceAll("-", ".")
-								})
-								let priority
-								let render = false
-								let leaguName
-								Object.entries(scoreboardLeagues).map((value) => {
-									if (value[1].id == key) {
-										priority = value[1].priority
-										leaguName = value[1].name
-										if (value[1].sourceOnlajny === false) {
-											if (typeof shownLeagues != "undefined") {
-												shownLeagues.forEach((league) => {
-													if (league == key) {
+		<React.Fragment>
+			{renderOnPage() && (
+				<section className={"mainScoreboard" + (scoreboardWidth < 730 && !isMladez() ? " small" : "")} ref={MainScoreboard}>
+					{foreignQuery.isFetching || czechQuery.isFetching == true ? <div className="loadContainer"></div> : ""}
+					<header className={"mainScoreboard-header"}>
+						<div className="header-date">
+							<div className="date-dayChanger prev" onClick={prevDate}>
+								<img src="../img/ArrowLeftGrey.svg" alt="" />
+								<h5>Předchozí den</h5>
+							</div>
+							<h1 className="date-currentDay">
+								{dayName} {displayDate.replaceAll(".", ". ")}
+							</h1>
+							<div className="date-dayChanger next" onClick={nextDate}>
+								<h5>Následující den</h5>
+								<img src="../img/ArrowRightGrey.svg" alt="" />
+							</div>
+						</div>
+						{(czechQuery.isSuccess || foreignQuery.isSuccess) && !maxDate ? (
+							<div
+								onMouseDown={mouseDownHandler}
+								onMouseMove={mouseMoveHandler}
+								onMouseUp={mouseUpHandler}
+								ref={LeagueTabs}
+								className={"header-tabs"}
+							>
+								{czechQuery.data != undefined &&
+									Object.entries(czechQuery.data).map(([key, value]) => {
+										let isFake = value.matches.every((match) => {
+											return displayDate != match.date.replaceAll("-", ".")
+										})
+										let priority
+										let render = false
+										let leaguName
+										Object.entries(scoreboardLeagues).map((value) => {
+											if (value[1].id == key) {
+												priority = value[1].priority
+												leaguName = value[1].name
+												if (value[1].sourceOnlajny === false) {
+													if (typeof shownLeagues != "undefined") {
+														shownLeagues.forEach((league) => {
+															if (league == key) {
+																render = true
+															}
+														})
+													} else {
 														render = true
 													}
-												})
-											} else {
-												render = true
+												}
 											}
-										}
-									}
-								})
-								if (!isFake && render) {
-									return (
-										<div
-											className={"tab-container " + (key == activeLeagueTab ? "active" : "")}
-											id={key}
-											onClick={() => {
-												setActiveLeagueTab(key)
-											}}
-											key={key}
-											data-order={priority}
-											style={{ order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" }}
-										>
-											<p>{leaguName}</p>
-										</div>
-									)
-								}
-							})}
-						{foreignQuery.data != undefined &&
-							Object.entries(foreignQuery.data).map(([key, value]) => {
-								let isFake = value.matches.every((match) => {
-									return APIDate != match.date
-								})
-								let render = false
-								let priority
-								let leagueName
-								Object.entries(scoreboardLeagues).map((value) => {
-									if (value[1].id == key) {
-										priority = value[1].priority
-										leagueName = value[1].name
-										if (value[1].sourceOnlajny === true) {
-											if (typeof shownLeagues != "undefined") {
-												shownLeagues.forEach((league) => {
-													if (league == key) {
-														render = true
-													}
-												})
-											} else {
-												render = true
-											}
-										}
-									}
-								})
-								if (!isFake && render) {
-									return (
-										<div
-											className={"tab-container " + (key == activeLeagueTab ? "active" : "")}
-											id={key}
-											onClick={() => {
-												setActiveLeagueTab(key)
-											}}
-											key={key}
-											data-order={priority}
-											style={{ order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" }}
-										>
-											<p>{leagueName}</p>
-										</div>
-									)
-								}
-							})}
-					</div>
-				) : (
-					<div></div>
-				)}
-			</header>
-			{(czechQuery.isSuccess || foreignQuery.isSuccess) && !noData && !maxDate ? (
-				<div className="mainScoreBoard-body">
-					{czechQuery.data != undefined &&
-						Object.entries(czechQuery.data).map(([key, value]) => {
-							if (key == activeLeagueTab) {
-								return (
-									<div key={key}>
-										{value.matches.map((match) => {
-											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
-											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
+										})
+										if (!isFake && render) {
 											return (
 												<div
-													onClick={() => handleMatchClick(`https://www.hokej.cz/zapas/${match.hokejcz_id}/`)}
-													className="body-match"
-													key={match.hokejcz_id}
+													className={"tab-container " + (key == activeLeagueTab ? "active" : "")}
+													id={key}
+													onClick={() => {
+														setActiveLeagueTab(key)
+													}}
+													key={key}
+													data-order={priority}
+													style={{ order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" }}
 												>
-													<div className="match-infoContainer">
-														<div className="match-team match-team--left">
-															<h3 className="shortName">{match.home.short_name ? match.home.short_name : match.home.shortcut}</h3>
-															<h3>{match.home.shortcut}</h3>
-															<div className="match-team--img">
-																<img src={homeLogo} alt="" />
-															</div>
-														</div>
-														<div className="match-scoreContainer">
-															<div
-																className={
-																	"match-score " +
-																	(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
-																}
-															>
-																{match.score_home}
-															</div>
-															{match.match_status == "zrušeno" && (
-																<div className="match-date">
-																	<p>Odloženo</p>
-																</div>
-															)}
-															{match.match_status == "po zápase" && (
-																<div className="match-date">
-																	<p>
-																		{match.match_actual_time_alias == "KP"
-																			? "Po prodloužení"
-																			: match.match_actual_time_alias == "KN"
-																			? "Po nájezdech"
-																			: "Konec"}
-																	</p>
-
-																	<p>
-																		{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
-																		{match.match_actual_time_alias == "KP" &&
-																			` - ${
-																				match.score_home > match.score_visitor ? "1:0" : match.score_home < match.score_visitor ? "0:1" : "0:0"
-																			}`}
-																		{match.match_actual_time_alias == "KN" && " - 0:0"}
-																	</p>
-																</div>
-															)}
-															{match.match_status == "před zápasem" && (
-																<div className="match-date future-match">
-																	<p>{dayName}</p>
-																	<p>
-																		{match.date.replace(/-/gi, ".")} • {match.time}
-																	</p>
-																</div>
-															)}
-															{match.match_status == "live" && (
-																<div className="match-date active-match">
-																	<p>
-																		{match.match_actual_time_alias == "0"
-																			? "1. př."
-																			: match.match_actual_time_alias == "10"
-																			? "1. př."
-																			: match.match_actual_time_alias == "20"
-																			? "2. př."
-																			: match.match_actual_time_alias == "30"
-																			? "3. př."
-																			: match.match_actual_time_alias == "P"
-																			? "P"
-																			: match.match_actual_time_alias == "N"
-																			? "SN"
-																			: match.match_actual_time_alias == "1P"
-																			? "po 1. tř"
-																			: match.match_actual_time_alias == "2P"
-																			? "po 2. tř"
-																			: match.match_actual_time_alias == "3P"
-																			? "po 3. tř"
-																			: `${match.match_actual_time_alias}. tř.`}
-																	</p>
-
-																	<p>
-																		{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
-																		{match.match_actual_time_alias == "KP" &&
-																			` - ${
-																				match.score_home > match.score_visitor ? "1:0" : match.score_home < match.score_visitor ? "0:1" : "0:0"
-																			}`}
-																		{match.match_actual_time_alias == "KN" && " - 0:0"}
-																	</p>
-																</div>
-															)}
-
-															<div
-																className={
-																	"match-score " +
-																	(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
-																}
-															>
-																{match.score_visitor}
-															</div>
-														</div>
-														<div className="match-team">
-															<div className="match-team--img">
-																<img src={visitorsLogo} alt="" />
-															</div>
-															<h3 className="shortName">{match.visitor.short_name ? match.visitor.short_name : match.visitor.shortcut}</h3>
-															<h3>{match.visitor.shortcut}</h3>
-														</div>
-													</div>
-													<div className="match-tabsContainer">
-														{(value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") &&
-															(match.match_status == "před zápasem" || match.match_status == "live") && (
-																<div className="mediaTab-container">
-																	{match.stream_url == "ct" && (
-																		<a href="https://sport.ceskatelevize.cz/#live" target="_blank" className="match-tab--imgOnly">
-																			<img src="../img/logoCT@2x.png" alt="" />
-																		</a>
-																	)}
-																	{match.stream_url == "o2" && (
-																		<a href="https://www.o2tv.cz/" target="_blank" className="match-tab--imgOnly">
-																			<img src="../img/logoO2@2x.png" alt="" />
-																		</a>
-																	)}
-																</div>
-															)}
-														{(match.match_status == "live" || match.match_status == "před zápasem") && value.league_name == "CHANCE LIGA" && (
-															<div>
-																{match.stream_url == "ct" && (
-																	<a href="https://sport.ceskatelevize.cz/#live" target="_blank" className="match-tab">
-																		<img src="../img/icoPlay.svg" alt="" />
-																		<p>Živě</p>
-																	</a>
-																)}
-																{match.stream_url == "o2" && (
-																	<a href="https://www.o2tv.cz/" target="_blank" className="match-tab">
-																		<img src="../img/icoPlay.svg" alt="" />
-																		<p>Živě</p>
-																	</a>
-																)}
-																{match.stream_url == null && (
-																	<a
-																		href={`https://www.hokej.cz/tv/hokejka/chl?matchId=${match.hokejcz_id}/`}
-																		target="_blank"
-																		className="match-tab"
-																	>
-																		<img src="../img/icoPlay.svg" alt="" />
-																		<p>Živě</p>
-																	</a>
-																)}
-															</div>
-														)}
-														{(match.match_status == "live" || match.match_status == "před zápasem") &&
-															value.league_name == "Tipsport extraliga" && (
-																<div>
-																	{match.stream_url == "ct" && (
-																		<a href="https://sport.ceskatelevize.cz/#live" target="_blank" className="match-tab">
-																			<img src="../img/icoPlay.svg" alt="" />
-																			<p>Živě</p>
-																		</a>
-																	)}
-																	{match.stream_url == "o2" && (
-																		<a href="https://www.o2tv.cz/" target="_blank" className="match-tab">
-																			<img src="../img/icoPlay.svg" alt="" />
-																			<p>Živě</p>
-																		</a>
-																	)}
-																	{match.stream_url == null && (
-																		<a
-																			href={`https://www.hokej.cz/tv/hokejka/elh?matchId=${match.hokejcz_id}/`}
-																			target="_blank"
-																			className="match-tab"
-																		>
-																			<img src="../img/icoPlay.svg" alt="" />
-																			<p>Živě</p>
-																		</a>
-																	)}
-																</div>
-															)}
-														{match.match_status == "live" && (value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") && (
-															<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`} target="_blank" className="match-tab">
-																<img src="../img/icoText.svg" alt="" />
-																<p>Text</p>
-															</a>
-														)}
-														{value.league_name == "Tipsport extraliga" && match.match_status == "před zápasem" && (
-															<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/preview`} className="match-tab">
-																<img src="../img/icoTextGray.svg" alt="" />
-																<p>Preview</p>
-															</a>
-														)}
-														{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
-															<a href={match.bets.tipsport.link} target="_blank" className="match-tab">
-																<img src="../img/icoTipsport.svg" alt="" />
-																<div className="tab-tipsportData">
-																	<p>{match.bets.tipsport.home_win}</p>
-																	<p>{match.bets.tipsport.draw}</p>
-																	<p>{match.bets.tipsport.away_win}</p>
-																</div>
-															</a>
-														)}
-														{match.bets.tipsport.link != null && match.match_status == "live" && (
-															<a href="https://www.tipsport.cz/live" target="_blank" className="match-tab">
-																<img src="../img/icoTipsport.svg" alt="" />
-																<p>Livesázka</p>
-															</a>
-														)}
-														{match.match_status == "po zápase" && value.league_name == "Tipsport extraliga" && (
-															<a href="https://www.hokej.cz/tv/hokejka/category/14" target="_blank" className="match-tab">
-																<img src="../img/icoPlayBlack.svg" alt="" />
-																<p>Záznam</p>
-															</a>
-														)}
-														{match.match_status == "po zápase" && value.league_name == "CHANCE LIGA" && (
-															<a href="https://www.hokej.cz/tv/hokejka/category/23" target="_blank" className="match-tab">
-																<img src="../img/icoPlayBlack.svg" alt="" />
-																<p>Záznam</p>
-															</a>
-														)}
-														{match.match_status == "po zápase" && (
-															<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="match-tab">
-																<img src="../img/icoSummary.svg" alt="" />
-																<p>Zápis</p>
-															</a>
-														)}
-													</div>
+													<p>{leaguName}</p>
 												</div>
 											)
-										})}
-									</div>
-								)
-							}
-						})}
-					{foreignQuery.data != undefined &&
-						Object.entries(foreignQuery.data).map(([key, value]) => {
-							if (key == activeLeagueTab && value.league_name != "NHL") {
-								return (
-									<div key={key}>
-										{value.matches.map((match) => {
-											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.logo_id}`
-											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.logo_id}`
+										}
+									})}
+								{foreignQuery.data != undefined &&
+									Object.entries(foreignQuery.data).map(([key, value]) => {
+										let isFake = value.matches.every((match) => {
+											return APIDate != match.date
+										})
+										let render = false
+										let priority
+										let leagueName
+										Object.entries(scoreboardLeagues).map((value) => {
+											if (value[1].id == key) {
+												priority = value[1].priority
+												leagueName = value[1].name
+												if (value[1].sourceOnlajny === true) {
+													if (typeof shownLeagues != "undefined") {
+														shownLeagues.forEach((league) => {
+															if (league == key) {
+																render = true
+															}
+														})
+													} else {
+														render = true
+													}
+												}
+											}
+										})
+										if (!isFake && render) {
+											return (
+												<div
+													className={"tab-container " + (key == activeLeagueTab ? "active" : "")}
+													id={key}
+													onClick={() => {
+														setActiveLeagueTab(key)
+													}}
+													key={key}
+													data-order={priority}
+													style={{ order: -priority, pointerEvents: scroll.pointerEvents ? "all" : "none" }}
+												>
+													<p>{leagueName}</p>
+												</div>
+											)
+										}
+									})}
+							</div>
+						) : (
+							<div></div>
+						)}
+					</header>
+					{(czechQuery.isSuccess || foreignQuery.isSuccess) && !noData && !maxDate ? (
+						<div className="mainScoreBoard-body">
+							{czechQuery.data != undefined &&
+								Object.entries(czechQuery.data).map(([key, value]) => {
+									if (key == activeLeagueTab) {
+										return (
+											<div key={key}>
+												{value.matches.map((match) => {
+													let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
+													let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
+													return (
+														<div
+															onClick={() => handleMatchClick(`https://www.hokej.cz/zapas/${match.hokejcz_id}/`)}
+															className="body-match"
+															key={match.hokejcz_id}
+														>
+															<div className="match-infoContainer">
+																<div className="match-team match-team--left">
+																	<h3 className="shortName">{match.home.short_name ? match.home.short_name : match.home.shortcut}</h3>
+																	<h3>{match.home.shortcut}</h3>
+																	<div className="match-team--img">
+																		<img src={homeLogo} alt="" />
+																	</div>
+																</div>
+																<div className="match-scoreContainer">
+																	<div
+																		className={
+																			"match-score " +
+																			(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+																		}
+																	>
+																		{match.score_home}
+																	</div>
+																	{match.match_status == "zrušeno" && (
+																		<div className="match-date">
+																			<p>Odloženo</p>
+																		</div>
+																	)}
+																	{match.match_status == "po zápase" && (
+																		<div className="match-date">
+																			<p>
+																				{match.match_actual_time_alias == "KP"
+																					? "Po prodloužení"
+																					: match.match_actual_time_alias == "KN"
+																					? "Po nájezdech"
+																					: "Konec"}
+																			</p>
 
-											if (APIDate == match.date) {
-												return (
-													<div
-														onClick={() => handleMatchClick(`https://www.hokej.cz/zapas/${match.hokejcz_id}/`)}
-														className="body-match"
-														key={match.hokejcz_id}
-													>
-														<div className="match-infoContainer">
-															<div className="match-team match-team--left">
-																<h3 className="shortName">{match.home.short_name ? match.home.short_name : match.home.shortcut}</h3>
-																<h3>{match.home.shortcut}</h3>
-																<div className="match-team--img">
-																	<img src={homeLogo} alt="" />
+																			<p>
+																				{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
+																				{match.match_actual_time_alias == "KP" &&
+																					` - ${
+																						match.score_home > match.score_visitor ? "1:0" : match.score_home < match.score_visitor ? "0:1" : "0:0"
+																					}`}
+																				{match.match_actual_time_alias == "KN" && " - 0:0"}
+																			</p>
+																		</div>
+																	)}
+																	{match.match_status == "před zápasem" && (
+																		<div className="match-date future-match">
+																			<p>{dayName}</p>
+																			<p>
+																				{match.date.replace(/-/gi, ".")} • {match.time}
+																			</p>
+																		</div>
+																	)}
+																	{match.match_status == "live" && (
+																		<div className="match-date active-match">
+																			<p>
+																				{match.match_actual_time_alias == "0"
+																					? "1. př."
+																					: match.match_actual_time_alias == "10"
+																					? "1. př."
+																					: match.match_actual_time_alias == "20"
+																					? "2. př."
+																					: match.match_actual_time_alias == "30"
+																					? "3. př."
+																					: match.match_actual_time_alias == "P"
+																					? "P"
+																					: match.match_actual_time_alias == "N"
+																					? "SN"
+																					: match.match_actual_time_alias == "1P"
+																					? "po 1. tř"
+																					: match.match_actual_time_alias == "2P"
+																					? "po 2. tř"
+																					: match.match_actual_time_alias == "3P"
+																					? "po 3. tř"
+																					: `${match.match_actual_time_alias}. tř.`}
+																			</p>
+
+																			<p>
+																				{match.score_periods[0]}, {match.score_periods[1]}, {match.score_periods[2]}
+																				{match.match_actual_time_alias == "KP" &&
+																					` - ${
+																						match.score_home > match.score_visitor ? "1:0" : match.score_home < match.score_visitor ? "0:1" : "0:0"
+																					}`}
+																				{match.match_actual_time_alias == "KN" && " - 0:0"}
+																			</p>
+																		</div>
+																	)}
+
+																	<div
+																		className={
+																			"match-score " +
+																			(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+																		}
+																	>
+																		{match.score_visitor}
+																	</div>
+																</div>
+																<div className="match-team">
+																	<div className="match-team--img">
+																		<img src={visitorsLogo} alt="" />
+																	</div>
+																	<h3 className="shortName">{match.visitor.short_name ? match.visitor.short_name : match.visitor.shortcut}</h3>
+																	<h3>{match.visitor.shortcut}</h3>
 																</div>
 															</div>
-															<div className="match-scoreContainer">
-																<div
-																	className={
-																		"match-score " +
-																		(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
-																	}
-																>
-																	{match.score_home}
-																</div>
-																{match.match_status == "zrušeno" && (
-																	<div className="match-date">
-																		<p>Odloženo</p>
+															<div className="match-tabsContainer">
+																{(value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") &&
+																	(match.match_status == "před zápasem" || match.match_status == "live") && (
+																		<div className="mediaTab-container">
+																			{match.stream_url == "ct" && (
+																				<a href="https://sport.ceskatelevize.cz/#live" target="_blank" className="match-tab--imgOnly">
+																					<img src="../img/logoCT@2x.png" alt="" />
+																				</a>
+																			)}
+																			{match.stream_url == "o2" && (
+																				<a href="https://www.o2tv.cz/" target="_blank" className="match-tab--imgOnly">
+																					<img src="../img/logoO2@2x.png" alt="" />
+																				</a>
+																			)}
+																		</div>
+																	)}
+																{(match.match_status == "live" || match.match_status == "před zápasem") && value.league_name == "CHANCE LIGA" && (
+																	<div>
+																		{match.stream_url == "ct" && (
+																			<a href="https://sport.ceskatelevize.cz/#live" target="_blank" className="match-tab">
+																				<img src="../img/icoPlay.svg" alt="" />
+																				<p>Živě</p>
+																			</a>
+																		)}
+																		{match.stream_url == "o2" && (
+																			<a href="https://www.o2tv.cz/" target="_blank" className="match-tab">
+																				<img src="../img/icoPlay.svg" alt="" />
+																				<p>Živě</p>
+																			</a>
+																		)}
+																		{match.stream_url == null && (
+																			<a
+																				href={`https://www.hokej.cz/tv/hokejka/chl?matchId=${match.hokejcz_id}/`}
+																				target="_blank"
+																				className="match-tab"
+																			>
+																				<img src="../img/icoPlay.svg" alt="" />
+																				<p>Živě</p>
+																			</a>
+																		)}
 																	</div>
+																)}
+																{(match.match_status == "live" || match.match_status == "před zápasem") &&
+																	value.league_name == "Tipsport extraliga" && (
+																		<div>
+																			{match.stream_url == "ct" && (
+																				<a href="https://sport.ceskatelevize.cz/#live" target="_blank" className="match-tab">
+																					<img src="../img/icoPlay.svg" alt="" />
+																					<p>Živě</p>
+																				</a>
+																			)}
+																			{match.stream_url == "o2" && (
+																				<a href="https://www.o2tv.cz/" target="_blank" className="match-tab">
+																					<img src="../img/icoPlay.svg" alt="" />
+																					<p>Živě</p>
+																				</a>
+																			)}
+																			{match.stream_url == null && (
+																				<a
+																					href={`https://www.hokej.cz/tv/hokejka/elh?matchId=${match.hokejcz_id}/`}
+																					target="_blank"
+																					className="match-tab"
+																				>
+																					<img src="../img/icoPlay.svg" alt="" />
+																					<p>Živě</p>
+																				</a>
+																			)}
+																		</div>
+																	)}
+																{match.match_status == "live" &&
+																	(value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") && (
+																		<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`} target="_blank" className="match-tab">
+																			<img src="../img/icoText.svg" alt="" />
+																			<p>Text</p>
+																		</a>
+																	)}
+																{value.league_name == "Tipsport extraliga" && match.match_status == "před zápasem" && (
+																	<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/preview`} className="match-tab">
+																		<img src="../img/icoTextGray.svg" alt="" />
+																		<p>Preview</p>
+																	</a>
+																)}
+																{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
+																	<a href={match.bets.tipsport.link} target="_blank" className="match-tab">
+																		<img src="../img/icoTipsport.svg" alt="" />
+																		<div className="tab-tipsportData">
+																			<p>{match.bets.tipsport.home_win}</p>
+																			<p>{match.bets.tipsport.draw}</p>
+																			<p>{match.bets.tipsport.away_win}</p>
+																		</div>
+																	</a>
+																)}
+																{match.bets.tipsport.link != null && match.match_status == "live" && (
+																	<a href="https://www.tipsport.cz/live" target="_blank" className="match-tab">
+																		<img src="../img/icoTipsport.svg" alt="" />
+																		<p>Livesázka</p>
+																	</a>
+																)}
+																{match.match_status == "po zápase" && value.league_name == "Tipsport extraliga" && (
+																	<a href="https://www.hokej.cz/tv/hokejka/category/14" target="_blank" className="match-tab">
+																		<img src="../img/icoPlayBlack.svg" alt="" />
+																		<p>Záznam</p>
+																	</a>
+																)}
+																{match.match_status == "po zápase" && value.league_name == "CHANCE LIGA" && (
+																	<a href="https://www.hokej.cz/tv/hokejka/category/23" target="_blank" className="match-tab">
+																		<img src="../img/icoPlayBlack.svg" alt="" />
+																		<p>Záznam</p>
+																	</a>
 																)}
 																{match.match_status == "po zápase" && (
-																	<div className="match-date">
-																		<p>
-																			{match.match_actual_time_alias == "KP"
-																				? "Po prodloužení"
-																				: match.match_actual_time_alias == "KN"
-																				? "Po nájezdech"
-																				: "Konec"}
-																		</p>
-
-																		<p>
-																			{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}
-																			{match.match_actual_time_alias == "KP" && ` - ${match.score_home > match.score_visitor ? "1:0" : "0:1"}`}
-																			{match.match_actual_time_alias == "KN" && " - 0:0"}
-																		</p>
-																	</div>
+																	<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="match-tab">
+																		<img src="../img/icoSummary.svg" alt="" />
+																		<p>Zápis</p>
+																	</a>
 																)}
-																{match.match_status == "před zápasem" && (
-																	<div className="match-date future-match">
-																		<p>{dayName}</p>
-																		<p>
-																			{match.date.replace(/-/gi, ".")} • {match.time}
-																		</p>
-																	</div>
-																)}
-																{match.match_status == "live" && (
-																	<div className="match-date active-match">
-																		<p>
-																			{match.match_actual_time_alias == "0"
-																				? "1. př."
-																				: match.match_actual_time_alias == "10"
-																				? "1. př."
-																				: match.match_actual_time_alias == "20"
-																				? "2. př."
-																				: match.match_actual_time_alias == "30"
-																				? "3. př."
-																				: match.match_actual_time_alias == "4"
-																				? "P"
-																				: match.match_actual_time_alias == "N"
-																				? "SN"
-																				: match.match_actual_time_alias == "1P"
-																				? "po 1. tř"
-																				: match.match_actual_time_alias == "2P"
-																				? "po 2. tř"
-																				: match.match_actual_time_alias == "3P"
-																				? "po 3. tř"
-																				: `${match.match_actual_time_alias}. tř.`}
-																		</p>
-
-																		<p>
-																			{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}
-																			{match.match_actual_time_alias == "KP" && ` - ${match.score_home > match.score_visitor ? "1:0" : "0:1"}`}
-																			{match.match_actual_time_alias == "KN" && " - 0:0"}
-																			{match.match_actual_time_alias == "KN" && " - 0:0"}
-																		</p>
-																	</div>
-																)}
-
-																<div
-																	className={
-																		"match-score " +
-																		(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
-																	}
-																>
-																	{match.score_visitor}
-																</div>
-															</div>
-															<div className="match-team">
-																<div className="match-team--img">
-																	<img src={visitorsLogo} alt="" />
-																</div>
-																<h3 className="shortName">{match.visitor.short_name ? match.visitor.short_name : match.visitor.shortcut}</h3>
-																<h3>{match.visitor.shortcut}</h3>
 															</div>
 														</div>
-														<div className="match-tabsContainer">
-															{match.match_status == "live" && (
-																<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`} target="_blank" className="match-tab">
-																	<img src="../img/icoText.svg" alt="" />
-																	<p>Text</p>
-																</a>
-															)}
-															{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
-																<a href={match.bets.tipsport.link} target="_blank" className="match-tab">
-																	<img src="../img/icoTipsport.svg" alt="" />
-																	<div className="tab-tipsportData">
-																		<p>{match.bets.tipsport.home_win}</p>
-																		<p>{match.bets.tipsport.draw}</p>
-																		<p>{match.bets.tipsport.away_win}</p>
+													)
+												})}
+											</div>
+										)
+									}
+								})}
+							{foreignQuery.data != undefined &&
+								Object.entries(foreignQuery.data).map(([key, value]) => {
+									if (key == activeLeagueTab && value.league_name != "NHL") {
+										return (
+											<div key={key}>
+												{value.matches.map((match) => {
+													let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.logo_id}`
+													let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.logo_id}`
+
+													if (APIDate == match.date) {
+														return (
+															<div
+																onClick={() => handleMatchClick(`https://www.hokej.cz/zapas/${match.hokejcz_id}/`)}
+																className="body-match"
+																key={match.hokejcz_id}
+															>
+																<div className="match-infoContainer">
+																	<div className="match-team match-team--left">
+																		<h3 className="shortName">{match.home.short_name ? match.home.short_name : match.home.shortcut}</h3>
+																		<h3>{match.home.shortcut}</h3>
+																		<div className="match-team--img">
+																			<img src={homeLogo} alt="" />
+																		</div>
 																	</div>
-																</a>
-															)}
-															{match.bets.tipsport.link != null && match.match_status == "live" && (
-																<a href="https://www.tipsport.cz/live" target="_blank" className="match-tab">
-																	<img src="../img/icoTipsport.svg" alt="" />
-																	<p>Livesázka</p>
-																</a>
-															)}
-															{match.match_status == "po zápase" && (
-																<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="match-tab">
-																	<img src="../img/icoSummary.svg" alt="" />
-																	<p>Zápis</p>
-																</a>
-															)}
-														</div>
-													</div>
-												)
-											}
-										})}
-									</div>
-								)
-							}
-						})}
-				</div>
-			) : (
-				<div className="mainScoreBoard-body--noData">
-					<h1>Žádné zápasy k zobrazení</h1>
-				</div>
+																	<div className="match-scoreContainer">
+																		<div
+																			className={
+																				"match-score " +
+																				(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+																			}
+																		>
+																			{match.score_home}
+																		</div>
+																		{match.match_status == "zrušeno" && (
+																			<div className="match-date">
+																				<p>Odloženo</p>
+																			</div>
+																		)}
+																		{match.match_status == "po zápase" && (
+																			<div className="match-date">
+																				<p>
+																					{match.match_actual_time_alias == "KP"
+																						? "Po prodloužení"
+																						: match.match_actual_time_alias == "KN"
+																						? "Po nájezdech"
+																						: "Konec"}
+																				</p>
+
+																				<p>
+																					{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}
+																					{match.match_actual_time_alias == "KP" && ` - ${match.score_home > match.score_visitor ? "1:0" : "0:1"}`}
+																					{match.match_actual_time_alias == "KN" && " - 0:0"}
+																				</p>
+																			</div>
+																		)}
+																		{match.match_status == "před zápasem" && (
+																			<div className="match-date future-match">
+																				<p>{dayName}</p>
+																				<p>
+																					{match.date.replace(/-/gi, ".")} • {match.time}
+																				</p>
+																			</div>
+																		)}
+																		{match.match_status == "live" && (
+																			<div className="match-date active-match">
+																				<p>
+																					{match.match_actual_time_alias == "0"
+																						? "1. př."
+																						: match.match_actual_time_alias == "10"
+																						? "1. př."
+																						: match.match_actual_time_alias == "20"
+																						? "2. př."
+																						: match.match_actual_time_alias == "30"
+																						? "3. př."
+																						: match.match_actual_time_alias == "4"
+																						? "P"
+																						: match.match_actual_time_alias == "N"
+																						? "SN"
+																						: match.match_actual_time_alias == "1P"
+																						? "po 1. tř"
+																						: match.match_actual_time_alias == "2P"
+																						? "po 2. tř"
+																						: match.match_actual_time_alias == "3P"
+																						? "po 3. tř"
+																						: `${match.match_actual_time_alias}. tř.`}
+																				</p>
+
+																				<p>
+																					{match.score_period[0]}, {match.score_period[1]}, {match.score_period[2]}
+																					{match.match_actual_time_alias == "KP" && ` - ${match.score_home > match.score_visitor ? "1:0" : "0:1"}`}
+																					{match.match_actual_time_alias == "KN" && " - 0:0"}
+																					{match.match_actual_time_alias == "KN" && " - 0:0"}
+																				</p>
+																			</div>
+																		)}
+
+																		<div
+																			className={
+																				"match-score " +
+																				(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+																			}
+																		>
+																			{match.score_visitor}
+																		</div>
+																	</div>
+																	<div className="match-team">
+																		<div className="match-team--img">
+																			<img src={visitorsLogo} alt="" />
+																		</div>
+																		<h3 className="shortName">{match.visitor.short_name ? match.visitor.short_name : match.visitor.shortcut}</h3>
+																		<h3>{match.visitor.shortcut}</h3>
+																	</div>
+																</div>
+																<div className="match-tabsContainer">
+																	{match.match_status == "live" && (
+																		<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`} target="_blank" className="match-tab">
+																			<img src="../img/icoText.svg" alt="" />
+																			<p>Text</p>
+																		</a>
+																	)}
+																	{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
+																		<a href={match.bets.tipsport.link} target="_blank" className="match-tab">
+																			<img src="../img/icoTipsport.svg" alt="" />
+																			<div className="tab-tipsportData">
+																				<p>{match.bets.tipsport.home_win}</p>
+																				<p>{match.bets.tipsport.draw}</p>
+																				<p>{match.bets.tipsport.away_win}</p>
+																			</div>
+																		</a>
+																	)}
+																	{match.bets.tipsport.link != null && match.match_status == "live" && (
+																		<a href="https://www.tipsport.cz/live" target="_blank" className="match-tab">
+																			<img src="../img/icoTipsport.svg" alt="" />
+																			<p>Livesázka</p>
+																		</a>
+																	)}
+																	{match.match_status == "po zápase" && (
+																		<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="match-tab">
+																			<img src="../img/icoSummary.svg" alt="" />
+																			<p>Zápis</p>
+																		</a>
+																	)}
+																</div>
+															</div>
+														)
+													}
+												})}
+											</div>
+										)
+									}
+								})}
+						</div>
+					) : (
+						<div className="mainScoreBoard-body--noData">
+							<h1>Žádné zápasy k zobrazení</h1>
+						</div>
+					)}
+					{(czechQuery.isSuccess || foreignQuery.isSuccess) && !noData && !maxDate && (
+						<div className="scoreBoard-buttonsContainer">
+							<a href={buttonsUrl ? buttonsUrl.url.matches : "#"} className="scoreBoard-button">
+								Rozpis zápasů
+							</a>
+							<a href={buttonsUrl ? buttonsUrl.url.table : "#"} className="scoreBoard-button">
+								Tabulka soutěže
+							</a>
+						</div>
+					)}
+				</section>
 			)}
-			{(czechQuery.isSuccess || foreignQuery.isSuccess) && !noData && !maxDate && (
-				<div className="scoreBoard-buttonsContainer">
-					<a href={buttonsUrl ? buttonsUrl.url.matches : "#"} className="scoreBoard-button">
-						Rozpis zápasů
-					</a>
-					<a href={buttonsUrl ? buttonsUrl.url.table : "#"} className="scoreBoard-button">
-						Tabulka soutěže
-					</a>
-				</div>
-			)}
-		</section>
+		</React.Fragment>
 	)
 }
 

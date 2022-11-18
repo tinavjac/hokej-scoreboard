@@ -20,6 +20,24 @@ const MainScoreboard = (props) => {
 	const [displayDate, setDisplayDate] = useState(day + "." + month + "." + year)
 	const [APIDate, setAPIDate] = useState(year + "-" + month + "-" + day)
 
+	let mladezLeagues = [
+		81, 112, 109, 41, 3079, 657, 39, 40, 168, 38, 254, 894, 131, 1656, 634, 975, 49, 962, 3441, 3912, 293, 2802, 868, 1864, 2712,
+		1258, 179, 856, 119, 63, 112, 110, 80, 174, 176, 198,
+	]
+
+	const isMladez = () => {
+		if (typeof shownLeagues != "undefined") {
+			shownLeagues.forEach((league) => {
+				if (!mladezLeagues.includes(league)) {
+					return false
+				}
+			})
+			return true
+		} else {
+			return false
+		}
+	}
+
 	const prevDate = () => {
 		setDayClicks(dayClicks - 1)
 		setForeignRefetch(false)
@@ -150,7 +168,6 @@ const MainScoreboard = (props) => {
 	useEffect(() => {
 		if (MainScoreboard.current) {
 			setScoreboardWidth(MainScoreboard.current.clientWidth)
-			console.log(scoreboardWidth)
 		}
 	}, [])
 
@@ -181,7 +198,7 @@ const MainScoreboard = (props) => {
 		})
 	})
 	return (
-		<section className={"mainScoreboard" + (scoreboardWidth < 730 ? " small" : "")} ref={MainScoreboard}>
+		<section className={"mainScoreboard" + (scoreboardWidth < 730 && !isMladez() ? " small" : "")} ref={MainScoreboard}>
 			{foreignQuery.isFetching || czechQuery.isFetching == true ? <div className="loadContainer"></div> : ""}
 			<header className={"mainScoreboard-header"}>
 				<div className="header-date">

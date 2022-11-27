@@ -180,8 +180,10 @@ const MainScoreboard = (props) => {
 		e.stopPropagation()
 	}
 
-	const handleMatchClick = (path) => {
-		window.location.href = path
+	const handleMatchClick = (e, path) => {
+		e.stopPropagation()
+		e.preventDefault()
+		window.open(path, "_blank")
 	}
 
 	useEffect(() => {
@@ -194,7 +196,6 @@ const MainScoreboard = (props) => {
 		if (MainScoreboard.current) {
 			setScoreboardWidth(MainScoreboard.current.clientWidth)
 		}
-		console.log(isMladez())
 	}, [])
 
 	useEffect(() => {
@@ -350,8 +351,9 @@ const MainScoreboard = (props) => {
 													let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
 													let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
 													return (
-														<div
-															onClick={() => handleMatchClick(`https://www.hokej.cz/zapas/${match.hokejcz_id}/`)}
+														<a
+															href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`}
+															target="_blank"
 															className="body-match"
 															key={match.hokejcz_id}
 														>
@@ -462,40 +464,42 @@ const MainScoreboard = (props) => {
 																	(match.match_status == "před zápasem" || match.match_status == "live") && (
 																		<div className="mediaTab-container">
 																			{match.stream_url == "ct" && (
-																				<a href="https://sport.ceskatelevize.cz/#live" target="_blank" className="match-tab--imgOnly">
+																				<div
+																					onClick={(e) => handleMatchClick(e, `https://sport.ceskatelevize.cz/#live`)}
+																					className="match-tab--imgOnly"
+																				>
 																					<img src="../img/logoCT@2x.png" alt="" />
-																				</a>
+																				</div>
 																			)}
 																			{match.stream_url == "o2" && (
-																				<a href="https://www.o2tv.cz/" target="_blank" className="match-tab--imgOnly">
+																				<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`)} className="match-tab--imgOnly">
 																					<img src="../img/logoO2@2x.png" alt="" />
-																				</a>
+																				</div>
 																			)}
 																		</div>
 																	)}
 																{(match.match_status == "live" || match.match_status == "před zápasem") && value.league_name == "CHANCE LIGA" && (
 																	<div>
 																		{match.stream_url == "ct" && (
-																			<a href="https://sport.ceskatelevize.cz/#live" target="_blank" className="match-tab">
+																			<div onClick={(e) => handleMatchClick(e, `https://sport.ceskatelevize.cz/#live`)} className="match-tab">
 																				<img src="../img/icoPlay.svg" alt="" />
 																				<p>Živě</p>
-																			</a>
+																			</div>
 																		)}
 																		{match.stream_url == "o2" && (
-																			<a href="https://www.o2tv.cz/" target="_blank" className="match-tab">
+																			<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`)} className="match-tab">
 																				<img src="../img/icoPlay.svg" alt="" />
 																				<p>Živě</p>
-																			</a>
+																			</div>
 																		)}
 																		{match.stream_url == null && (
-																			<a
-																				href={`https://www.hokej.cz/tv/hokejka/chl?matchId=${match.hokejcz_id}/`}
-																				target="_blank"
+																			<div
+																				onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/tv/hokejka/chl?matchId=${match.hokejcz_id}/`)}
 																				className="match-tab"
 																			>
 																				<img src="../img/icoPlay.svg" alt="" />
 																				<p>Živě</p>
-																			</a>
+																			</div>
 																		)}
 																	</div>
 																)}
@@ -503,78 +507,86 @@ const MainScoreboard = (props) => {
 																	value.league_name == "Tipsport extraliga" && (
 																		<div>
 																			{match.stream_url == "ct" && (
-																				<a href="https://sport.ceskatelevize.cz/#live" target="_blank" className="match-tab">
+																				<div onClick={(e) => handleMatchClick(e, `https://sport.ceskatelevize.cz/#live`)} className="match-tab">
 																					<img src="../img/icoPlay.svg" alt="" />
 																					<p>Živě</p>
-																				</a>
+																				</div>
 																			)}
 																			{match.stream_url == "o2" && (
-																				<a href="https://www.o2tv.cz/" target="_blank" className="match-tab">
+																				<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`)} className="match-tab">
 																					<img src="../img/icoPlay.svg" alt="" />
 																					<p>Živě</p>
-																				</a>
+																				</div>
 																			)}
 																			{match.stream_url == null && (
-																				<a
-																					href={`https://www.hokej.cz/tv/hokejka/elh?matchId=${match.hokejcz_id}/`}
-																					target="_blank"
+																				<div
+																					onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/tv/hokejka/elh?matchId=${match.hokejcz_id}/`)}
 																					className="match-tab"
 																				>
 																					<img src="../img/icoPlay.svg" alt="" />
 																					<p>Živě</p>
-																				</a>
+																				</div>
 																			)}
 																		</div>
 																	)}
 																{match.match_status == "live" &&
 																	(value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") && (
-																		<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`} target="_blank" className="match-tab">
+																		<div
+																			onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`)}
+																			className="match-tab"
+																		>
 																			<img src="../img/icoText.svg" alt="" />
 																			<p>Text</p>
-																		</a>
+																		</div>
 																	)}
 																{value.league_name == "Tipsport extraliga" && match.match_status == "před zápasem" && (
-																	<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/preview`} className="match-tab">
+																	<div
+																		onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/zapas/${match.hokejcz_id}/preview`)}
+																		className="match-tab"
+																	>
 																		<img src="../img/icoTextGray.svg" alt="" />
 																		<p>Preview</p>
-																	</a>
+																	</div>
 																)}
 																{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
-																	<a href={match.bets.tipsport.link} target="_blank" className="match-tab">
+																	<div onClick={(e) => handleMatchClick(e, match.bets.tipsport.link)} className="match-tab">
 																		<img src="../img/icoTipsport.svg" alt="" />
 																		<div className="tab-tipsportData">
 																			<p>{match.bets.tipsport.home_win}</p>
 																			<p>{match.bets.tipsport.draw}</p>
 																			<p>{match.bets.tipsport.away_win}</p>
 																		</div>
-																	</a>
+																	</div>
 																)}
 																{match.bets.tipsport.link != null && match.match_status == "live" && (
-																	<a href="https://www.tipsport.cz/live" target="_blank" className="match-tab">
+																	<div onClick={(e) => handleMatchClick(e, `https://www.tipsport.cz/live`)} className="match-tab">
 																		<img src="../img/icoTipsport.svg" alt="" />
 																		<p>Livesázka</p>
-																	</a>
+																	</div>
 																)}
 																{match.match_status == "po zápase" && value.league_name == "Tipsport extraliga" && (
-																	<a href="https://www.hokej.cz/tv/hokejka/category/14" target="_blank" className="match-tab">
+																	<div onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/tv/hokejka/category/14`)} className="match-tab">
 																		<img src="../img/icoPlayBlack.svg" alt="" />
 																		<p>Záznam</p>
-																	</a>
+																	</div>
 																)}
 																{match.match_status == "po zápase" && value.league_name == "CHANCE LIGA" && (
-																	<a href="https://www.hokej.cz/tv/hokejka/category/23" target="_blank" className="match-tab">
+																	<div onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/tv/hokejka/category/23`)} className="match-tab">
 																		<img src="../img/icoPlayBlack.svg" alt="" />
 																		<p>Záznam</p>
-																	</a>
+																	</div>
 																)}
 																{match.match_status == "po zápase" && (
-																	<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="match-tab">
+																	<div
+																		onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/zapas/${match.hokejcz_id}/`)}
+																		className="match-tab"
+																	>
 																		<img src="../img/icoSummary.svg" alt="" />
 																		<p>Zápis</p>
-																	</a>
+																	</div>
 																)}
 															</div>
-														</div>
+														</a>
 													)
 												})}
 											</div>
@@ -592,8 +604,9 @@ const MainScoreboard = (props) => {
 
 													if (APIDate == match.date) {
 														return (
-															<div
-																onClick={() => handleMatchClick(`https://www.hokej.cz/zapas/${match.hokejcz_id}/`)}
+															<a
+																href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`}
+																target="_blank"
 																className="body-match"
 																key={match.hokejcz_id}
 															>
@@ -696,35 +709,41 @@ const MainScoreboard = (props) => {
 																</div>
 																<div className="match-tabsContainer">
 																	{match.match_status == "live" && (
-																		<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`} target="_blank" className="match-tab">
+																		<div
+																			onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`)}
+																			className="match-tab"
+																		>
 																			<img src="../img/icoText.svg" alt="" />
 																			<p>Text</p>
-																		</a>
+																		</div>
 																	)}
 																	{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
-																		<a href={match.bets.tipsport.link} target="_blank" className="match-tab">
+																		<div onClick={(e) => handleMatchClick(e, match.bets.tipsport.link)} className="match-tab">
 																			<img src="../img/icoTipsport.svg" alt="" />
 																			<div className="tab-tipsportData">
 																				<p>{match.bets.tipsport.home_win}</p>
 																				<p>{match.bets.tipsport.draw}</p>
 																				<p>{match.bets.tipsport.away_win}</p>
 																			</div>
-																		</a>
+																		</div>
 																	)}
 																	{match.bets.tipsport.link != null && match.match_status == "live" && (
-																		<a href="https://www.tipsport.cz/live" target="_blank" className="match-tab">
+																		<div onClick={(e) => handleMatchClick(e, `https://www.tipsport.cz/live`)} className="match-tab">
 																			<img src="../img/icoTipsport.svg" alt="" />
 																			<p>Livesázka</p>
-																		</a>
+																		</div>
 																	)}
 																	{match.match_status == "po zápase" && (
-																		<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="match-tab">
+																		<div
+																			onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/zapas/${match.hokejcz_id}/`)}
+																			className="match-tab"
+																		>
 																			<img src="../img/icoSummary.svg" alt="" />
 																			<p>Zápis</p>
-																		</a>
+																		</div>
 																	)}
 																</div>
-															</div>
+															</a>
 														)
 													}
 												})}

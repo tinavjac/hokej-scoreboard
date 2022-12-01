@@ -180,10 +180,14 @@ const MainScoreboard = (props) => {
 		e.stopPropagation()
 	}
 
-	const handleMatchClick = (e, path) => {
+	const handleMatchClick = (e, path, newTab) => {
 		e.stopPropagation()
 		e.preventDefault()
-		window.open(path, "_blank")
+		if (newTab == true) {
+			window.open(path, "_blank")
+		} else {
+			window.location.href = path
+		}
 	}
 
 	useEffect(() => {
@@ -351,12 +355,7 @@ const MainScoreboard = (props) => {
 													let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
 													let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
 													return (
-														<a
-															href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`}
-															target="_blank"
-															className="body-match"
-															key={match.hokejcz_id}
-														>
+														<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="body-match" key={match.hokejcz_id}>
 															<div className="match-infoContainer">
 																<div className="match-team match-team--left">
 																	<h3 className="shortName">{match.home.short_name ? match.home.short_name : match.home.shortcut}</h3>
@@ -465,14 +464,14 @@ const MainScoreboard = (props) => {
 																		<div className="mediaTab-container">
 																			{match.stream_url == "ct" && (
 																				<div
-																					onClick={(e) => handleMatchClick(e, `https://sport.ceskatelevize.cz/#live`)}
+																					onClick={(e) => handleMatchClick(e, `https://sport.ceskatelevize.cz/#live`, true)}
 																					className="match-tab--imgOnly"
 																				>
 																					<img src="../img/logoCT@2x.png" alt="" />
 																				</div>
 																			)}
 																			{match.stream_url == "o2" && (
-																				<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`)} className="match-tab--imgOnly">
+																				<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`, true)} className="match-tab--imgOnly">
 																					<img src="../img/logoO2@2x.png" alt="" />
 																				</div>
 																			)}
@@ -481,13 +480,13 @@ const MainScoreboard = (props) => {
 																{(match.match_status == "live" || match.match_status == "před zápasem") && value.league_name == "CHANCE LIGA" && (
 																	<div>
 																		{match.stream_url == "ct" && (
-																			<div onClick={(e) => handleMatchClick(e, `https://sport.ceskatelevize.cz/#live`)} className="match-tab">
+																			<div onClick={(e) => handleMatchClick(e, `https://sport.ceskatelevize.cz/#live`, true)} className="match-tab">
 																				<img src="../img/icoPlay.svg" alt="" />
 																				<p>Živě</p>
 																			</div>
 																		)}
 																		{match.stream_url == "o2" && (
-																			<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`)} className="match-tab">
+																			<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`, true)} className="match-tab">
 																				<img src="../img/icoPlay.svg" alt="" />
 																				<p>Živě</p>
 																			</div>
@@ -507,13 +506,13 @@ const MainScoreboard = (props) => {
 																	value.league_name == "Tipsport extraliga" && (
 																		<div>
 																			{match.stream_url == "ct" && (
-																				<div onClick={(e) => handleMatchClick(e, `https://sport.ceskatelevize.cz/#live`)} className="match-tab">
+																				<div onClick={(e) => handleMatchClick(e, `https://sport.ceskatelevize.cz/#live`, true)} className="match-tab">
 																					<img src="../img/icoPlay.svg" alt="" />
 																					<p>Živě</p>
 																				</div>
 																			)}
 																			{match.stream_url == "o2" && (
-																				<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`)} className="match-tab">
+																				<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`, true)} className="match-tab">
 																					<img src="../img/icoPlay.svg" alt="" />
 																					<p>Živě</p>
 																				</div>
@@ -549,7 +548,7 @@ const MainScoreboard = (props) => {
 																	</div>
 																)}
 																{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
-																	<div onClick={(e) => handleMatchClick(e, match.bets.tipsport.link)} className="match-tab">
+																	<div onClick={(e) => handleMatchClick(e, match.bets.tipsport.link, true)} className="match-tab">
 																		<img src="../img/icoTipsport.svg" alt="" />
 																		<div className="tab-tipsportData">
 																			<p>{match.bets.tipsport.home_win}</p>
@@ -559,7 +558,7 @@ const MainScoreboard = (props) => {
 																	</div>
 																)}
 																{match.bets.tipsport.link != null && match.match_status == "live" && (
-																	<div onClick={(e) => handleMatchClick(e, `https://www.tipsport.cz/live`)} className="match-tab">
+																	<div onClick={(e) => handleMatchClick(e, `https://www.tipsport.cz/live`, true)} className="match-tab">
 																		<img src="../img/icoTipsport.svg" alt="" />
 																		<p>Livesázka</p>
 																	</div>
@@ -604,12 +603,7 @@ const MainScoreboard = (props) => {
 
 													if (APIDate == match.date) {
 														return (
-															<a
-																href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`}
-																target="_blank"
-																className="body-match"
-																key={match.hokejcz_id}
-															>
+															<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="body-match" key={match.hokejcz_id}>
 																<div className="match-infoContainer">
 																	<div className="match-team match-team--left">
 																		<h3 className="shortName">{match.home.short_name ? match.home.short_name : match.home.shortcut}</h3>
@@ -718,7 +712,7 @@ const MainScoreboard = (props) => {
 																		</div>
 																	)}
 																	{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
-																		<div onClick={(e) => handleMatchClick(e, match.bets.tipsport.link)} className="match-tab">
+																		<div onClick={(e) => handleMatchClick(e, match.bets.tipsport.link, true)} className="match-tab">
 																			<img src="../img/icoTipsport.svg" alt="" />
 																			<div className="tab-tipsportData">
 																				<p>{match.bets.tipsport.home_win}</p>
@@ -728,7 +722,7 @@ const MainScoreboard = (props) => {
 																		</div>
 																	)}
 																	{match.bets.tipsport.link != null && match.match_status == "live" && (
-																		<div onClick={(e) => handleMatchClick(e, `https://www.tipsport.cz/live`)} className="match-tab">
+																		<div onClick={(e) => handleMatchClick(e, `https://www.tipsport.cz/live`, true)} className="match-tab">
 																			<img src="../img/icoTipsport.svg" alt="" />
 																			<p>Livesázka</p>
 																		</div>

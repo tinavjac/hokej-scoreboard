@@ -284,6 +284,8 @@ var MainScoreboard = function MainScoreboard(props) {
 				setActiveLeagueTab(leagues[0].id);
 			}
 		}
+		console.log(czechQuery.data);
+		console.log(foreignQuery.data);
 	}, [czechRefetch, foreignRefetch, czechQuery.isSuccess, foreignQuery.isSuccess]);
 
 	useEffect(function () {
@@ -608,6 +610,27 @@ var MainScoreboard = function MainScoreboard(props) {
 														return handleMatchClick(e, "https://www.o2tv.cz/", true);
 													}, className: "match-tab--imgOnly" },
 												React.createElement("img", { src: "../img/logoO2@2x.png", alt: "" })
+											),
+											match.stream_url == "cto2" && React.createElement(
+												React.Fragment,
+												null,
+												React.createElement(
+													"div",
+													{
+														onClick: function onClick(e) {
+															return handleMatchClick(e, "https://sport.ceskatelevize.cz/#live", true);
+														},
+														className: "match-tab--imgOnly"
+													},
+													React.createElement("img", { src: "../img/logoCT@2x.png", alt: "" })
+												),
+												React.createElement(
+													"div",
+													{ onClick: function onClick(e) {
+															return handleMatchClick(e, "https://www.o2tv.cz/", true);
+														}, className: "match-tab--imgOnly" },
+													React.createElement("img", { src: "../img/logoO2@2x.png", alt: "" })
+												)
 											)
 										),
 										(match.match_status == "live" || match.match_status == "před zápasem") && value.league_name == "CHANCE LIGA" && React.createElement(

@@ -219,6 +219,8 @@ const MainScoreboard = (props) => {
 				setActiveLeagueTab(leagues[0].id)
 			}
 		}
+		console.log(czechQuery.data)
+		console.log(foreignQuery.data)
 	}, [czechRefetch, foreignRefetch, czechQuery.isSuccess, foreignQuery.isSuccess])
 
 	useEffect(() => {
@@ -474,6 +476,19 @@ const MainScoreboard = (props) => {
 																				<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`, true)} className="match-tab--imgOnly">
 																					<img src="../img/logoO2@2x.png" alt="" />
 																				</div>
+																			)}
+																			{match.stream_url == "cto2" && (
+																				<React.Fragment>
+																					<div
+																						onClick={(e) => handleMatchClick(e, `https://sport.ceskatelevize.cz/#live`, true)}
+																						className="match-tab--imgOnly"
+																					>
+																						<img src="../img/logoCT@2x.png" alt="" />
+																					</div>
+																					<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`, true)} className="match-tab--imgOnly">
+																						<img src="../img/logoO2@2x.png" alt="" />
+																					</div>
+																				</React.Fragment>
 																			)}
 																		</div>
 																	)}

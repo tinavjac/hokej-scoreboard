@@ -42,10 +42,17 @@ body {
 	box-shadow: 0 4px 12px 0px rgba(5, 22, 37, 0.1);
 	display: flex;
 	flex-flow: row nowrap;
+	align-items: center;
 	overflow-x: auto;
 	-ms-overflow-style: none; /* IE and Edge */
 	scrollbar-width: none; /* Firefox */
 	background-color: var(--color-white);
+}
+.ms-logo {
+	order: -10000000 !important;
+	height: 24px;
+	width: auto;
+	margin-left: 16px;
 }
 .topScoreboard * {
 	font-family: "Public Sans", sans-serif;

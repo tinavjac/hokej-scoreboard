@@ -126,154 +126,158 @@ var TopScoreboard = function TopScoreboard(props) {
 				    key = _ref2[0],
 				    value = _ref2[1];
 
-				return React.createElement(
-					"section",
-					{ className: "League", key: key, style: { pointerEvents: scroll.pointerEvents ? "all" : "none" } },
-					React.createElement(
-						"div",
-						{ className: "league-name" },
+				if (key == 12) {
+					return React.createElement(
+						"section",
+						{ className: "League", key: key, style: { pointerEvents: scroll.pointerEvents ? "all" : "none" } },
 						React.createElement(
-							"h3",
-							null,
-							"MS 2023 ",
-							React.createElement("br", null),
-							day,
-							". ",
-							month,
-							"."
+							"div",
+							{ className: "league-name" },
+							React.createElement(
+								"h3",
+								null,
+								"MS 2023 ",
+								React.createElement("br", null),
+								day,
+								". ",
+								month,
+								"."
+							),
+							React.createElement("img", { src: "../img/ArrowRightBlack.svg", alt: "" })
 						),
-						React.createElement("img", { src: "../img/ArrowRightBlack.svg", alt: "" })
-					),
-					value.matches.map(function (match) {
-						var homeLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.home.logo_id;
-						var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.logo_id;
-						if (today == match.date) {
-							return React.createElement(
-								"a",
-								{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "league-match", key: match.hokejcz_id },
-								React.createElement(
-									"div",
-									{ className: "league-team" },
+						value.matches.map(function (match) {
+							var homeLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.home.logo_id;
+							var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.logo_id;
+							if (today == match.date) {
+								return React.createElement(
+									"a",
+									{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "league-match", key: match.hokejcz_id },
 									React.createElement(
 										"div",
-										{ className: "team-container" },
-										React.createElement("img", { src: homeLogo, alt: "" }),
+										{ className: "league-team" },
 										React.createElement(
-											"p",
-											{ className: "team-name" },
-											match.home.shortcut
+											"div",
+											{ className: "team-container" },
+											React.createElement("img", { src: homeLogo, alt: "" }),
+											React.createElement(
+												"p",
+												{ className: "team-name" },
+												match.home.shortcut
+											)
+										),
+										React.createElement(
+											"div",
+											{
+												className: "team-score " + (match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+											},
+											match.score_home
 										)
 									),
 									React.createElement(
 										"div",
-										{
-											className: "team-score " + (match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
-										},
-										match.score_home
-									)
-								),
-								React.createElement(
-									"div",
-									{ className: "league-team" },
-									React.createElement(
-										"div",
-										{ className: "team-container" },
-										React.createElement("img", { src: visitorsLogo, alt: "" }),
+										{ className: "league-team" },
 										React.createElement(
-											"p",
-											{ className: "team-name" },
-											match.visitor.shortcut
+											"div",
+											{ className: "team-container" },
+											React.createElement("img", { src: visitorsLogo, alt: "" }),
+											React.createElement(
+												"p",
+												{ className: "team-name" },
+												match.visitor.shortcut
+											)
+										),
+										React.createElement(
+											"div",
+											{
+												className: "team-score " + (match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+											},
+											match.score_visitor
 										)
-									),
-									React.createElement(
-										"div",
-										{
-											className: "team-score " + (match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
-										},
-										match.score_visitor
 									)
-								)
-							);
-						}
-					})
-				);
+								);
+							}
+						})
+					);
+				}
 			}),
 			tomorowQuery.data != undefined && Object.entries(tomorowQuery.data).map(function (_ref3) {
 				var _ref4 = _slicedToArray(_ref3, 2),
 				    key = _ref4[0],
 				    value = _ref4[1];
 
-				return React.createElement(
-					"section",
-					{ className: "League", key: key, style: { pointerEvents: scroll.pointerEvents ? "all" : "none" } },
-					React.createElement(
-						"div",
-						{ className: "league-name" },
+				if (key == 12) {
+					return React.createElement(
+						"section",
+						{ className: "League", key: key, style: { pointerEvents: scroll.pointerEvents ? "all" : "none" } },
 						React.createElement(
-							"h3",
-							null,
-							"MS 2023 ",
-							React.createElement("br", null),
-							day2,
-							". ",
-							month2,
-							"."
+							"div",
+							{ className: "league-name" },
+							React.createElement(
+								"h3",
+								null,
+								"MS 2023 ",
+								React.createElement("br", null),
+								day,
+								". ",
+								month,
+								"."
+							),
+							React.createElement("img", { src: "../img/ArrowRightBlack.svg", alt: "" })
 						),
-						React.createElement("img", { src: "../img/ArrowRightBlack.svg", alt: "" })
-					),
-					value.matches.map(function (match) {
-						var homeLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.home.logo_id;
-						var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.logo_id;
-						if (tomorow == match.date) {
-							return React.createElement(
-								"a",
-								{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "league-match", key: match.hokejcz_id },
-								React.createElement(
-									"div",
-									{ className: "league-team" },
+						value.matches.map(function (match) {
+							var homeLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.home.logo_id;
+							var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.logo_id;
+							if (today == match.date) {
+								return React.createElement(
+									"a",
+									{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "league-match", key: match.hokejcz_id },
 									React.createElement(
 										"div",
-										{ className: "team-container" },
-										React.createElement("img", { src: homeLogo, alt: "" }),
+										{ className: "league-team" },
 										React.createElement(
-											"p",
-											{ className: "team-name" },
-											match.home.shortcut
+											"div",
+											{ className: "team-container" },
+											React.createElement("img", { src: homeLogo, alt: "" }),
+											React.createElement(
+												"p",
+												{ className: "team-name" },
+												match.home.shortcut
+											)
+										),
+										React.createElement(
+											"div",
+											{
+												className: "team-score " + (match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+											},
+											match.score_home
 										)
 									),
 									React.createElement(
 										"div",
-										{
-											className: "team-score " + (match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
-										},
-										match.score_home
-									)
-								),
-								React.createElement(
-									"div",
-									{ className: "league-team" },
-									React.createElement(
-										"div",
-										{ className: "team-container" },
-										React.createElement("img", { src: visitorsLogo, alt: "" }),
+										{ className: "league-team" },
 										React.createElement(
-											"p",
-											{ className: "team-name" },
-											match.visitor.shortcut
+											"div",
+											{ className: "team-container" },
+											React.createElement("img", { src: visitorsLogo, alt: "" }),
+											React.createElement(
+												"p",
+												{ className: "team-name" },
+												match.visitor.shortcut
+											)
+										),
+										React.createElement(
+											"div",
+											{
+												className: "team-score " + (match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+											},
+											match.score_visitor
 										)
-									),
-									React.createElement(
-										"div",
-										{
-											className: "team-score " + (match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
-										},
-										match.score_visitor
 									)
-								)
-							);
-						}
-					})
-				);
+								);
+							}
+						})
+					);
+				}
 			})
 		) : ""
 	);

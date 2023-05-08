@@ -81,131 +81,134 @@ const TopScoreboard = (props) => {
 	}
 
 	return (
-		<div className="topScoreboard-container ms">
-			{todayQuery.isSuccess ? (
-				<section
-					className="topScoreboard"
-					ref={scrollContainer}
-					onMouseDown={mouseDownHandler}
-					onMouseMove={mouseMoveHandler}
-					onMouseUp={mouseUpHandler}
-				>
-					<img className="ms-logo" src="../img/tipsport_logo.png" alt="" />
-					{todayQuery.data != undefined &&
-						Object.entries(todayQuery.data).map(([key, value]) => {
-							if (key == 12) {
-								return (
-									<section className="League" key={key} style={{ pointerEvents: scroll.pointerEvents ? "all" : "none" }}>
-										<div className={"league-name"}>
-											<h3>
-												MS 2023 <br />
-												{day}. {month}.
-											</h3>
+		<React.Fragment>
+			{(todayQuery.data != undefined && Object.keys(todayQuery.data).includes("12")) ||
+			(tomorowQuery.data != undefined && Object.keys(tomorowQuery.data).includes("12")) ? (
+				<div className="topScoreboard-container ms">
+					<section
+						className="topScoreboard"
+						ref={scrollContainer}
+						onMouseDown={mouseDownHandler}
+						onMouseMove={mouseMoveHandler}
+						onMouseUp={mouseUpHandler}
+					>
+						<img className="ms-logo" src="../img/tipsport_logo.png" alt="" />
+						{todayQuery.data != undefined &&
+							Object.entries(todayQuery.data).map(([key, value]) => {
+								if (key == 12) {
+									return (
+										<section className="League" key={key} style={{ pointerEvents: scroll.pointerEvents ? "all" : "none" }}>
+											<div className={"league-name"}>
+												<h3>
+													MS 2023 <br />
+													{day}. {month}.
+												</h3>
 
-											<img src="../img/ArrowRightBlack.svg" alt="" />
-										</div>
-										{value.matches.map((match) => {
-											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.logo_id}`
-											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.logo_id}`
-											if (today == match.date) {
-												return (
-													<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="league-match" key={match.hokejcz_id}>
-														<div className="league-team">
-															<div className="team-container">
-																<img src={homeLogo} alt="" />
-																<p className="team-name">{match.home.shortcut}</p>
+												<img src="../img/ArrowRightBlack.svg" alt="" />
+											</div>
+											{value.matches.map((match) => {
+												let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.logo_id}`
+												let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.logo_id}`
+												if (today == match.date) {
+													return (
+														<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="league-match" key={match.hokejcz_id}>
+															<div className="league-team">
+																<div className="team-container">
+																	<img src={homeLogo} alt="" />
+																	<p className="team-name">{match.home.shortcut}</p>
+																</div>
+																<div
+																	className={
+																		"team-score " +
+																		(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+																	}
+																>
+																	{match.score_home}
+																</div>
 															</div>
-															<div
-																className={
-																	"team-score " +
-																	(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
-																}
-															>
-																{match.score_home}
+															<div className="league-team">
+																<div className="team-container">
+																	<img src={visitorsLogo} alt="" />
+																	<p className="team-name">{match.visitor.shortcut}</p>
+																</div>
+																<div
+																	className={
+																		"team-score " +
+																		(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+																	}
+																>
+																	{match.score_visitor}
+																</div>
 															</div>
-														</div>
-														<div className="league-team">
-															<div className="team-container">
-																<img src={visitorsLogo} alt="" />
-																<p className="team-name">{match.visitor.shortcut}</p>
-															</div>
-															<div
-																className={
-																	"team-score " +
-																	(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
-																}
-															>
-																{match.score_visitor}
-															</div>
-														</div>
-													</a>
-												)
-											}
-										})}
-									</section>
-								)
-							}
-						})}
-					{tomorowQuery.data != undefined &&
-						Object.entries(tomorowQuery.data).map(([key, value]) => {
-							if (key == 12) {
-								return (
-									<section className="League" key={key} style={{ pointerEvents: scroll.pointerEvents ? "all" : "none" }}>
-										<div className={"league-name"}>
-											<h3>
-												MS 2023 <br />
-												{day}. {month}.
-											</h3>
+														</a>
+													)
+												}
+											})}
+										</section>
+									)
+								}
+							})}
+						{tomorowQuery.data != undefined &&
+							Object.entries(tomorowQuery.data).map(([key, value]) => {
+								if (key == 12) {
+									return (
+										<section className="League" key={key} style={{ pointerEvents: scroll.pointerEvents ? "all" : "none" }}>
+											<div className={"league-name"}>
+												<h3>
+													MS 2023 <br />
+													{day}. {month}.
+												</h3>
 
-											<img src="../img/ArrowRightBlack.svg" alt="" />
-										</div>
-										{value.matches.map((match) => {
-											let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.logo_id}`
-											let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.logo_id}`
-											if (today == match.date) {
-												return (
-													<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="league-match" key={match.hokejcz_id}>
-														<div className="league-team">
-															<div className="team-container">
-																<img src={homeLogo} alt="" />
-																<p className="team-name">{match.home.shortcut}</p>
+												<img src="../img/ArrowRightBlack.svg" alt="" />
+											</div>
+											{value.matches.map((match) => {
+												let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.logo_id}`
+												let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.logo_id}`
+												if (today == match.date) {
+													return (
+														<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="league-match" key={match.hokejcz_id}>
+															<div className="league-team">
+																<div className="team-container">
+																	<img src={homeLogo} alt="" />
+																	<p className="team-name">{match.home.shortcut}</p>
+																</div>
+																<div
+																	className={
+																		"team-score " +
+																		(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+																	}
+																>
+																	{match.score_home}
+																</div>
 															</div>
-															<div
-																className={
-																	"team-score " +
-																	(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
-																}
-															>
-																{match.score_home}
+															<div className="league-team">
+																<div className="team-container">
+																	<img src={visitorsLogo} alt="" />
+																	<p className="team-name">{match.visitor.shortcut}</p>
+																</div>
+																<div
+																	className={
+																		"team-score " +
+																		(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+																	}
+																>
+																	{match.score_visitor}
+																</div>
 															</div>
-														</div>
-														<div className="league-team">
-															<div className="team-container">
-																<img src={visitorsLogo} alt="" />
-																<p className="team-name">{match.visitor.shortcut}</p>
-															</div>
-															<div
-																className={
-																	"team-score " +
-																	(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
-																}
-															>
-																{match.score_visitor}
-															</div>
-														</div>
-													</a>
-												)
-											}
-										})}
-									</section>
-								)
-							}
-						})}
-				</section>
+														</a>
+													)
+												}
+											})}
+										</section>
+									)
+								}
+							})}
+					</section>
+				</div>
 			) : (
 				""
 			)}
-		</div>
+		</React.Fragment>
 	)
 }
 

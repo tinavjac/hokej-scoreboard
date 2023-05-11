@@ -219,8 +219,6 @@ const MainScoreboard = (props) => {
 				setActiveLeagueTab(leagues[0].id)
 			}
 		}
-		console.log(czechQuery.data)
-		console.log(foreignQuery.data)
 	}, [czechRefetch, foreignRefetch, czechQuery.isSuccess, foreignQuery.isSuccess])
 
 	useEffect(() => {
@@ -357,7 +355,11 @@ const MainScoreboard = (props) => {
 													let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
 													let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
 													return (
-														<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="body-match" key={match.hokejcz_id}>
+														<a
+															href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`}
+															className="body-match"
+															key={match.hokejcz_id != 0 ? match.hokejcz_id : match.onlajny_id}
+														>
 															<div className="match-infoContainer">
 																<div className="match-team match-team--left">
 																	<h3 className="shortName">{match.home.short_name ? match.home.short_name : match.home.shortcut}</h3>
@@ -618,7 +620,11 @@ const MainScoreboard = (props) => {
 
 													if (APIDate == match.date) {
 														return (
-															<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="body-match" key={match.hokejcz_id}>
+															<a
+																href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`}
+																className="body-match"
+																key={match.hokejcz_id != 0 ? match.hokejcz_id : match.onlajny_id}
+															>
 																<div className="match-infoContainer">
 																	<div className="match-team match-team--left">
 																		<h3 className="shortName">{match.home.short_name ? match.home.short_name : match.home.shortcut}</h3>

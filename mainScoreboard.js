@@ -284,8 +284,6 @@ var MainScoreboard = function MainScoreboard(props) {
 				setActiveLeagueTab(leagues[0].id);
 			}
 		}
-		console.log(czechQuery.data);
-		console.log(foreignQuery.data);
 	}, [czechRefetch, foreignRefetch, czechQuery.isSuccess, foreignQuery.isSuccess]);
 
 	useEffect(function () {
@@ -462,7 +460,11 @@ var MainScoreboard = function MainScoreboard(props) {
 								var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.onlajny_id;
 								return React.createElement(
 									"a",
-									{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "body-match", key: match.hokejcz_id },
+									{
+										href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/",
+										className: "body-match",
+										key: match.hokejcz_id != 0 ? match.hokejcz_id : match.onlajny_id
+									},
 									React.createElement(
 										"div",
 										{ className: "match-infoContainer" },
@@ -848,7 +850,11 @@ var MainScoreboard = function MainScoreboard(props) {
 								if (APIDate == match.date) {
 									return React.createElement(
 										"a",
-										{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "body-match", key: match.hokejcz_id },
+										{
+											href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/",
+											className: "body-match",
+											key: match.hokejcz_id != 0 ? match.hokejcz_id : match.onlajny_id
+										},
 										React.createElement(
 											"div",
 											{ className: "match-infoContainer" },

@@ -129,7 +129,10 @@ var TopScoreboard = function TopScoreboard(props) {
 					    key = _ref2[0],
 					    value = _ref2[1];
 
-					if (key == 12) {
+					var isFake = value.matches.every(function (match) {
+						return today != match.date;
+					});
+					if (key == 12 && !isFake) {
 						return React.createElement(
 							"section",
 							{ className: "League", key: key, style: { pointerEvents: scroll.pointerEvents ? "all" : "none" } },
@@ -154,7 +157,7 @@ var TopScoreboard = function TopScoreboard(props) {
 								if (today == match.date) {
 									return React.createElement(
 										"a",
-										{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "league-match", key: match.hokejcz_id },
+										{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "league-match", key: match.onlajny_id },
 										React.createElement(
 											"div",
 											{ className: "league-team" },
@@ -208,7 +211,10 @@ var TopScoreboard = function TopScoreboard(props) {
 					    key = _ref4[0],
 					    value = _ref4[1];
 
-					if (key == 12) {
+					var isFake = value.matches.every(function (match) {
+						return tomorow != match.date;
+					});
+					if (key == 12 && !isFake) {
 						return React.createElement(
 							"section",
 							{ className: "League", key: key, style: { pointerEvents: scroll.pointerEvents ? "all" : "none" } },
@@ -220,9 +226,9 @@ var TopScoreboard = function TopScoreboard(props) {
 									null,
 									"MS 2023 ",
 									React.createElement("br", null),
-									day,
+									day2,
 									". ",
-									month,
+									month2,
 									"."
 								),
 								React.createElement("img", { src: "../img/ArrowRightBlack.svg", alt: "" })
@@ -230,10 +236,10 @@ var TopScoreboard = function TopScoreboard(props) {
 							value.matches.map(function (match) {
 								var homeLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.home.logo_id;
 								var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.logo_id;
-								if (today == match.date) {
+								if (tomorow == match.date) {
 									return React.createElement(
 										"a",
-										{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "league-match", key: match.hokejcz_id },
+										{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "league-match", key: match.onlajny_id },
 										React.createElement(
 											"div",
 											{ className: "league-team" },

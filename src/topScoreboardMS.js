@@ -95,7 +95,10 @@ const TopScoreboard = (props) => {
 						<img className="ms-logo" src="../img/tipsport_logo.png" alt="" />
 						{todayQuery.data != undefined &&
 							Object.entries(todayQuery.data).map(([key, value]) => {
-								if (key == 12) {
+								let isFake = value.matches.every((match) => {
+									return today != match.date
+								})
+								if (key == 12 && !isFake) {
 									return (
 										<section className="League" key={key} style={{ pointerEvents: scroll.pointerEvents ? "all" : "none" }}>
 											<div className={"league-name"}>
@@ -111,7 +114,7 @@ const TopScoreboard = (props) => {
 												let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.logo_id}`
 												if (today == match.date) {
 													return (
-														<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="league-match" key={match.hokejcz_id}>
+														<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="league-match" key={match.onlajny_id}>
 															<div className="league-team">
 																<div className="team-container">
 																	<img src={homeLogo} alt="" />
@@ -150,13 +153,16 @@ const TopScoreboard = (props) => {
 							})}
 						{tomorowQuery.data != undefined &&
 							Object.entries(tomorowQuery.data).map(([key, value]) => {
-								if (key == 12) {
+								let isFake = value.matches.every((match) => {
+									return tomorow != match.date
+								})
+								if (key == 12 && !isFake) {
 									return (
 										<section className="League" key={key} style={{ pointerEvents: scroll.pointerEvents ? "all" : "none" }}>
 											<div className={"league-name"}>
 												<h3>
 													MS 2023 <br />
-													{day}. {month}.
+													{day2}. {month2}.
 												</h3>
 
 												<img src="../img/ArrowRightBlack.svg" alt="" />
@@ -164,9 +170,9 @@ const TopScoreboard = (props) => {
 											{value.matches.map((match) => {
 												let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.logo_id}`
 												let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.logo_id}`
-												if (today == match.date) {
+												if (tomorow == match.date) {
 													return (
-														<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="league-match" key={match.hokejcz_id}>
+														<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="league-match" key={match.onlajny_id}>
 															<div className="league-team">
 																<div className="team-container">
 																	<img src={homeLogo} alt="" />

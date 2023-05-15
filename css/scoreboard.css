@@ -60,12 +60,12 @@ body {
 .topScoreboard::-webkit-scrollbar {
 	display: none;
 }
-.topScoreboard a {
+.topScoreboard a:not(.ms-logo-anchor) {
 	text-decoration: none;
 	transition: background-color 200ms ease-in-out;
 }
-.topScoreboard a:hover,
-.topScoreboard a:focus {
+.topScoreboard a:not(.ms-logo-anchor):hover,
+.topScoreboard a:not(.ms-logo-anchor):focus {
 	background-color: var(--color-gray-light);
 }
 .League {

@@ -123,7 +123,21 @@ var TopScoreboard = function TopScoreboard(props) {
 					onMouseMove: mouseMoveHandler,
 					onMouseUp: mouseUpHandler
 				},
-				React.createElement("img", { className: "ms-logo", src: "../img/tipsport_logo.png", alt: "" }),
+				React.createElement(
+					"a",
+					{
+						href: "https://www.tipsport.cz/PartnerRedirectAction.do?pid=61&sid=45&bid=35610&tid=11274",
+						className: "ms-logo-anchor",
+						target: "_blank"
+					},
+					React.createElement("img", {
+						src: "https://ban.tipsport.cz/c/1x1.php?pid=61&sid=45&bid=35610&tid=11274",
+						alt: "",
+						title: "",
+						style: { width: 0, height: 0 }
+					}),
+					React.createElement("img", { className: "ms-logo", src: "../img/tipsport_logo.png", alt: "" })
+				),
 				todayQuery.data != undefined && Object.entries(todayQuery.data).map(function (_ref) {
 					var _ref2 = _slicedToArray(_ref, 2),
 					    key = _ref2[0],

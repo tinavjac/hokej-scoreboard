@@ -147,30 +147,10 @@ body {
 /* MAIN SCOREBOARD */
 .mainScoreboard {
 	position: relative;
-	width: 728px;
+	max-width: 1032px;
 }
 .mainScoreboard * {
 	font-family: "Public Sans", sans-serif;
-}
-
-.mainScoreboard.small .match-team.match-team--left {
-	width: 60px;
-}
-.mainScoreboard.small .match-team h3:not(.shortName) {
-	display: block;
-}
-.mainScoreboard.small .match-team h3.shortName {
-	display: none;
-}
-.mainScoreboard.small .match-date {
-	min-width: 100px;
-	padding: 0;
-}
-.mainScoreboard.small .match-scoreContainer {
-	margin-inline: 4px;
-}
-.mainScoreboard.small .match-team {
-	gap: 4px;
 }
 .loadContainer {
 	position: absolute;
@@ -240,44 +220,6 @@ body {
 	text-transform: uppercase;
 	font-size: 16px;
 }
-
-.header-tabs {
-	margin-top: 12px;
-	display: flex;
-	flex-flow: row nowrap;
-	align-items: center;
-	gap: 8px;
-	width: 100%;
-	overflow-x: auto;
-	-ms-overflow-style: none; /* IE and Edge */
-	scrollbar-width: none; /* Firefox */
-}
-.header-tabs::-webkit-scrollbar {
-	display: none;
-}
-.tab-container {
-	padding: 10px 12.5px;
-	background-color: var(--color-white);
-	border-radius: var(--default-border-radius);
-	cursor: pointer;
-}
-.tab-container:hover p {
-	text-decoration: underline;
-}
-.tab-container.active {
-	background-color: var(--color-blue);
-}
-.tab-container p {
-	color: var(--color-gray);
-	font-size: 11px;
-	font-weight: var(--font-extra-bold);
-	text-transform: uppercase;
-	white-space: nowrap;
-}
-.tab-container.active p {
-	color: var(--color-white);
-}
-
 .mainScoreBoard-body {
 	padding-top: 12px;
 	background-color: var(--color-white);
@@ -357,7 +299,7 @@ body {
 	place-items: center;
 }
 .match-score.active-match {
-	background-color: var(--color-red);
+	background-color: var(--color-orange);
 }
 .match-score.future-match {
 	background-color: var(--color-gray);
@@ -381,7 +323,7 @@ body {
 	line-height: 1.1;
 }
 .match-date.active-match p {
-	color: var(--color-red);
+	color: var(--color-orange);
 }
 .match-date.future-match p {
 	color: var(--color-gray);
@@ -446,33 +388,19 @@ body {
 	border-right: 0px;
 	padding-right: 0px;
 }
-.match-tab--imgOnly img {
-	height: 14px;
-	width: auto;
-}
-.mediaTab-container {
-	display: flex;
-	flex-flow: row nowrap;
-	gap: 8px;
-}
-
-.scoreBoard-buttonsContainer {
-	display: flex;
-	flex-flow: row nowrap;
-	align-items: center;
-	justify-content: center;
-	gap: 8px;
-	margin-top: 8px;
-}
 .scoreBoard-button {
+	display: block;
+	width: fit-content;
 	padding: 10px 21.5px;
-	background-color: var(--color-blue);
+	background-color: var(--color-black);
 	border-radius: var(--default-border-radius);
 	color: var(--color-white);
 	text-transform: uppercase;
 	font-size: 11px;
 	font-weight: var(--font-extra-bold);
 	text-decoration: none;
+	margin-top: 8px;
+	margin-inline: auto;
 }
 .scoreBoard-button:hover,
 .scoreBoard-button:focus {
@@ -513,12 +441,6 @@ body {
 	.match-tabsContainer {
 		margin-left: 0;
 		flex-wrap: wrap;
-		justify-content: center;
-	}
-	.mediaTab-container {
-		order: 100;
-		flex-basis: 100%;
-		display: flex;
 		justify-content: center;
 	}
 }

@@ -218,7 +218,7 @@ var ScoreboardBody = function ScoreboardBody(_ref2) {
 							return React.createElement(
 								"a",
 								{
-									href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/",
+									href: "https://www.nhl.cz/zapas/" + match.hokejcz_id + "/",
 									className: "body-match",
 									key: match.hokejcz_id != 0 ? match.hokejcz_id : match.onlajny_id
 								},
@@ -449,7 +449,7 @@ var MatchTabs = function MatchTabs(_ref11) {
 		matchStatus == "live" && React.createElement(
 			"div",
 			{ onClick: function onClick(e) {
-					return handleMatchClick(e, "https://www.hokej.cz/zapas/" + hokejId + "/on-line");
+					return handleMatchClick(e, "https://www.nhl.cz/zapas/" + hokejId + "/on-line");
 				}, className: "match-tab" },
 			React.createElement("img", { src: "../img/icoText.svg", alt: "" }),
 			React.createElement(
@@ -473,7 +473,7 @@ var MatchTabs = function MatchTabs(_ref11) {
 		matchStatus == "po zápase" && React.createElement(
 			"div",
 			{ onClick: function onClick(e) {
-					return handleMatchClick(e, "https://www.hokej.cz/zapas/" + hokejId + "/");
+					return handleMatchClick(e, "https://www.nhl.cz/zapas/" + hokejId + "/");
 				}, className: "match-tab" },
 			React.createElement("img", { src: "../img/icoSummary.svg", alt: "" }),
 			React.createElement(

@@ -144,7 +144,7 @@ const ScoreboardBody = ({ APIDate, data, dayName, keys }) => (
 								if (APIDate == match.date) {
 									return (
 										<a
-											href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`}
+											href={`https://www.nhl.cz/zapas/${match.hokejcz_id}/`}
 											className="body-match"
 											key={match.hokejcz_id != 0 ? match.hokejcz_id : match.onlajny_id}
 										>
@@ -299,7 +299,7 @@ const MatchTabs = ({ hokejId, tipsport, matchStatus }) => {
 				</div>
 			)}
 			{matchStatus == "live" && (
-				<div onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/zapas/${hokejId}/on-line`)} className="match-tab">
+				<div onClick={(e) => handleMatchClick(e, `https://www.nhl.cz/zapas/${hokejId}/on-line`)} className="match-tab">
 					<img src="../img/icoText.svg" alt="" />
 					<p>Text</p>
 				</div>
@@ -311,7 +311,7 @@ const MatchTabs = ({ hokejId, tipsport, matchStatus }) => {
 				</div>
 			)}
 			{matchStatus == "po zápase" && (
-				<div onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/zapas/${hokejId}/`)} className="match-tab">
+				<div onClick={(e) => handleMatchClick(e, `https://www.nhl.cz/zapas/${hokejId}/`)} className="match-tab">
 					<img src="../img/icoSummary.svg" alt="" />
 					<p>Zápis</p>
 				</div>

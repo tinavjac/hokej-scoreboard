@@ -133,7 +133,7 @@ const DayMatches = ({ data, date, apiDate, day, month, year }) => {
 								let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.logo_id}`
 								if (apiDate == match.date) {
 									return (
-										<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="match" key={match.onlajny_id}>
+										<a href={`https://www.nhl.cz/zapas/${match.hokejcz_id}/`} className="match" key={match.onlajny_id}>
 											<Team
 												logo={homeLogo}
 												shortcut={match.home.shortcut}
@@ -169,7 +169,7 @@ const Team = ({ logo, shortcut, matchStatus, score, seriesScore }) => (
 		<div className={"team-score " + (matchStatus == "před zápasem" ? "future-match" : matchStatus == "live" ? "active-match" : "")}>
 			{score}
 		</div>
-		<div className="series-score">{seriesScore}</div>
+		{seriesScore.length > 0 && <div className="series-score">{seriesScore}</div>}
 	</div>
 )
 

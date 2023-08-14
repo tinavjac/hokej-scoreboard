@@ -180,7 +180,7 @@ var DayMatches = function DayMatches(_ref) {
 						if (apiDate == match.date) {
 							return React.createElement(
 								"a",
-								{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "match", key: match.onlajny_id },
+								{ href: "https://www.nhl.cz/zapas/" + match.hokejcz_id + "/", className: "match", key: match.onlajny_id },
 								React.createElement(Team, {
 									logo: homeLogo,
 									shortcut: match.home.shortcut,
@@ -228,7 +228,7 @@ var Team = function Team(_ref4) {
 			{ className: "team-score " + (matchStatus == "před zápasem" ? "future-match" : matchStatus == "live" ? "active-match" : "") },
 			score
 		),
-		React.createElement(
+		seriesScore.length > 0 && React.createElement(
 			"div",
 			{ className: "series-score" },
 			seriesScore

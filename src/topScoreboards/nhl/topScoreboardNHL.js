@@ -110,7 +110,7 @@ const TopScoreboard = () => {
 
 const DayMatches = ({ data, date, apiDate, day, month, year }) => {
 	const days = ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"]
-	const nhlKeys = ["425"]
+	const nhlKeys = ["425", "101"]
 	return (
 		<React.Fragment>
 			{Object.entries(data).map(([leagueKey, league]) => {

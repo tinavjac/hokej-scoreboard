@@ -4,7 +4,7 @@ const { useState, useEffect, createRoot, useRef } = React
 const queryClient = new QueryClient()
 
 const MainScoreboard = () => {
-	const nhlKeys = ["425"]
+	const nhlKeys = ["425", "101"]
 	const days = ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"]
 
 	//let date = new Date()
@@ -107,7 +107,7 @@ const MainScoreboard = () => {
 			) : (
 				<NoData />
 			)}
-			{dataQuery.isSuccess && !noData && !maxDate && <ScoreboardButton url={"#"} />}
+			{dataQuery.isSuccess && !noData && !maxDate && <ScoreboardButton />}
 		</section>
 	)
 }
@@ -293,7 +293,7 @@ const MatchTabs = ({ hokejId, tipsport, matchStatus }) => {
 				</div>
 			)}
 			{matchStatus == "live" && (
-				<div onClick={(e) => handleMatchClick(e, `#`, true)} className="match-tab">
+				<div onClick={(e) => handleMatchClick(e, `https://www.tipsport.cz/live`, true)} className="match-tab">
 					<img src="../img/icoPlay.svg" alt="" />
 					<p>Živě</p>
 				</div>
@@ -320,8 +320,8 @@ const MatchTabs = ({ hokejId, tipsport, matchStatus }) => {
 	)
 }
 
-const ScoreboardButton = ({ url }) => (
-	<a href={url} className="scoreBoard-button">
+const ScoreboardButton = () => (
+	<a href={"https://nhl.cz/sezona/zapasy"} className="scoreBoard-button">
 		Rozpis zápasů
 	</a>
 )

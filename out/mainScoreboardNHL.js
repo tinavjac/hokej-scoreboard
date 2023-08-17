@@ -14,7 +14,7 @@ var _React = React,
 var queryClient = new QueryClient();
 
 var MainScoreboard = function MainScoreboard() {
-	var nhlKeys = ["425"];
+	var nhlKeys = ["425", "101"];
 	var days = ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"];
 
 	//let date = new Date()
@@ -147,7 +147,7 @@ var MainScoreboard = function MainScoreboard() {
 		dataQuery.isFetching ? React.createElement("div", { className: "loadContainer" }) : "",
 		React.createElement(ScoreboardHeader, { prevDate: prevDate, nextDate: nextDate, dayName: dayName, displayDate: displayDate }),
 		dataQuery.isSuccess && !noData && !maxDate ? React.createElement(ScoreboardBody, { data: dataQuery.data, dayName: dayName, APIDate: APIDate, keys: nhlKeys }) : React.createElement(NoData, null),
-		dataQuery.isSuccess && !noData && !maxDate && React.createElement(ScoreboardButton, { url: "#" })
+		dataQuery.isSuccess && !noData && !maxDate && React.createElement(ScoreboardButton, null)
 	);
 };
 
@@ -437,7 +437,7 @@ var MatchTabs = function MatchTabs(_ref11) {
 		matchStatus == "live" && React.createElement(
 			"div",
 			{ onClick: function onClick(e) {
-					return handleMatchClick(e, "#", true);
+					return handleMatchClick(e, "https://www.tipsport.cz/live", true);
 				}, className: "match-tab" },
 			React.createElement("img", { src: "../img/icoPlay.svg", alt: "" }),
 			React.createElement(
@@ -485,11 +485,10 @@ var MatchTabs = function MatchTabs(_ref11) {
 	);
 };
 
-var ScoreboardButton = function ScoreboardButton(_ref12) {
-	var url = _ref12.url;
+var ScoreboardButton = function ScoreboardButton() {
 	return React.createElement(
 		"a",
-		{ href: url, className: "scoreBoard-button" },
+		{ href: "https://nhl.cz/sezona/zapasy", className: "scoreBoard-button" },
 		"Rozpis z\xE1pas\u016F"
 	);
 };

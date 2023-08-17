@@ -141,7 +141,7 @@ var DayMatches = function DayMatches(_ref) {
 	    year = _ref.year;
 
 	var days = ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"];
-	var nhlKeys = ["425"];
+	var nhlKeys = ["425", "101"];
 	return React.createElement(
 		React.Fragment,
 		null,

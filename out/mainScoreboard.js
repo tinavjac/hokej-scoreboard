@@ -1039,6 +1039,21 @@ var MainScoreboard = function MainScoreboard(props) {
 													"Lives\xE1zka"
 												)
 											),
+											match.match_status == "po zápase" && onlineLeagues.includes(key) && React.createElement(
+												"div",
+												{
+													onClick: function onClick(e) {
+														return handleMatchClick(e, "https://www.onlajny.com/match/index/date/" + APIDate + "/id/" + match.onlajny_id, true);
+													},
+													className: "match-tab"
+												},
+												React.createElement("img", { src: "../img/icoText.svg", alt: "" }),
+												React.createElement(
+													"p",
+													null,
+													"On-line p\u0159enos"
+												)
+											),
 											match.match_status == "po zápase" && React.createElement(
 												"div",
 												{

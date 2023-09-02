@@ -758,6 +758,23 @@ const MainScoreboard = (props) => {
 																			<p>Livesázka</p>
 																		</div>
 																	)}
+																	{match.match_status == "po zápase" && onlineLeagues.includes(key) && (
+																		<div
+																			onClick={(e) =>
+																				handleMatchClick(
+																					e,
+
+																					`https://www.onlajny.com/match/index/date/${APIDate}/id/${match.onlajny_id}`,
+
+																					true
+																				)
+																			}
+																			className="match-tab"
+																		>
+																			<img src="../img/icoText.svg" alt="" />
+																			<p>On-line přenos</p>
+																		</div>
+																	)}
 																	{match.match_status == "po zápase" && (
 																		<div
 																			onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/zapas/${match.hokejcz_id}/`)}

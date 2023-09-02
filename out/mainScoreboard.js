@@ -49,6 +49,8 @@ var MainScoreboard = function MainScoreboard(props) {
 
 	var womanLeagues = [658, 342, 3162, 2380, 3086];
 
+	var onlineLeagues = ["1828", "33", "112", "3969", "28", "26", "3853", "30", "197", "32"];
+
 	var isMladez = function isMladez() {
 		if (typeof shownLeagues != "undefined") {
 			if (shownLeagues.length == mladezLeagues.length) {
@@ -988,7 +990,7 @@ var MainScoreboard = function MainScoreboard(props) {
 												"div",
 												{
 													onClick: function onClick(e) {
-														return handleMatchClick(e, "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/on-line");
+														return handleMatchClick(e, onlineLeagues.includes(key) ? "https://www.onlajny.com/match/index/date/" + APIDate + "/id/" + match.onlajny_id : "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/on-line", true);
 													},
 													className: "match-tab"
 												},
@@ -996,7 +998,7 @@ var MainScoreboard = function MainScoreboard(props) {
 												React.createElement(
 													"p",
 													null,
-													"Text"
+													onlineLeagues.includes(key) ? "On-line přenos" : "Text"
 												)
 											),
 											match.bets.tipsport.link != null && match.match_status == "před zápasem" && React.createElement(
@@ -1059,29 +1061,35 @@ var MainScoreboard = function MainScoreboard(props) {
 						);
 					}
 				})
-			) : React.createElement(
-				"div",
-				{ className: "mainScoreBoard-body--noData" },
-				React.createElement(
-					"h1",
-					null,
-					"\u017D\xE1dn\xE9 z\xE1pasy k zobrazen\xED"
-				)
-			),
+			) : React.createElement(NoData, null),
 			(czechQuery.isSuccess || foreignQuery.isSuccess) && !noData && !maxDate && React.createElement(
 				"div",
 				{ className: "scoreBoard-buttonsContainer" },
-				React.createElement(
-					"a",
-					{ href: buttonsUrl ? buttonsUrl.url.matches : "#", className: "scoreBoard-button" },
-					"Rozpis z\xE1pas\u016F"
-				),
-				React.createElement(
-					"a",
-					{ href: buttonsUrl ? buttonsUrl.url.table : "#", className: "scoreBoard-button" },
-					"Tabulka sout\u011B\u017Ee"
-				)
+				React.createElement(ScoreboardButton, { link: buttonsUrl ? buttonsUrl.url.matches : "#", label: "Rozpis zápasů" }),
+				React.createElement(ScoreboardButton, { link: buttonsUrl ? buttonsUrl.url.table : "#", label: "Tabulka soutěže" })
 			)
+		)
+	);
+};
+
+var ScoreboardButton = function ScoreboardButton(_ref9) {
+	var link = _ref9.link,
+	    label = _ref9.label;
+	return React.createElement(
+		"a",
+		{ href: link, className: "scoreBoard-button" },
+		label
+	);
+};
+
+var NoData = function NoData() {
+	return React.createElement(
+		"div",
+		{ className: "mainScoreBoard-body--noData" },
+		React.createElement(
+			"h1",
+			null,
+			"\u017D\xE1dn\xE9 z\xE1pasy k zobrazen\xED"
 		)
 	);
 };

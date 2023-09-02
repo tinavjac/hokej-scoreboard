@@ -27,6 +27,8 @@ const MainScoreboard = (props) => {
 
 	let womanLeagues = [658, 342, 3162, 2380, 3086]
 
+	let onlineLeagues = ["1828", "33", "112", "3969", "28", "26", "3853", "30", "197", "32"]
+
 	const isMladez = () => {
 		if (typeof shownLeagues != "undefined") {
 			if (shownLeagues.length == mladezLeagues.length) {
@@ -725,11 +727,19 @@ const MainScoreboard = (props) => {
 																<div className="match-tabsContainer">
 																	{match.match_status == "live" && (
 																		<div
-																			onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`)}
+																			onClick={(e) =>
+																				handleMatchClick(
+																					e,
+																					onlineLeagues.includes(key)
+																						? `https://www.onlajny.com/match/index/date/${APIDate}/id/${match.onlajny_id}`
+																						: `https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`,
+																					true
+																				)
+																			}
 																			className="match-tab"
 																		>
 																			<img src="../img/icoText.svg" alt="" />
-																			<p>Text</p>
+																			<p>{onlineLeagues.includes(key) ? "On-line přenos" : "Text"}</p>
 																		</div>
 																	)}
 																	{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
@@ -768,18 +778,12 @@ const MainScoreboard = (props) => {
 								})}
 						</div>
 					) : (
-						<div className="mainScoreBoard-body--noData">
-							<h1>Žádné zápasy k zobrazení</h1>
-						</div>
+						<NoData />
 					)}
 					{(czechQuery.isSuccess || foreignQuery.isSuccess) && !noData && !maxDate && (
 						<div className="scoreBoard-buttonsContainer">
-							<a href={buttonsUrl ? buttonsUrl.url.matches : "#"} className="scoreBoard-button">
-								Rozpis zápasů
-							</a>
-							<a href={buttonsUrl ? buttonsUrl.url.table : "#"} className="scoreBoard-button">
-								Tabulka soutěže
-							</a>
+							<ScoreboardButton link={buttonsUrl ? buttonsUrl.url.matches : "#"} label={"Rozpis zápasů"} />
+							<ScoreboardButton link={buttonsUrl ? buttonsUrl.url.table : "#"} label={"Tabulka soutěže"} />
 						</div>
 					)}
 				</section>
@@ -787,6 +791,18 @@ const MainScoreboard = (props) => {
 		</React.Fragment>
 	)
 }
+
+const ScoreboardButton = ({ link, label }) => (
+	<a href={link} className="scoreBoard-button">
+		{label}
+	</a>
+)
+
+const NoData = () => (
+	<div className="mainScoreBoard-body--noData">
+		<h1>Žádné zápasy k zobrazení</h1>
+	</div>
+)
 
 const Render = () => {
 	return (

@@ -725,40 +725,7 @@ const MainScoreboard = (props) => {
 																	</div>
 																</div>
 																<div className="match-tabsContainer">
-																	{match.match_status == "live" && (
-																		<div
-																			onClick={(e) =>
-																				handleMatchClick(
-																					e,
-																					onlineLeagues.includes(key)
-																						? `https://www.onlajny.com/match/index/date/${APIDate}/id/${match.onlajny_id}`
-																						: `https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`,
-																					true
-																				)
-																			}
-																			className="match-tab"
-																		>
-																			<img src="../img/icoText.svg" alt="" />
-																			<p>{onlineLeagues.includes(key) ? "On-line přenos" : "Text"}</p>
-																		</div>
-																	)}
-																	{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
-																		<div onClick={(e) => handleMatchClick(e, match.bets.tipsport.link, true)} className="match-tab">
-																			<img src="../img/icoTipsport.svg" alt="" />
-																			<div className="tab-tipsportData">
-																				<p>{match.bets.tipsport.home_win}</p>
-																				<p>{match.bets.tipsport.draw}</p>
-																				<p>{match.bets.tipsport.away_win}</p>
-																			</div>
-																		</div>
-																	)}
-																	{match.bets.tipsport.link != null && match.match_status == "live" && (
-																		<div onClick={(e) => handleMatchClick(e, `https://www.tipsport.cz/live`, true)} className="match-tab">
-																			<img src="../img/icoTipsport.svg" alt="" />
-																			<p>Livesázka</p>
-																		</div>
-																	)}
-																	{match.match_status == "po zápase" && onlineLeagues.includes(key) && (
+																	{onlineLeagues.includes(key) && (
 																		<div
 																			onClick={(e) =>
 																				handleMatchClick(
@@ -773,6 +740,32 @@ const MainScoreboard = (props) => {
 																		>
 																			<img src="../img/icoText.svg" alt="" />
 																			<p>On-line přenos</p>
+																		</div>
+																	)}
+																	{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
+																		<div onClick={(e) => handleMatchClick(e, match.bets.tipsport.link, true)} className="match-tab">
+																			<img src="../img/icoTipsport.svg" alt="" />
+																			<div className="tab-tipsportData">
+																				<p>{match.bets.tipsport.home_win}</p>
+																				<p>{match.bets.tipsport.draw}</p>
+																				<p>{match.bets.tipsport.away_win}</p>
+																			</div>
+																		</div>
+																	)}
+																	{match.match_status == "live" &&
+																		!onlineLeagues.includes(key)(
+																			<div
+																				onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`, true)}
+																				className="match-tab"
+																			>
+																				<img src="../img/icoText.svg" alt="" />
+																				<p>Text</p>
+																			</div>
+																		)}
+																	{match.bets.tipsport.link != null && match.match_status == "live" && (
+																		<div onClick={(e) => handleMatchClick(e, `https://www.tipsport.cz/live`, true)} className="match-tab">
+																			<img src="../img/icoTipsport.svg" alt="" />
+																			<p>Livesázka</p>
 																		</div>
 																	)}
 																	{match.match_status == "po zápase" && (

@@ -986,11 +986,11 @@ var MainScoreboard = function MainScoreboard(props) {
 										React.createElement(
 											"div",
 											{ className: "match-tabsContainer" },
-											match.match_status == "live" && React.createElement(
+											onlineLeagues.includes(key) && React.createElement(
 												"div",
 												{
 													onClick: function onClick(e) {
-														return handleMatchClick(e, onlineLeagues.includes(key) ? "https://www.onlajny.com/match/index/date/" + APIDate + "/id/" + match.onlajny_id : "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/on-line", true);
+														return handleMatchClick(e, "https://www.onlajny.com/match/index/date/" + APIDate + "/id/" + match.onlajny_id, true);
 													},
 													className: "match-tab"
 												},
@@ -998,7 +998,7 @@ var MainScoreboard = function MainScoreboard(props) {
 												React.createElement(
 													"p",
 													null,
-													onlineLeagues.includes(key) ? "On-line přenos" : "Text"
+													"On-line p\u0159enos"
 												)
 											),
 											match.bets.tipsport.link != null && match.match_status == "před zápasem" && React.createElement(
@@ -1027,6 +1027,21 @@ var MainScoreboard = function MainScoreboard(props) {
 													)
 												)
 											),
+											match.match_status == "live" && !onlineLeagues.includes(key)(React.createElement(
+												"div",
+												{
+													onClick: function onClick(e) {
+														return handleMatchClick(e, "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/on-line", true);
+													},
+													className: "match-tab"
+												},
+												React.createElement("img", { src: "../img/icoText.svg", alt: "" }),
+												React.createElement(
+													"p",
+													null,
+													"Text"
+												)
+											)),
 											match.bets.tipsport.link != null && match.match_status == "live" && React.createElement(
 												"div",
 												{ onClick: function onClick(e) {
@@ -1037,21 +1052,6 @@ var MainScoreboard = function MainScoreboard(props) {
 													"p",
 													null,
 													"Lives\xE1zka"
-												)
-											),
-											match.match_status == "po zápase" && onlineLeagues.includes(key) && React.createElement(
-												"div",
-												{
-													onClick: function onClick(e) {
-														return handleMatchClick(e, "https://www.onlajny.com/match/index/date/" + APIDate + "/id/" + match.onlajny_id, true);
-													},
-													className: "match-tab"
-												},
-												React.createElement("img", { src: "../img/icoText.svg", alt: "" }),
-												React.createElement(
-													"p",
-													null,
-													"On-line p\u0159enos"
 												)
 											),
 											match.match_status == "po zápase" && React.createElement(

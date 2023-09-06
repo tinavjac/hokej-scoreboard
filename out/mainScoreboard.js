@@ -49,7 +49,7 @@ var MainScoreboard = function MainScoreboard(props) {
 
 	var womanLeagues = [658, 342, 3162, 2380, 3086];
 
-	var onlineLeagues = ["1828", "33", "112", "3969", "28", "26", "3853", "30", "197", "32"];
+	var onlineLeagues = ["1828", "33", "112", "3969", "28", "26", "3853", "30", "197", "32", "3282"];
 
 	var isMladez = function isMladez() {
 		if (typeof shownLeagues != "undefined") {

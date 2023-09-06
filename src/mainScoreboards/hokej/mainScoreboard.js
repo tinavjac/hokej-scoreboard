@@ -27,7 +27,7 @@ const MainScoreboard = (props) => {
 
 	let womanLeagues = [658, 342, 3162, 2380, 3086]
 
-	let onlineLeagues = ["1828", "33", "112", "3969", "28", "26", "3853", "30", "197", "32"]
+	let onlineLeagues = ["1828", "33", "112", "3969", "28", "26", "3853", "30", "197", "32", "3282"]
 
 	const isMladez = () => {
 		if (typeof shownLeagues != "undefined") {

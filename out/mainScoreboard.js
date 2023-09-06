@@ -68,6 +68,12 @@ var MainScoreboard = function MainScoreboard(props) {
 		}
 	};
 
+	var isOnlineLeague = function isOnlineLeague(key) {
+		return onlineLeagues.some(function (item) {
+			return item === key;
+		});
+	};
+
 	var renderOnPage = function renderOnPage() {
 		if (typeof shownLeagues != "undefined") {
 			if (shownLeagues.length == 1 && shownLeagues.includes(147)) {
@@ -986,7 +992,7 @@ var MainScoreboard = function MainScoreboard(props) {
 										React.createElement(
 											"div",
 											{ className: "match-tabsContainer" },
-											onlineLeagues.includes(key) && React.createElement(
+											isOnlineLeague(key) && React.createElement(
 												"div",
 												{
 													onClick: function onClick(e) {
@@ -1027,7 +1033,7 @@ var MainScoreboard = function MainScoreboard(props) {
 													)
 												)
 											),
-											match.match_status == "live" && !onlineLeagues.includes(key)(React.createElement(
+											match.match_status == "live" && !isOnlineLeague(key) && React.createElement(
 												"div",
 												{
 													onClick: function onClick(e) {
@@ -1041,7 +1047,7 @@ var MainScoreboard = function MainScoreboard(props) {
 													null,
 													"Text"
 												)
-											)),
+											),
 											match.bets.tipsport.link != null && match.match_status == "live" && React.createElement(
 												"div",
 												{ onClick: function onClick(e) {

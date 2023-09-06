@@ -27,7 +27,7 @@ const MainScoreboard = (props) => {
 
 	let womanLeagues = [658, 342, 3162, 2380, 3086]
 
-	let onlineLeagues = ["1828", "33", "112", "3969", "28", "26", "3853", "30", "197", "32", "3282"]
+	const onlineLeagues = ["1828", "33", "112", "3969", "28", "26", "3853", "30", "197", "32", "3282"]
 
 	const isMladez = () => {
 		if (typeof shownLeagues != "undefined") {
@@ -44,6 +44,10 @@ const MainScoreboard = (props) => {
 		} else {
 			return false
 		}
+	}
+
+	const isOnlineLeague = (key) => {
+		return onlineLeagues.some((item) => item === key)
 	}
 
 	const renderOnPage = () => {
@@ -725,7 +729,7 @@ const MainScoreboard = (props) => {
 																	</div>
 																</div>
 																<div className="match-tabsContainer">
-																	{onlineLeagues.includes(key) && (
+																	{isOnlineLeague(key) && (
 																		<div
 																			onClick={(e) =>
 																				handleMatchClick(
@@ -752,16 +756,15 @@ const MainScoreboard = (props) => {
 																			</div>
 																		</div>
 																	)}
-																	{match.match_status == "live" &&
-																		!onlineLeagues.includes(key)(
-																			<div
-																				onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`, true)}
-																				className="match-tab"
-																			>
-																				<img src="../img/icoText.svg" alt="" />
-																				<p>Text</p>
-																			</div>
-																		)}
+																	{match.match_status == "live" && !isOnlineLeague(key) && (
+																		<div
+																			onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`, true)}
+																			className="match-tab"
+																		>
+																			<img src="../img/icoText.svg" alt="" />
+																			<p>Text</p>
+																		</div>
+																	)}
 																	{match.bets.tipsport.link != null && match.match_status == "live" && (
 																		<div onClick={(e) => handleMatchClick(e, `https://www.tipsport.cz/live`, true)} className="match-tab">
 																			<img src="../img/icoTipsport.svg" alt="" />

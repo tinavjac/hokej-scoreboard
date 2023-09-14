@@ -170,12 +170,12 @@ var TopScoreboard = function TopScoreboard(props) {
 							),
 							React.createElement("img", { src: "../img/ArrowRightBlack.svg", alt: "" })
 						),
-						value.matches.map(function (match) {
+						value.matches.map(function (match, index) {
 							var homeLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.home.onlajny_id;
 							var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.onlajny_id;
 							return React.createElement(
 								"a",
-								{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "league-match", key: match.hokejcz_id },
+								{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "league-match", key: index },
 								React.createElement(
 									"div",
 									{ className: "league-team" },
@@ -271,13 +271,13 @@ var TopScoreboard = function TopScoreboard(props) {
 							),
 							React.createElement("img", { src: "../img/ArrowRightBlack.svg", alt: "" })
 						),
-						value.matches.map(function (match) {
+						value.matches.map(function (match, index) {
 							var homeLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.home.logo_id;
 							var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.logo_id;
 							if (APIDate == match.date) {
 								return React.createElement(
 									"a",
-									{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "league-match", key: match.hokejcz_id },
+									{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "league-match", key: index },
 									React.createElement(
 										"div",
 										{ className: "league-team" },

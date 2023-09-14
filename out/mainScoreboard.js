@@ -259,6 +259,20 @@ var MainScoreboard = function MainScoreboard(props) {
 		}
 	};
 
+	var displayStreamMatch = function displayStreamMatch(time, state) {
+		var matchTime = time.split(":").map(function (el) {
+			return Number(el);
+		});
+
+		if (date.getHours() === matchTime[0] && date.getMinutes() + 15 >= matchTime[1]) {
+			return true;
+		} else if (state == "live") {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
 	useEffect(function () {
 		czechQuery.refetch();
 		foreignQuery.refetch();
@@ -468,11 +482,9 @@ var MainScoreboard = function MainScoreboard(props) {
 								var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.onlajny_id;
 								var streamInfo = void 0;
 
-								if (stream) {
-									streamInfo = stream[match.hokejcz_id];
+								if (streamMatch && displayStreamMatch(match.time, match.match_status)) {
+									streamInfo = streamMatch[match.hokejcz_id];
 								}
-
-								console.log(streamInfo[0].url);
 
 								return React.createElement(
 									"a",
@@ -609,30 +621,20 @@ var MainScoreboard = function MainScoreboard(props) {
 									React.createElement(
 										"div",
 										{ className: "match-tabsContainer" },
-										(value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") && (match.match_status == "před zápasem" || match.match_status == "live") && React.createElement(
+										React.createElement(
 											"div",
 											{ className: "mediaTab-container" },
-											match.stream_url == "ct" && React.createElement(
-												"div",
-												{
-													onClick: function onClick(e) {
-														return handleMatchClick(e, "https://sport.ceskatelevize.cz/#live", true);
-													},
-													className: "match-tab--imgOnly"
-												},
-												React.createElement("img", { src: "../img/logoCT@2x.png", alt: "" })
-											),
-											match.stream_url == "o2" && React.createElement(
+											streamInfo && React.createElement(
 												"div",
 												{ onClick: function onClick(e) {
-														return handleMatchClick(e, "https://www.o2tv.cz/", true);
+														return handleMatchClick(e, streamInfo.url, true);
 													}, className: "match-tab--imgOnly" },
-												React.createElement("img", { src: "../img/logoO2@2x.png", alt: "" })
+												React.createElement("img", { src: "../img/cro.svg", alt: "" })
 											),
-											match.stream_url == "cto2" && React.createElement(
+											(value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") && (match.match_status == "před zápasem" || match.match_status == "live") && React.createElement(
 												React.Fragment,
 												null,
-												React.createElement(
+												match.stream_url == "ct" && React.createElement(
 													"div",
 													{
 														onClick: function onClick(e) {
@@ -642,12 +644,33 @@ var MainScoreboard = function MainScoreboard(props) {
 													},
 													React.createElement("img", { src: "../img/logoCT@2x.png", alt: "" })
 												),
-												React.createElement(
+												match.stream_url == "o2" && React.createElement(
 													"div",
 													{ onClick: function onClick(e) {
 															return handleMatchClick(e, "https://www.o2tv.cz/", true);
 														}, className: "match-tab--imgOnly" },
 													React.createElement("img", { src: "../img/logoO2@2x.png", alt: "" })
+												),
+												match.stream_url == "cto2" && React.createElement(
+													React.Fragment,
+													null,
+													React.createElement(
+														"div",
+														{
+															onClick: function onClick(e) {
+																return handleMatchClick(e, "https://sport.ceskatelevize.cz/#live", true);
+															},
+															className: "match-tab--imgOnly"
+														},
+														React.createElement("img", { src: "../img/logoCT@2x.png", alt: "" })
+													),
+													React.createElement(
+														"div",
+														{ onClick: function onClick(e) {
+																return handleMatchClick(e, "https://www.o2tv.cz/", true);
+															}, className: "match-tab--imgOnly" },
+														React.createElement("img", { src: "../img/logoO2@2x.png", alt: "" })
+													)
 												)
 											)
 										),
@@ -720,18 +743,6 @@ var MainScoreboard = function MainScoreboard(props) {
 													null,
 													"\u017Div\u011B"
 												)
-											)
-										),
-										streamInfo && React.createElement(
-											"div",
-											{ onClick: function onClick(e) {
-													return handleMatchClick(e, streamInfo[0].url, true);
-												}, className: "match-tab" },
-											React.createElement("img", { src: "../img/microphone.svg", alt: "" }),
-											React.createElement(
-												"p",
-												null,
-												"Radio\u017Eurn\xE1l"
 											)
 										),
 										match.match_status == "live" && (value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") && React.createElement(

@@ -196,6 +196,18 @@ const MainScoreboard = (props) => {
 		}
 	}
 
+	const displayStreamMatch = (time, state) => {
+		let matchTime = time.split(":").map((el) => Number(el))
+
+		if (date.getHours() === matchTime[0] && date.getMinutes() + 15 >= matchTime[1]) {
+			return true
+		} else if (state == "live") {
+			return true
+		} else {
+			return false
+		}
+	}
+
 	useEffect(() => {
 		czechQuery.refetch()
 		foreignQuery.refetch()
@@ -362,11 +374,9 @@ const MainScoreboard = (props) => {
 													let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
 													let streamInfo
 
-													if (stream) {
-														streamInfo = stream[match.hokejcz_id]
+													if (streamMatch && displayStreamMatch(match.time, match.match_status)) {
+														streamInfo = streamMatch[match.hokejcz_id]
 													}
-
-													console.log(streamInfo[0].url)
 
 													return (
 														<a
@@ -477,37 +487,44 @@ const MainScoreboard = (props) => {
 																</div>
 															</div>
 															<div className="match-tabsContainer">
-																{(value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") &&
-																	(match.match_status == "před zápasem" || match.match_status == "live") && (
-																		<div className="mediaTab-container">
-																			{match.stream_url == "ct" && (
-																				<div
-																					onClick={(e) => handleMatchClick(e, `https://sport.ceskatelevize.cz/#live`, true)}
-																					className="match-tab--imgOnly"
-																				>
-																					<img src="../img/logoCT@2x.png" alt="" />
-																				</div>
-																			)}
-																			{match.stream_url == "o2" && (
-																				<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`, true)} className="match-tab--imgOnly">
-																					<img src="../img/logoO2@2x.png" alt="" />
-																				</div>
-																			)}
-																			{match.stream_url == "cto2" && (
-																				<React.Fragment>
+																<div className="mediaTab-container">
+																	{streamInfo && (
+																		<div onClick={(e) => handleMatchClick(e, streamInfo.url, true)} className="match-tab--imgOnly">
+																			<img src="../img/cro.svg" alt="" />
+																		</div>
+																	)}
+																	{(value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") &&
+																		(match.match_status == "před zápasem" || match.match_status == "live") && (
+																			<React.Fragment>
+																				{match.stream_url == "ct" && (
 																					<div
 																						onClick={(e) => handleMatchClick(e, `https://sport.ceskatelevize.cz/#live`, true)}
 																						className="match-tab--imgOnly"
 																					>
 																						<img src="../img/logoCT@2x.png" alt="" />
 																					</div>
+																				)}
+																				{match.stream_url == "o2" && (
 																					<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`, true)} className="match-tab--imgOnly">
 																						<img src="../img/logoO2@2x.png" alt="" />
 																					</div>
-																				</React.Fragment>
-																			)}
-																		</div>
-																	)}
+																				)}
+																				{match.stream_url == "cto2" && (
+																					<React.Fragment>
+																						<div
+																							onClick={(e) => handleMatchClick(e, `https://sport.ceskatelevize.cz/#live`, true)}
+																							className="match-tab--imgOnly"
+																						>
+																							<img src="../img/logoCT@2x.png" alt="" />
+																						</div>
+																						<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`, true)} className="match-tab--imgOnly">
+																							<img src="../img/logoO2@2x.png" alt="" />
+																						</div>
+																					</React.Fragment>
+																				)}
+																			</React.Fragment>
+																		)}
+																</div>
 																{(match.match_status == "live" || match.match_status == "před zápasem") && value.league_name == "CHANCE LIGA" && (
 																	<div>
 																		{match.stream_url == "ct" && (
@@ -560,12 +577,6 @@ const MainScoreboard = (props) => {
 																			)} */}
 																		</div>
 																	)}
-																{streamInfo && (
-																	<div onClick={(e) => handleMatchClick(e, streamInfo[0].url, true)} className="match-tab">
-																		<img src="../img/microphone.svg" alt="" />
-																		<p>Radiožurnál</p>
-																	</div>
-																)}
 																{match.match_status == "live" &&
 																	(value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") && (
 																		<div

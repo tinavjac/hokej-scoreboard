@@ -489,7 +489,10 @@ const MainScoreboard = (props) => {
 															<div className="match-tabsContainer">
 																<div className="mediaTab-container">
 																	{streamInfo && (
-																		<div onClick={(e) => handleMatchClick(e, streamInfo.url, true)} className="match-tab--imgOnly">
+																		<div
+																			onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/zapas/${match.hokejcz_id}/adhoc-stream`, true)}
+																			className="match-tab--imgOnly"
+																		>
 																			<img src="../img/cro.svg" alt="" />
 																		</div>
 																	)}

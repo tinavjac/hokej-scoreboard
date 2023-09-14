@@ -626,9 +626,12 @@ var MainScoreboard = function MainScoreboard(props) {
 											{ className: "mediaTab-container" },
 											streamInfo && React.createElement(
 												"div",
-												{ onClick: function onClick(e) {
-														return handleMatchClick(e, streamInfo.url, true);
-													}, className: "match-tab--imgOnly" },
+												{
+													onClick: function onClick(e) {
+														return handleMatchClick(e, "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/adhoc-stream", true);
+													},
+													className: "match-tab--imgOnly"
+												},
 												React.createElement("img", { src: "../img/cro.svg", alt: "" })
 											),
 											(value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") && (match.match_status == "před zápasem" || match.match_status == "live") && React.createElement(

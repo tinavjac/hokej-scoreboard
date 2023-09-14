@@ -466,6 +466,14 @@ var MainScoreboard = function MainScoreboard(props) {
 							value.matches.map(function (match) {
 								var homeLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.home.onlajny_id;
 								var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.onlajny_id;
+								var streamInfo = void 0;
+
+								if (stream) {
+									streamInfo = stream[match.hokejcz_id];
+								}
+
+								console.log(streamInfo[0].url);
+
 								return React.createElement(
 									"a",
 									{
@@ -670,7 +678,7 @@ var MainScoreboard = function MainScoreboard(props) {
 													"\u017Div\u011B"
 												)
 											),
-											match.stream_url == null && React.createElement(
+											match.stream_url == null(React.createElement(
 												"div",
 												{
 													onClick: function onClick(e) {
@@ -684,7 +692,7 @@ var MainScoreboard = function MainScoreboard(props) {
 													null,
 													"\u017Div\u011B"
 												)
-											)
+											))
 										),
 										(match.match_status == "live" || match.match_status == "před zápasem") && value.league_name == "Tipsport extraliga" && React.createElement(
 											"div",
@@ -712,21 +720,18 @@ var MainScoreboard = function MainScoreboard(props) {
 													null,
 													"\u017Div\u011B"
 												)
-											),
-											match.stream_url == null && React.createElement(
-												"div",
-												{
-													onClick: function onClick(e) {
-														return handleMatchClick(e, "https://www.hokej.cz/tv/hokejka/elh?matchId=" + match.hokejcz_id + "/");
-													},
-													className: "match-tab"
-												},
-												React.createElement("img", { src: "../img/icoPlay.svg", alt: "" }),
-												React.createElement(
-													"p",
-													null,
-													"\u017Div\u011B"
-												)
+											)
+										),
+										streamInfo && React.createElement(
+											"div",
+											{ onClick: function onClick(e) {
+													return handleMatchClick(e, streamInfo[0].url, true);
+												}, className: "match-tab" },
+											React.createElement("img", { src: "../img/microphone.svg", alt: "" }),
+											React.createElement(
+												"p",
+												null,
+												"Radio\u017Eurn\xE1l"
 											)
 										),
 										match.match_status == "live" && (value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") && React.createElement(

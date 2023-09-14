@@ -360,6 +360,14 @@ const MainScoreboard = (props) => {
 												{value.matches.map((match) => {
 													let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
 													let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
+													let streamInfo
+
+													if (stream) {
+														streamInfo = stream[match.hokejcz_id]
+													}
+
+													console.log(streamInfo[0].url)
+
 													return (
 														<a
 															href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`}
@@ -514,15 +522,16 @@ const MainScoreboard = (props) => {
 																				<p>Živě</p>
 																			</div>
 																		)}
-																		{match.stream_url == null && (
-																			<div
-																				onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/tv/hokejka/chl?matchId=${match.hokejcz_id}/`)}
-																				className="match-tab"
-																			>
-																				<img src="../img/icoPlay.svg" alt="" />
-																				<p>Živě</p>
-																			</div>
-																		)}
+																		{match.stream_url ==
+																			null(
+																				<div
+																					onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/tv/hokejka/chl?matchId=${match.hokejcz_id}/`)}
+																					className="match-tab"
+																				>
+																					<img src="../img/icoPlay.svg" alt="" />
+																					<p>Živě</p>
+																				</div>
+																			)}
 																	</div>
 																)}
 																{(match.match_status == "live" || match.match_status == "před zápasem") &&
@@ -540,7 +549,7 @@ const MainScoreboard = (props) => {
 																					<p>Živě</p>
 																				</div>
 																			)}
-																			{match.stream_url == null && (
+																			{/* {match.stream_url == null && (
 																				<div
 																					onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/tv/hokejka/elh?matchId=${match.hokejcz_id}/`)}
 																					className="match-tab"
@@ -548,9 +557,15 @@ const MainScoreboard = (props) => {
 																					<img src="../img/icoPlay.svg" alt="" />
 																					<p>Živě</p>
 																				</div>
-																			)}
+																			)} */}
 																		</div>
 																	)}
+																{streamInfo && (
+																	<div onClick={(e) => handleMatchClick(e, streamInfo[0].url, true)} className="match-tab">
+																		<img src="../img/microphone.svg" alt="" />
+																		<p>Radiožurnál</p>
+																	</div>
+																)}
 																{match.match_status == "live" &&
 																	(value.league_name == "Tipsport extraliga" || value.league_name == "CHANCE LIGA") && (
 																		<div

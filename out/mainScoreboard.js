@@ -315,6 +315,7 @@ var MainScoreboard = function MainScoreboard(props) {
 			}
 		});
 	});
+
 	return React.createElement(
 		React.Fragment,
 		null,
@@ -474,10 +475,11 @@ var MainScoreboard = function MainScoreboard(props) {
 					    value = _ref6[1];
 
 					if (key == activeLeagueTab) {
+						console.log(value.matches);
 						return React.createElement(
 							"div",
 							{ key: key },
-							value.matches.map(function (match) {
+							value.matches.map(function (match, index) {
 								var homeLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.home.onlajny_id;
 								var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.onlajny_id;
 								var streamInfo = void 0;
@@ -488,11 +490,7 @@ var MainScoreboard = function MainScoreboard(props) {
 
 								return React.createElement(
 									"a",
-									{
-										href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/",
-										className: "body-match",
-										key: match.hokejcz_id != 0 ? match.hokejcz_id : match.onlajny_id
-									},
+									{ href: "https://www.hokej.cz/zapas/" + match.hokejcz_id + "/", className: "body-match", key: index },
 									React.createElement(
 										"div",
 										{ className: "match-infoContainer" },
@@ -704,7 +702,7 @@ var MainScoreboard = function MainScoreboard(props) {
 													"\u017Div\u011B"
 												)
 											),
-											match.stream_url == null(React.createElement(
+											!match.stream_url && React.createElement(
 												"div",
 												{
 													onClick: function onClick(e) {
@@ -718,7 +716,7 @@ var MainScoreboard = function MainScoreboard(props) {
 													null,
 													"\u017Div\u011B"
 												)
-											))
+											)
 										),
 										(match.match_status == "live" || match.match_status == "před zápasem") && value.league_name == "Tipsport extraliga" && React.createElement(
 											"div",

@@ -246,6 +246,7 @@ const MainScoreboard = (props) => {
 			}
 		})
 	})
+
 	return (
 		<React.Fragment>
 			{renderOnPage() && (
@@ -367,9 +368,10 @@ const MainScoreboard = (props) => {
 							{czechQuery.data != undefined &&
 								Object.entries(czechQuery.data).map(([key, value]) => {
 									if (key == activeLeagueTab) {
+										console.log(value.matches)
 										return (
 											<div key={key}>
-												{value.matches.map((match) => {
+												{value.matches.map((match, index) => {
 													let homeLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.home.onlajny_id}`
 													let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
 													let streamInfo
@@ -379,11 +381,7 @@ const MainScoreboard = (props) => {
 													}
 
 													return (
-														<a
-															href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`}
-															className="body-match"
-															key={match.hokejcz_id != 0 ? match.hokejcz_id : match.onlajny_id}
-														>
+														<a href={`https://www.hokej.cz/zapas/${match.hokejcz_id}/`} className="body-match" key={index}>
 															<div className="match-infoContainer">
 																<div className="match-team match-team--left">
 																	<h3 className="shortName">{match.home.short_name ? match.home.short_name : match.home.shortcut}</h3>
@@ -542,16 +540,15 @@ const MainScoreboard = (props) => {
 																				<p>Živě</p>
 																			</div>
 																		)}
-																		{match.stream_url ==
-																			null(
-																				<div
-																					onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/tv/hokejka/chl?matchId=${match.hokejcz_id}/`)}
-																					className="match-tab"
-																				>
-																					<img src="../img/icoPlay.svg" alt="" />
-																					<p>Živě</p>
-																				</div>
-																			)}
+																		{!match.stream_url && (
+																			<div
+																				onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/tv/hokejka/chl?matchId=${match.hokejcz_id}/`)}
+																				className="match-tab"
+																			>
+																				<img src="../img/icoPlay.svg" alt="" />
+																				<p>Živě</p>
+																			</div>
+																		)}
 																	</div>
 																)}
 																{(match.match_status == "live" || match.match_status == "před zápasem") &&
@@ -569,15 +566,6 @@ const MainScoreboard = (props) => {
 																					<p>Živě</p>
 																				</div>
 																			)}
-																			{/* {match.stream_url == null && (
-																				<div
-																					onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/tv/hokejka/elh?matchId=${match.hokejcz_id}/`)}
-																					className="match-tab"
-																				>
-																					<img src="../img/icoPlay.svg" alt="" />
-																					<p>Živě</p>
-																				</div>
-																			)} */}
 																		</div>
 																	)}
 																{match.match_status == "live" &&

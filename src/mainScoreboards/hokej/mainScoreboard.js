@@ -510,6 +510,11 @@ const MainScoreboard = (props) => {
 																						<img src="../img/logoO2@2x.png" alt="" />
 																					</div>
 																				)}
+																				{match.stream_url == "md" && (
+																					<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`, true)} className="match-tab--imgOnly">
+																						<img src="../img/logoO2md.png" alt="" />
+																					</div>
+																				)}
 																				{match.stream_url == "cto2" && (
 																					<React.Fragment>
 																						<div

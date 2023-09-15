@@ -652,6 +652,13 @@ var MainScoreboard = function MainScoreboard(props) {
 														}, className: "match-tab--imgOnly" },
 													React.createElement("img", { src: "../img/logoO2@2x.png", alt: "" })
 												),
+												match.stream_url == "md" && React.createElement(
+													"div",
+													{ onClick: function onClick(e) {
+															return handleMatchClick(e, "https://www.o2tv.cz/", true);
+														}, className: "match-tab--imgOnly" },
+													React.createElement("img", { src: "../img/logoO2md.png", alt: "" })
+												),
 												match.stream_url == "cto2" && React.createElement(
 													React.Fragment,
 													null,

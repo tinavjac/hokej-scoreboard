@@ -4,16 +4,16 @@ const { useState, useRef } = React
 const queryClientTop = new QueryClient()
 
 const TopScoreboard = () => {
-	//let date = new Date()
-	let date = new Date(2023, 4, 5)
+	let date = new Date()
+	//let date = new Date(2023, 4, 5)
 	let year = date.getFullYear()
 	let month = date.getMonth() + 1
 	let day = date.getDate()
 	if (day < 10) day = "0" + day
 	if (month < 10) month = "0" + month
 
-	//let date2 = new Date(new Date().setDate(date.getDate() + 1))
-	let date2 = new Date(2023, 4, 6)
+	let date2 = new Date(new Date().setDate(date.getDate() + 1))
+	//let date2 = new Date(2023, 4, 6)
 	let year2 = date2.getFullYear()
 	let month2 = date2.getMonth() + 1
 	let day2 = date2.getDate()
@@ -169,7 +169,7 @@ const Team = ({ logo, shortcut, matchStatus, score, seriesScore }) => (
 		<div className={"team-score " + (matchStatus == "před zápasem" ? "future-match" : matchStatus == "live" ? "active-match" : "")}>
 			{score}
 		</div>
-		{seriesScore.length > 0 && <div className="series-score">{seriesScore}</div>}
+		{seriesScore && seriesScore.length > 0 && <div className="series-score">{seriesScore}</div>}
 	</div>
 )
 

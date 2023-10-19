@@ -12,16 +12,16 @@ var _React = React,
 var queryClientTop = new QueryClient();
 
 var TopScoreboard = function TopScoreboard() {
-	//let date = new Date()
-	var date = new Date(2023, 4, 5);
+	var date = new Date();
+	//let date = new Date(2023, 4, 5)
 	var year = date.getFullYear();
 	var month = date.getMonth() + 1;
 	var day = date.getDate();
 	if (day < 10) day = "0" + day;
 	if (month < 10) month = "0" + month;
 
-	//let date2 = new Date(new Date().setDate(date.getDate() + 1))
-	var date2 = new Date(2023, 4, 6);
+	var date2 = new Date(new Date().setDate(date.getDate() + 1));
+	//let date2 = new Date(2023, 4, 6)
 	var year2 = date2.getFullYear();
 	var month2 = date2.getMonth() + 1;
 	var day2 = date2.getDate();
@@ -228,7 +228,7 @@ var Team = function Team(_ref4) {
 			{ className: "team-score " + (matchStatus == "před zápasem" ? "future-match" : matchStatus == "live" ? "active-match" : "") },
 			score
 		),
-		seriesScore.length > 0 && React.createElement(
+		seriesScore && seriesScore.length > 0 && React.createElement(
 			"div",
 			{ className: "series-score" },
 			seriesScore

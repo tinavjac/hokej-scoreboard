@@ -17,8 +17,8 @@ var MainScoreboard = function MainScoreboard() {
 	var nhlKeys = ["425", "101"];
 	var days = ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"];
 
-	//let date = new Date()
-	var date = new Date(2023, 4, 5);
+	var date = new Date();
+	//let date = new Date(2023, 4, 5)
 	var year = date.getFullYear();
 	var month = date.getMonth() + 1;
 	var day = date.getDate();

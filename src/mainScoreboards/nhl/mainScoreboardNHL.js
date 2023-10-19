@@ -7,8 +7,8 @@ const MainScoreboard = () => {
 	const nhlKeys = ["425", "101"]
 	const days = ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"]
 
-	//let date = new Date()
-	let date = new Date(2023, 4, 5)
+	let date = new Date()
+	//let date = new Date(2023, 4, 5)
 	let year = date.getFullYear()
 	let month = date.getMonth() + 1
 	let day = date.getDate()

@@ -153,7 +153,12 @@ const ScoreboardBody = ({ APIDate, data, dayName, keys }) => (
 												<MatchCenterInfo match={match} dayName={dayName} />
 												<MatchTeam logo={visitorsLogo} shortName={match.visitor.short_name} shortcut={match.visitor.shortcut} />
 											</div>
-											<MatchTabs tipsport={match.bets.tipsport} matchStatus={match.match_status} hokejId={match.hokejcz_id} />
+											<MatchTabs
+												tipsport={match.bets.tipsport}
+												matchStatus={match.match_status}
+												hokejId={match.hokejcz_id}
+												streamUrl={match.stream_url}
+											/>
 										</a>
 									)
 								}
@@ -269,7 +274,7 @@ const MatchTeam = ({ logo, shortName, shortcut, left }) => (
 	</div>
 )
 
-const MatchTabs = ({ hokejId, tipsport, matchStatus }) => {
+const MatchTabs = ({ hokejId, tipsport, matchStatus, streamUrl }) => {
 	const handleMatchClick = (e, path, newTab) => {
 		e.stopPropagation()
 		e.preventDefault()
@@ -282,6 +287,23 @@ const MatchTabs = ({ hokejId, tipsport, matchStatus }) => {
 
 	return (
 		<div className="match-tabsContainer">
+			{matchStatus != "po zápase" && (
+				<div
+					onClick={(e) =>
+						handleMatchClick(
+							e,
+							`https://voyo.nova.cz/blog/526909-zapasy-nhl-23-24-zive-program-vysilani?utm_source=nhlcz&utm_medium=display&utm_campaign=voyo_2024_01_nhl&utm_content=rozpis_loga`,
+							true
+						)
+					}
+					className={`match-tab--imgOnly${true ? " black" : ""}`}
+				>
+					{true && <img src="../img/ns1.png" alt="" />}
+					{false && <img src="../img/ns2.png" alt="" />}
+					{false && <img src="../img/voyo.png" alt="" />}
+					{false && <img src="../img/novaAction.png" alt="" />}
+				</div>
+			)}
 			{matchStatus == "před zápasem" && (
 				<div onClick={(e) => handleMatchClick(e, tipsport.link, true)} className="match-tab">
 					<img src="../img/icoTipsport.svg" alt="" />

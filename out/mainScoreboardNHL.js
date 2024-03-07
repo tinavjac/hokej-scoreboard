@@ -229,7 +229,12 @@ var ScoreboardBody = function ScoreboardBody(_ref2) {
 									React.createElement(MatchCenterInfo, { match: match, dayName: dayName }),
 									React.createElement(MatchTeam, { logo: visitorsLogo, shortName: match.visitor.short_name, shortcut: match.visitor.shortcut })
 								),
-								React.createElement(MatchTabs, { tipsport: match.bets.tipsport, matchStatus: match.match_status, hokejId: match.hokejcz_id })
+								React.createElement(MatchTabs, {
+									tipsport: match.bets.tipsport,
+									matchStatus: match.match_status,
+									hokejId: match.hokejcz_id,
+									streamUrl: match.stream_url
+								})
 							);
 						}
 					})
@@ -393,7 +398,8 @@ var MatchTeam = function MatchTeam(_ref10) {
 var MatchTabs = function MatchTabs(_ref11) {
 	var hokejId = _ref11.hokejId,
 	    tipsport = _ref11.tipsport,
-	    matchStatus = _ref11.matchStatus;
+	    matchStatus = _ref11.matchStatus,
+	    streamUrl = _ref11.streamUrl;
 
 	var handleMatchClick = function handleMatchClick(e, path, newTab) {
 		e.stopPropagation();
@@ -408,6 +414,19 @@ var MatchTabs = function MatchTabs(_ref11) {
 	return React.createElement(
 		"div",
 		{ className: "match-tabsContainer" },
+		matchStatus != "po zápase" && React.createElement(
+			"div",
+			{
+				onClick: function onClick(e) {
+					return handleMatchClick(e, "https://voyo.nova.cz/blog/526909-zapasy-nhl-23-24-zive-program-vysilani?utm_source=nhlcz&utm_medium=display&utm_campaign=voyo_2024_01_nhl&utm_content=rozpis_loga", true);
+				},
+				className: "match-tab--imgOnly" + (true ? " black" : "")
+			},
+			true && React.createElement("img", { src: "../img/ns1.png", alt: "" }),
+			false && React.createElement("img", { src: "../img/ns2.png", alt: "" }),
+			false && React.createElement("img", { src: "../img/voyo.png", alt: "" }),
+			false && React.createElement("img", { src: "../img/novaAction.png", alt: "" })
+		),
 		matchStatus == "před zápasem" && React.createElement(
 			"div",
 			{ onClick: function onClick(e) {

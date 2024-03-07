@@ -372,6 +372,18 @@ body {
 	font-size: 11px;
 	color: var(--color-black);
 }
+.match-tab--imgOnly {
+	display: grid;
+	place-items: center;
+	padding: 6px;
+}
+.match-tab--imgOnly img {
+	height: 14px;
+	width: auto;
+}
+.match-tab--imgOnly.black {
+	background-color: var(--color-black);
+}
 .tab-tipsportData {
 	display: flex;
 	flex-flow: row nowrap;

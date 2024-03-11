@@ -375,14 +375,17 @@ body {
 .match-tab--imgOnly {
 	display: grid;
 	place-items: center;
-	padding: 6px;
+	padding: 4px;
 }
 .match-tab--imgOnly img {
-	height: 14px;
+	height: 32px;
 	width: auto;
 }
 .match-tab--imgOnly.black {
 	background-color: var(--color-black);
+}
+.match-tab--imgOnly.black img {
+	height: 24px;
 }
 .tab-tipsportData {
 	display: flex;

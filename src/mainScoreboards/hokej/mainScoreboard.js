@@ -507,7 +507,13 @@ const MainScoreboard = (props) => {
 																				)}
 																				{match.stream_url == "plus" && (
 																					<div
-																						onClick={(e) => handleMatchClick(e, `https://sport.ceskatelevize.cz/#live`, true)}
+																						onClick={(e) =>
+																							handleMatchClick(
+																								e,
+																								`https://sport.ceskatelevize.cz/clanek/ostatni/program-vysilani-ct-sport-plus/5ddda79bfccd259ea46d41bc`,
+																								true
+																							)
+																						}
 																						className="match-tab--imgOnly"
 																					>
 																						<img src="../img/logo_ct_sport_plus.png" alt="" />

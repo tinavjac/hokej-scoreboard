@@ -649,7 +649,7 @@ var MainScoreboard = function MainScoreboard(props) {
 													"div",
 													{
 														onClick: function onClick(e) {
-															return handleMatchClick(e, "https://sport.ceskatelevize.cz/#live", true);
+															return handleMatchClick(e, "https://sport.ceskatelevize.cz/clanek/ostatni/program-vysilani-ct-sport-plus/5ddda79bfccd259ea46d41bc", true);
 														},
 														className: "match-tab--imgOnly"
 													},

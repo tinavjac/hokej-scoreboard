@@ -645,6 +645,16 @@ var MainScoreboard = function MainScoreboard(props) {
 													},
 													React.createElement("img", { src: "../img/logoCT@2x.png", alt: "" })
 												),
+												match.stream_url == "plus" && React.createElement(
+													"div",
+													{
+														onClick: function onClick(e) {
+															return handleMatchClick(e, "https://sport.ceskatelevize.cz/#live", true);
+														},
+														className: "match-tab--imgOnly"
+													},
+													React.createElement("img", { src: "../img/logo_ct_sport_plus.png", alt: "" })
+												),
 												match.stream_url == "o2" && React.createElement(
 													"div",
 													{ onClick: function onClick(e) {

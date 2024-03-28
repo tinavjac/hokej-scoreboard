@@ -505,6 +505,14 @@ const MainScoreboard = (props) => {
 																						<img src="../img/logoCT@2x.png" alt="" />
 																					</div>
 																				)}
+																				{match.stream_url == "plus" && (
+																					<div
+																						onClick={(e) => handleMatchClick(e, `https://sport.ceskatelevize.cz/#live`, true)}
+																						className="match-tab--imgOnly"
+																					>
+																						<img src="../img/logo_ct_sport_plus.png" alt="" />
+																					</div>
+																				)}
 																				{match.stream_url == "o2" && (
 																					<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`, true)} className="match-tab--imgOnly">
 																						<img src="../img/logoO2@2x.png" alt="" />

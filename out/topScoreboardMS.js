@@ -125,17 +125,8 @@ var TopScoreboard = function TopScoreboard(props) {
 				},
 				React.createElement(
 					"a",
-					{
-						href: "https://www.tipsport.cz/PartnerRedirectAction.do?pid=61&sid=45&bid=35610&tid=11274",
-						className: "ms-logo-anchor",
-						target: "_blank"
-					},
-					React.createElement("img", {
-						src: "https://ban.tipsport.cz/c/1x1.php?pid=61&sid=45&bid=35610&tid=11274",
-						alt: "",
-						title: "",
-						style: { width: 0, height: 0 }
-					}),
+					{ href: "https://www.tipsport.cz/PartnerRedirectAction.do?pid=61&sid=45&bid=3924&tid=11461", className: "ms-logo-anchor", target: "_blank" },
+					React.createElement("img", { src: "https://ban.tipsport.cz/c/1x1.php?pid=61&sid=45&bid=35610&tid=11274", alt: "", title: "", style: { width: 0, height: 0 } }),
 					React.createElement("img", { className: "ms-logo", src: "../img/tipsport_logo.png", alt: "" })
 				),
 				todayQuery.data != undefined && Object.entries(todayQuery.data).map(function (_ref) {
@@ -156,7 +147,9 @@ var TopScoreboard = function TopScoreboard(props) {
 								React.createElement(
 									"h3",
 									null,
-									"MS 2023 ",
+									"MS ",
+									year,
+									" ",
 									React.createElement("br", null),
 									day,
 									". ",
@@ -238,7 +231,9 @@ var TopScoreboard = function TopScoreboard(props) {
 								React.createElement(
 									"h3",
 									null,
-									"MS 2023 ",
+									"MS ",
+									year,
+									" ",
 									React.createElement("br", null),
 									day2,
 									". ",

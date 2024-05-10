@@ -92,17 +92,8 @@ const TopScoreboard = (props) => {
 						onMouseMove={mouseMoveHandler}
 						onMouseUp={mouseUpHandler}
 					>
-						<a
-							href="https://www.tipsport.cz/PartnerRedirectAction.do?pid=61&sid=45&bid=35610&tid=11274"
-							className="ms-logo-anchor"
-							target="_blank"
-						>
-							<img
-								src="https://ban.tipsport.cz/c/1x1.php?pid=61&sid=45&bid=35610&tid=11274"
-								alt=""
-								title=""
-								style={{ width: 0, height: 0 }}
-							/>
+						<a href="https://www.tipsport.cz/PartnerRedirectAction.do?pid=61&sid=45&bid=3924&tid=11461" className="ms-logo-anchor" target="_blank">
+							<img src="https://ban.tipsport.cz/c/1x1.php?pid=61&sid=45&bid=35610&tid=11274" alt="" title="" style={{ width: 0, height: 0 }} />
 							<img className="ms-logo" src="../img/tipsport_logo.png" alt="" />
 						</a>
 						{todayQuery.data != undefined &&
@@ -115,7 +106,7 @@ const TopScoreboard = (props) => {
 										<section className="League" key={key} style={{ pointerEvents: scroll.pointerEvents ? "all" : "none" }}>
 											<div className={"league-name"}>
 												<h3>
-													MS 2023 <br />
+													MS {year} <br />
 													{day}. {month}.
 												</h3>
 
@@ -134,8 +125,7 @@ const TopScoreboard = (props) => {
 																</div>
 																<div
 																	className={
-																		"team-score " +
-																		(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+																		"team-score " + (match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
 																	}
 																>
 																	{match.score_home}
@@ -148,8 +138,7 @@ const TopScoreboard = (props) => {
 																</div>
 																<div
 																	className={
-																		"team-score " +
-																		(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+																		"team-score " + (match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
 																	}
 																>
 																	{match.score_visitor}
@@ -173,7 +162,7 @@ const TopScoreboard = (props) => {
 										<section className="League" key={key} style={{ pointerEvents: scroll.pointerEvents ? "all" : "none" }}>
 											<div className={"league-name"}>
 												<h3>
-													MS 2023 <br />
+													MS {year} <br />
 													{day2}. {month2}.
 												</h3>
 
@@ -192,8 +181,7 @@ const TopScoreboard = (props) => {
 																</div>
 																<div
 																	className={
-																		"team-score " +
-																		(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+																		"team-score " + (match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
 																	}
 																>
 																	{match.score_home}
@@ -206,8 +194,7 @@ const TopScoreboard = (props) => {
 																</div>
 																<div
 																	className={
-																		"team-score " +
-																		(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+																		"team-score " + (match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
 																	}
 																>
 																	{match.score_visitor}

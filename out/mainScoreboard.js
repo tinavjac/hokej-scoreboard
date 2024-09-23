@@ -780,7 +780,7 @@ var MainScoreboard = function MainScoreboard(props) {
 											{ onClick: function onClick(e) {
 													return handleMatchClick(e, match.bets.tipsport.link, true);
 												}, className: "match-tab" },
-											React.createElement("img", { src: "https://ban.tipsport.cz/c/1x1.php?pid=61&sid=45&bid=40210&tid=1721", style: { display: "none" } }),
+											React.createElement("img", { src: "https://ban.tipsport.cz/c/1x1.php?pid=61&sid=45&bid=40210&tid=1721", style: { dispaly: "none" } }),
 											React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
 											React.createElement(
 												"div",
@@ -810,7 +810,7 @@ var MainScoreboard = function MainScoreboard(props) {
 												},
 												className: "match-tab"
 											},
-											React.createElement("img", { src: "https://ban.tipsport.cz/c/1x1.php?pid=61&sid=45&bid=40210&tid=1721", style: { display: "none" } }),
+											React.createElement("img", { src: "https://ban.tipsport.cz/c/1x1.php?pid=61&sid=45&bid=41070&tid=1761", style: { dispaly: "none" } }),
 											React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
 											React.createElement(
 												"p",

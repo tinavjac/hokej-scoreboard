@@ -577,8 +577,10 @@ const MainScoreboard = (props) => {
 																	</div>
 																)}
 																{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
-																	<div onClick={(e) => handleMatchClick(e, match.bets.tipsport.link, true)} className="match-tab">
-																		<img src="https://ban.tipsport.cz/c/1x1.php?pid=61&sid=45&bid=40210&tid=1721" style={{ dispaly: "none" }} />
+																	<div
+																		onClick={(e) => handleMatchClick(e, `${match.bets.tipsport.link}?pid=61&sid=45&bid=40210&tid=1721`, true)}
+																		className="match-tab"
+																	>
 																		<img src="../img/icoTipsport.svg" alt="" />
 																		<div className="tab-tipsportData">
 																			<p>{match.bets.tipsport.home_win}</p>
@@ -592,7 +594,6 @@ const MainScoreboard = (props) => {
 																		onClick={(e) => handleMatchClick(e, `https://www.tipsport.cz/live/ledni-hokej-23?pid=61&sid=45&bid=41070&tid=1761`, true)}
 																		className="match-tab"
 																	>
-																		<img src="https://ban.tipsport.cz/c/1x1.php?pid=61&sid=45&bid=41070&tid=1761" style={{ dispaly: "none" }} />
 																		<img src="../img/icoTipsport.svg" alt="" />
 																		<p>Livesázka</p>
 																	</div>
@@ -749,8 +750,10 @@ const MainScoreboard = (props) => {
 																		</div>
 																	)}
 																	{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
-																		<div onClick={(e) => handleMatchClick(e, match.bets.tipsport.link, true)} className="match-tab">
-																			<img src="https://ban.tipsport.cz/c/1x1.php?pid=61&sid=45&bid=40210&tid=1721" style={{ display: "none" }} />
+																		<div
+																			onClick={(e) => handleMatchClick(e, `${match.bets.tipsport.link}?pid=61&sid=45&bid=40210&tid=1721`, true)}
+																			className="match-tab"
+																		>
 																			<img src="../img/icoTipsport.svg" alt="" />
 																			<div className="tab-tipsportData">
 																				<p>{match.bets.tipsport.home_win}</p>
@@ -770,7 +773,6 @@ const MainScoreboard = (props) => {
 																			onClick={(e) => handleMatchClick(e, `https://www.tipsport.cz/live/ledni-hokej-23?pid=61&sid=45&bid=41070&tid=1761`, true)}
 																			className="match-tab"
 																		>
-																			<img src="https://ban.tipsport.cz/c/1x1.php?pid=61&sid=45&bid=40210&tid=1721" style={{ display: "none" }} />
 																			<img src="../img/icoTipsport.svg" alt="" />
 																			<p>Livesázka</p>
 																		</div>

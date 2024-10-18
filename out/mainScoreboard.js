@@ -274,18 +274,10 @@ var MainScoreboard = function MainScoreboard(props) {
 	};
 
 	var getTipsportMeasureCodes = function getTipsportMeasureCodes(key) {
-		switch (key) {
-			case 101 || 82:
-				return {
-					before: "?pid=61&sid=45&bid=40210&tid=1721",
-					live: "?pid=61&sid=45&bid=41070&tid=1761"
-				};
-			default:
-				return {
-					before: "?pid=61&sid=45&bid=2405&tid=1721",
-					live: "?pid=61&sid=45&bid=2429&tid=1761"
-				};
-		}
+		return {
+			before: "?pid=61&sid=45&bid=2405&tid=1721",
+			live: "?pid=61&sid=45&bid=2429&tid=1761"
+		};
 	};
 
 	useEffect(function () {

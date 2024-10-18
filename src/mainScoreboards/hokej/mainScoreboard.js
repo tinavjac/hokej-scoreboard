@@ -370,7 +370,7 @@ const MainScoreboard = (props) => {
 													let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
 													let streamInfo
 
-													if (streamMatch && displayStreamMatch(match.time, match.match_status)) {
+													if (typeof streamMatch !== undefined && displayStreamMatch(match.time, match.match_status)) {
 														streamInfo = streamMatch[match.hokejcz_id]
 													}
 

@@ -208,6 +208,21 @@ const MainScoreboard = (props) => {
 		}
 	}
 
+	const getTipsportMeasureCodes = (key) => {
+		switch (key) {
+			case 101 || 82:
+				return {
+					before: "?pid=61&sid=45&bid=40210&tid=1721",
+					live: "?pid=61&sid=45&bid=41070&tid=1761",
+				}
+			default:
+				return {
+					before: "?pid=61&sid=45&bid=2405&tid=1721",
+					live: "?pid=61&sid=45&bid=2429&tid=1761",
+				}
+		}
+	}
+
 	useEffect(() => {
 		czechQuery.refetch()
 		foreignQuery.refetch()
@@ -362,7 +377,6 @@ const MainScoreboard = (props) => {
 							{czechQuery.data != undefined &&
 								Object.entries(czechQuery.data).map(([key, value]) => {
 									if (key == activeLeagueTab) {
-										console.log(value.matches)
 										return (
 											<div key={key}>
 												{value.matches.map((match, index) => {
@@ -370,7 +384,7 @@ const MainScoreboard = (props) => {
 													let visitorsLogo = `https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/${match.visitor.onlajny_id}`
 													let streamInfo
 
-													if (typeof streamMatch !== undefined && displayStreamMatch(match.time, match.match_status)) {
+													if (typeof streamMatch !== "undefined" && displayStreamMatch(match.time, match.match_status)) {
 														streamInfo = streamMatch[match.hokejcz_id]
 													}
 
@@ -578,8 +592,8 @@ const MainScoreboard = (props) => {
 																)}
 																{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
 																	<div
-																		onClick={(e) => handleMatchClick(e, `${match.bets.tipsport.link}?pid=61&sid=45&bid=40210&tid=1721`, true)}
-																		className="match-tab"
+																		onClick={(e) => handleMatchClick(e, `${match.bets.tipsport.link}${getTipsportMeasureCodes(key).before}`, true)}
+																		className="match-tab match-tab--tipsport"
 																	>
 																		<img src="../img/icoTipsport.svg" alt="" />
 																		<div className="tab-tipsportData">
@@ -591,8 +605,8 @@ const MainScoreboard = (props) => {
 																)}
 																{match.bets.tipsport.link != null && match.match_status == "live" && (
 																	<div
-																		onClick={(e) => handleMatchClick(e, `https://www.tipsport.cz/live/ledni-hokej-23?pid=61&sid=45&bid=41070&tid=1761`, true)}
-																		className="match-tab"
+																		onClick={(e) => handleMatchClick(e, `https://www.tipsport.cz/live/ledni-hokej-23${getTipsportMeasureCodes(key).live}`, true)}
+																		className="match-tab match-tab--tipsport"
 																	>
 																		<img src="../img/icoTipsport.svg" alt="" />
 																		<p>Livesázka</p>
@@ -751,8 +765,8 @@ const MainScoreboard = (props) => {
 																	)}
 																	{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
 																		<div
-																			onClick={(e) => handleMatchClick(e, `${match.bets.tipsport.link}?pid=61&sid=45&bid=40210&tid=1721`, true)}
-																			className="match-tab"
+																			onClick={(e) => handleMatchClick(e, `${match.bets.tipsport.link}${getTipsportMeasureCodes(key).before}`, true)}
+																			className="match-tab match-tab--tipsport"
 																		>
 																			<img src="../img/icoTipsport.svg" alt="" />
 																			<div className="tab-tipsportData">
@@ -770,8 +784,8 @@ const MainScoreboard = (props) => {
 																	)}
 																	{match.bets.tipsport.link != null && match.match_status == "live" && (
 																		<div
-																			onClick={(e) => handleMatchClick(e, `https://www.tipsport.cz/live/ledni-hokej-23?pid=61&sid=45&bid=41070&tid=1761`, true)}
-																			className="match-tab"
+																			onClick={(e) => handleMatchClick(e, `https://www.tipsport.cz/live/ledni-hokej-23${getTipsportMeasureCodes(key).live}`, true)}
+																			className="match-tab match-tab--tipsport"
 																		>
 																			<img src="../img/icoTipsport.svg" alt="" />
 																			<p>Livesázka</p>

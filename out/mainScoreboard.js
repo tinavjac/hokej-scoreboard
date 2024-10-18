@@ -1,5 +1,3 @@
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _ReactQuery = ReactQuery,
@@ -275,6 +273,21 @@ var MainScoreboard = function MainScoreboard(props) {
 		}
 	};
 
+	var getTipsportMeasureCodes = function getTipsportMeasureCodes(key) {
+		switch (key) {
+			case 101 || 82:
+				return {
+					before: "?pid=61&sid=45&bid=40210&tid=1721",
+					live: "?pid=61&sid=45&bid=41070&tid=1761"
+				};
+			default:
+				return {
+					before: "?pid=61&sid=45&bid=2405&tid=1721",
+					live: "?pid=61&sid=45&bid=2429&tid=1761"
+				};
+		}
+	};
+
 	useEffect(function () {
 		czechQuery.refetch();
 		foreignQuery.refetch();
@@ -471,7 +484,6 @@ var MainScoreboard = function MainScoreboard(props) {
 					    value = _ref6[1];
 
 					if (key == activeLeagueTab) {
-						console.log(value.matches);
 						return React.createElement(
 							"div",
 							{ key: key },
@@ -480,7 +492,7 @@ var MainScoreboard = function MainScoreboard(props) {
 								var visitorsLogo = "https://s3-eu-west-1.amazonaws.com/onlajny/team/logo/" + match.visitor.onlajny_id;
 								var streamInfo = void 0;
 
-								if ((typeof streamMatch === "undefined" ? "undefined" : _typeof(streamMatch)) !== undefined && displayStreamMatch(match.time, match.match_status)) {
+								if (typeof streamMatch !== "undefined" && displayStreamMatch(match.time, match.match_status)) {
 									streamInfo = streamMatch[match.hokejcz_id];
 								}
 
@@ -781,9 +793,9 @@ var MainScoreboard = function MainScoreboard(props) {
 											"div",
 											{
 												onClick: function onClick(e) {
-													return handleMatchClick(e, match.bets.tipsport.link + "?pid=61&sid=45&bid=40210&tid=1721", true);
+													return handleMatchClick(e, "" + match.bets.tipsport.link + getTipsportMeasureCodes(key).before, true);
 												},
-												className: "match-tab"
+												className: "match-tab match-tab--tipsport"
 											},
 											React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
 											React.createElement(
@@ -810,9 +822,9 @@ var MainScoreboard = function MainScoreboard(props) {
 											"div",
 											{
 												onClick: function onClick(e) {
-													return handleMatchClick(e, "https://www.tipsport.cz/live/ledni-hokej-23?pid=61&sid=45&bid=41070&tid=1761", true);
+													return handleMatchClick(e, "https://www.tipsport.cz/live/ledni-hokej-23" + getTipsportMeasureCodes(key).live, true);
 												},
-												className: "match-tab"
+												className: "match-tab match-tab--tipsport"
 											},
 											React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
 											React.createElement(
@@ -1032,9 +1044,9 @@ var MainScoreboard = function MainScoreboard(props) {
 												"div",
 												{
 													onClick: function onClick(e) {
-														return handleMatchClick(e, match.bets.tipsport.link + "?pid=61&sid=45&bid=40210&tid=1721", true);
+														return handleMatchClick(e, "" + match.bets.tipsport.link + getTipsportMeasureCodes(key).before, true);
 													},
-													className: "match-tab"
+													className: "match-tab match-tab--tipsport"
 												},
 												React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
 												React.createElement(
@@ -1073,9 +1085,9 @@ var MainScoreboard = function MainScoreboard(props) {
 												"div",
 												{
 													onClick: function onClick(e) {
-														return handleMatchClick(e, "https://www.tipsport.cz/live/ledni-hokej-23?pid=61&sid=45&bid=41070&tid=1761", true);
+														return handleMatchClick(e, "https://www.tipsport.cz/live/ledni-hokej-23" + getTipsportMeasureCodes(key).live, true);
 													},
-													className: "match-tab"
+													className: "match-tab match-tab--tipsport"
 												},
 												React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
 												React.createElement(

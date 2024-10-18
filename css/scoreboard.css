@@ -442,14 +442,23 @@ body {
 	font-size: 11px;
 	color: var(--color-black);
 }
+.match-tab--tipsport {
+	background-color: #007aff;
+}
+.match-tab--tipsport p {
+	color: var(--color-white);
+}
 .tab-tipsportData {
 	display: flex;
 	flex-flow: row nowrap;
 	align-items: center;
 }
 .tab-tipsportData p {
+	color: var(--color-white);
 	padding-inline: 6px;
-	border-right: 1px solid var(--tipsport-border);
+	border-right: 1px solid #0f56a3;
+	min-width: 36px;
+	text-align: center;
 }
 .tab-tipsportData p:first-of-type {
 	padding-left: 0px;

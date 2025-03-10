@@ -150,28 +150,39 @@ var MainScoreboard = function MainScoreboard(props) {
 	    foreignRefetch = _useState12[0],
 	    setForeignRefetch = _useState12[1];
 
-	var _useState13 = useState(""),
+	var _useState13 = useState(false),
 	    _useState14 = _slicedToArray(_useState13, 2),
-	    activeLeagueTab = _useState14[0],
-	    setActiveLeagueTab = _useState14[1];
+	    liveBetsRefetch = _useState14[0],
+	    setLiveBetsRefetch = _useState14[1];
 
-	var _useState15 = useState(null),
+	var _useState15 = useState(""),
 	    _useState16 = _slicedToArray(_useState15, 2),
-	    buttonsUrl = _useState16[0],
-	    setButtonsUrl = _useState16[1];
+	    activeLeagueTab = _useState16[0],
+	    setActiveLeagueTab = _useState16[1];
 
-	var _useState17 = useState(true),
+	var _useState17 = useState(null),
 	    _useState18 = _slicedToArray(_useState17, 2),
-	    noData = _useState18[0],
-	    setNoData = _useState18[1];
+	    buttonsUrl = _useState18[0],
+	    setButtonsUrl = _useState18[1];
 
-	var _useState19 = useState(false),
+	var _useState19 = useState(true),
 	    _useState20 = _slicedToArray(_useState19, 2),
-	    maxDate = _useState20[0],
-	    setMaxDate = _useState20[1];
+	    noData = _useState20[0],
+	    setNoData = _useState20[1];
+
+	var _useState21 = useState(false),
+	    _useState22 = _slicedToArray(_useState21, 2),
+	    maxDate = _useState22[0],
+	    setMaxDate = _useState22[1];
+
+	var _useState23 = useState([]),
+	    _useState24 = _slicedToArray(_useState23, 2),
+	    liveBets = _useState24[0],
+	    setLiveBets = _useState24[1];
 
 	var urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/";
 	var urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/";
+	var urlLiveBets = "https://s3.eu-west-1.amazonaws.com/data.onlajny.com/odds/tipsport-live.json";
 
 	var foreignQuery = useQuery(["foreign"], function () {
 		return fetch("" + urlForeignRoot + APIDate + ".json").then(function (res) {
@@ -211,18 +222,38 @@ var MainScoreboard = function MainScoreboard(props) {
 		},
 		enabled: APIDate == today ? true : false
 	});
+	var liveBetsQuery = useQuery(["liveBets"], function () {
+		return fetch(urlLiveBets).then(function (res) {
+			return res.json();
+		});
+	}, {
+		retry: false,
+		refetchOnMount: false,
+		refetchOnWindowFocus: false,
+		refetchOnReconnect: false,
+		refetchInterval: liveBetsRefetch,
+		refetchIntervalInBackground: true,
+		onSuccess: function onSuccess(res) {
+			setLiveBetsRefetch(5000);
+		},
+		onError: function onError(res) {
+			return setLiveBetsRefetch(false);
+		},
+		enabled: APIDate == today ? true : false
+	});
+
 	var LeagueTabs = useRef(null);
 	var MainScoreboard = useRef(null);
 
-	var _useState21 = useState({
+	var _useState25 = useState({
 		pointerEvents: true,
 		isScrolling: false,
 		left: 0,
 		x: 0
 	}),
-	    _useState22 = _slicedToArray(_useState21, 2),
-	    scroll = _useState22[0],
-	    setScroll = _useState22[1];
+	    _useState26 = _slicedToArray(_useState25, 2),
+	    scroll = _useState26[0],
+	    setScroll = _useState26[1];
 
 	var mouseDownHandler = function mouseDownHandler(e) {
 		LeagueTabs.current.style.cursor = "grabbing";
@@ -280,15 +311,24 @@ var MainScoreboard = function MainScoreboard(props) {
 		};
 	};
 
+	var getLiveBets = function getLiveBets(id) {
+		if (liveBets && Object.keys(liveBets).some(function (key) {
+			return key == id;
+		})) {
+			return liveBets[id];
+		}
+	};
+
 	useEffect(function () {
 		czechQuery.refetch();
 		foreignQuery.refetch();
+		liveBetsQuery.refetch();
 	}, [APIDate]);
 
-	var _useState23 = useState(undefined),
-	    _useState24 = _slicedToArray(_useState23, 2),
-	    scoreboardWidth = _useState24[0],
-	    setScoreboardWidth = _useState24[1];
+	var _useState27 = useState(undefined),
+	    _useState28 = _slicedToArray(_useState27, 2),
+	    scoreboardWidth = _useState28[0],
+	    setScoreboardWidth = _useState28[1];
 
 	useEffect(function () {
 		if (MainScoreboard.current) {
@@ -321,6 +361,14 @@ var MainScoreboard = function MainScoreboard(props) {
 				setButtonsUrl(value[1]);
 			}
 		});
+	});
+
+	useEffect(function () {
+		if (liveBetsQuery.data) {
+			if (liveBetsQuery.data.matches != undefined) {
+				setLiveBets(liveBetsQuery.data.matches);
+			}
+		}
 	});
 
 	return React.createElement(
@@ -655,14 +703,14 @@ var MainScoreboard = function MainScoreboard(props) {
 												match.stream_url == "o2" && React.createElement(
 													"div",
 													{ onClick: function onClick(e) {
-															return handleMatchClick(e, "https://www.o2tv.cz/", true);
+															return handleMatchClick(e, "https://www.oneplay.cz/", true);
 														}, className: "match-tab--imgOnly" },
 													React.createElement("img", { src: "../img/logoO2@2x.png", alt: "" })
 												),
 												match.stream_url == "md" && React.createElement(
 													"div",
 													{ onClick: function onClick(e) {
-															return handleMatchClick(e, "https://www.o2tv.cz/", true);
+															return handleMatchClick(e, "https://www.oneplay.cz/", true);
 														}, className: "match-tab--imgOnly" },
 													React.createElement("img", { src: "../img/logoO2md.png", alt: "" })
 												),
@@ -679,7 +727,7 @@ var MainScoreboard = function MainScoreboard(props) {
 													React.createElement(
 														"div",
 														{ onClick: function onClick(e) {
-																return handleMatchClick(e, "https://www.o2tv.cz/", true);
+																return handleMatchClick(e, "https://www.oneplay.cz/", true);
 															}, className: "match-tab--imgOnly" },
 														React.createElement("img", { src: "../img/logoO2@2x.png", alt: "" })
 													)
@@ -704,7 +752,7 @@ var MainScoreboard = function MainScoreboard(props) {
 											match.stream_url == "o2" && React.createElement(
 												"div",
 												{ onClick: function onClick(e) {
-														return handleMatchClick(e, "https://www.o2tv.cz/", true);
+														return handleMatchClick(e, "https://www.oneplay.cz/", true);
 													}, className: "match-tab" },
 												React.createElement("img", { src: "../img/icoPlay.svg", alt: "" }),
 												React.createElement(
@@ -747,7 +795,7 @@ var MainScoreboard = function MainScoreboard(props) {
 											match.stream_url == "o2" && React.createElement(
 												"div",
 												{ onClick: function onClick(e) {
-														return handleMatchClick(e, "https://www.o2tv.cz/", true);
+														return handleMatchClick(e, "https://www.oneplay.cz/", true);
 													}, className: "match-tab" },
 												React.createElement("img", { src: "../img/icoPlay.svg", alt: "" }),
 												React.createElement(
@@ -810,19 +858,33 @@ var MainScoreboard = function MainScoreboard(props) {
 												)
 											)
 										),
-										match.bets.tipsport.link != null && match.match_status == "live" && React.createElement(
+										match.match_status == "live" && getLiveBets(match.onlajny_id) && React.createElement(
 											"div",
 											{
 												onClick: function onClick(e) {
-													return handleMatchClick(e, "https://www.tipsport.cz/live/ledni-hokej-23" + getTipsportMeasureCodes(key).live, true);
+													return handleMatchClick(e, "" + getLiveBets(match.onlajny_id).link + getTipsportMeasureCodes(key).live, true);
 												},
 												className: "match-tab match-tab--tipsport"
 											},
 											React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
 											React.createElement(
-												"p",
-												null,
-												"Lives\xE1zka"
+												"div",
+												{ className: "tab-tipsportData" },
+												React.createElement(
+													"p",
+													null,
+													getLiveBets(match.onlajny_id).home_win
+												),
+												React.createElement(
+													"p",
+													null,
+													getLiveBets(match.onlajny_id).draw
+												),
+												React.createElement(
+													"p",
+													null,
+													getLiveBets(match.onlajny_id).away_win
+												)
 											)
 										),
 										match.match_status == "po zápase" && value.league_name == "Tipsport extraliga" && React.createElement(
@@ -1061,6 +1123,35 @@ var MainScoreboard = function MainScoreboard(props) {
 													)
 												)
 											),
+											match.match_status == "live" && getLiveBets(match.onlajny_id) && React.createElement(
+												"div",
+												{
+													onClick: function onClick(e) {
+														return handleMatchClick(e, "" + getLiveBets(match.onlajny_id).link + getTipsportMeasureCodes(key).live, true);
+													},
+													className: "match-tab match-tab--tipsport"
+												},
+												React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
+												React.createElement(
+													"div",
+													{ className: "tab-tipsportData" },
+													React.createElement(
+														"p",
+														null,
+														getLiveBets(match.onlajny_id).home_win
+													),
+													React.createElement(
+														"p",
+														null,
+														getLiveBets(match.onlajny_id).draw
+													),
+													React.createElement(
+														"p",
+														null,
+														getLiveBets(match.onlajny_id).away_win
+													)
+												)
+											),
 											match.match_status == "live" && !isOnlineLeague(key) && React.createElement(
 												"div",
 												{ onClick: function onClick(e) {
@@ -1071,21 +1162,6 @@ var MainScoreboard = function MainScoreboard(props) {
 													"p",
 													null,
 													"Text"
-												)
-											),
-											match.bets.tipsport.link != null && match.match_status == "live" && React.createElement(
-												"div",
-												{
-													onClick: function onClick(e) {
-														return handleMatchClick(e, "https://www.tipsport.cz/live/ledni-hokej-23" + getTipsportMeasureCodes(key).live, true);
-													},
-													className: "match-tab match-tab--tipsport"
-												},
-												React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
-												React.createElement(
-													"p",
-													null,
-													"Lives\xE1zka"
 												)
 											),
 											match.match_status == "po zápase" && React.createElement(

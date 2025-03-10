@@ -117,13 +117,16 @@ const MainScoreboard = (props) => {
 	/* API FETCHING */
 	const [czechRefetch, setCzechRefetch] = useState(false)
 	const [foreignRefetch, setForeignRefetch] = useState(false)
+	const [liveBetsRefetch, setLiveBetsRefetch] = useState(false)
 	const [activeLeagueTab, setActiveLeagueTab] = useState("")
 	const [buttonsUrl, setButtonsUrl] = useState(null)
 	const [noData, setNoData] = useState(true)
 	const [maxDate, setMaxDate] = useState(false)
+	const [liveBets, setLiveBets] = useState([])
 
 	const urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/"
 	const urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/"
+	const urlLiveBets = "https://s3.eu-west-1.amazonaws.com/data.onlajny.com/odds/tipsport-live.json"
 
 	const foreignQuery = useQuery(["foreign"], () => fetch(`${urlForeignRoot}${APIDate}.json`).then((res) => res.json()), {
 		retry: false,
@@ -151,6 +154,20 @@ const MainScoreboard = (props) => {
 		onError: (res) => setCzechRefetch(false),
 		enabled: APIDate == today ? true : false,
 	})
+	const liveBetsQuery = useQuery(["liveBets"], () => fetch(urlLiveBets).then((res) => res.json()), {
+		retry: false,
+		refetchOnMount: false,
+		refetchOnWindowFocus: false,
+		refetchOnReconnect: false,
+		refetchInterval: liveBetsRefetch,
+		refetchIntervalInBackground: true,
+		onSuccess: (res) => {
+			setLiveBetsRefetch(5000)
+		},
+		onError: (res) => setLiveBetsRefetch(false),
+		enabled: APIDate == today ? true : false,
+	})
+
 	const LeagueTabs = useRef(null)
 	const MainScoreboard = useRef(null)
 
@@ -215,9 +232,16 @@ const MainScoreboard = (props) => {
 		}
 	}
 
+	const getLiveBets = (id) => {
+		if (liveBets && Object.keys(liveBets).some((key) => key == id)) {
+			return liveBets[id]
+		}
+	}
+
 	useEffect(() => {
 		czechQuery.refetch()
 		foreignQuery.refetch()
+		liveBetsQuery.refetch()
 	}, [APIDate])
 
 	const [scoreboardWidth, setScoreboardWidth] = useState(undefined)
@@ -252,6 +276,14 @@ const MainScoreboard = (props) => {
 				setButtonsUrl(value[1])
 			}
 		})
+	})
+
+	useEffect(() => {
+		if (liveBetsQuery.data) {
+			if (liveBetsQuery.data.matches != undefined) {
+				setLiveBets(liveBetsQuery.data.matches)
+			}
+		}
 	})
 
 	return (
@@ -507,12 +539,12 @@ const MainScoreboard = (props) => {
 																					</div>
 																				)}
 																				{match.stream_url == "o2" && (
-																					<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`, true)} className="match-tab--imgOnly">
+																					<div onClick={(e) => handleMatchClick(e, `https://www.oneplay.cz/`, true)} className="match-tab--imgOnly">
 																						<img src="../img/logoO2@2x.png" alt="" />
 																					</div>
 																				)}
 																				{match.stream_url == "md" && (
-																					<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`, true)} className="match-tab--imgOnly">
+																					<div onClick={(e) => handleMatchClick(e, `https://www.oneplay.cz/`, true)} className="match-tab--imgOnly">
 																						<img src="../img/logoO2md.png" alt="" />
 																					</div>
 																				)}
@@ -521,7 +553,7 @@ const MainScoreboard = (props) => {
 																						<div onClick={(e) => handleMatchClick(e, `https://sport.ceskatelevize.cz/#live`, true)} className="match-tab--imgOnly">
 																							<img src="../img/logoCT@2x.png" alt="" />
 																						</div>
-																						<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`, true)} className="match-tab--imgOnly">
+																						<div onClick={(e) => handleMatchClick(e, `https://www.oneplay.cz/`, true)} className="match-tab--imgOnly">
 																							<img src="../img/logoO2@2x.png" alt="" />
 																						</div>
 																					</React.Fragment>
@@ -538,7 +570,7 @@ const MainScoreboard = (props) => {
 																			</div>
 																		)}
 																		{match.stream_url == "o2" && (
-																			<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`, true)} className="match-tab">
+																			<div onClick={(e) => handleMatchClick(e, `https://www.oneplay.cz/`, true)} className="match-tab">
 																				<img src="../img/icoPlay.svg" alt="" />
 																				<p>Živě</p>
 																			</div>
@@ -563,7 +595,7 @@ const MainScoreboard = (props) => {
 																			</div>
 																		)}
 																		{match.stream_url == "o2" && (
-																			<div onClick={(e) => handleMatchClick(e, `https://www.o2tv.cz/`, true)} className="match-tab">
+																			<div onClick={(e) => handleMatchClick(e, `https://www.oneplay.cz/`, true)} className="match-tab">
 																				<img src="../img/icoPlay.svg" alt="" />
 																				<p>Živě</p>
 																			</div>
@@ -595,7 +627,20 @@ const MainScoreboard = (props) => {
 																		</div>
 																	</div>
 																)}
-																{match.bets.tipsport.link != null && match.match_status == "live" && (
+																{match.match_status == "live" && getLiveBets(match.onlajny_id) && (
+																	<div
+																		onClick={(e) => handleMatchClick(e, `${getLiveBets(match.onlajny_id).link}${getTipsportMeasureCodes(key).live}`, true)}
+																		className="match-tab match-tab--tipsport"
+																	>
+																		<img src="../img/icoTipsport.svg" alt="" />
+																		<div className="tab-tipsportData">
+																			<p>{getLiveBets(match.onlajny_id).home_win}</p>
+																			<p>{getLiveBets(match.onlajny_id).draw}</p>
+																			<p>{getLiveBets(match.onlajny_id).away_win}</p>
+																		</div>
+																	</div>
+																)}
+																{/* {match.bets.tipsport.link != null && match.match_status == "live" && (
 																	<div
 																		onClick={(e) => handleMatchClick(e, `https://www.tipsport.cz/live/ledni-hokej-23${getTipsportMeasureCodes(key).live}`, true)}
 																		className="match-tab match-tab--tipsport"
@@ -603,7 +648,7 @@ const MainScoreboard = (props) => {
 																		<img src="../img/icoTipsport.svg" alt="" />
 																		<p>Livesázka</p>
 																	</div>
-																)}
+																)} */}
 																{match.match_status == "po zápase" && value.league_name == "Tipsport extraliga" && (
 																	<div onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/tv/hokejka/category/14`)} className="match-tab">
 																		<img src="../img/icoPlayBlack.svg" alt="" />
@@ -768,13 +813,26 @@ const MainScoreboard = (props) => {
 																			</div>
 																		</div>
 																	)}
+																	{match.match_status == "live" && getLiveBets(match.onlajny_id) && (
+																		<div
+																			onClick={(e) => handleMatchClick(e, `${getLiveBets(match.onlajny_id).link}${getTipsportMeasureCodes(key).live}`, true)}
+																			className="match-tab match-tab--tipsport"
+																		>
+																			<img src="../img/icoTipsport.svg" alt="" />
+																			<div className="tab-tipsportData">
+																				<p>{getLiveBets(match.onlajny_id).home_win}</p>
+																				<p>{getLiveBets(match.onlajny_id).draw}</p>
+																				<p>{getLiveBets(match.onlajny_id).away_win}</p>
+																			</div>
+																		</div>
+																	)}
 																	{match.match_status == "live" && !isOnlineLeague(key) && (
 																		<div onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/zapas/${match.hokejcz_id}/on-line`, true)} className="match-tab">
 																			<img src="../img/icoText.svg" alt="" />
 																			<p>Text</p>
 																		</div>
 																	)}
-																	{match.bets.tipsport.link != null && match.match_status == "live" && (
+																	{/* {match.bets.tipsport.link != null && match.match_status == "live" && (
 																		<div
 																			onClick={(e) => handleMatchClick(e, `https://www.tipsport.cz/live/ledni-hokej-23${getTipsportMeasureCodes(key).live}`, true)}
 																			className="match-tab match-tab--tipsport"
@@ -782,7 +840,7 @@ const MainScoreboard = (props) => {
 																			<img src="../img/icoTipsport.svg" alt="" />
 																			<p>Livesázka</p>
 																		</div>
-																	)}
+																	)} */}
 																	{match.match_status == "po zápase" && (
 																		<div onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/zapas/${match.hokejcz_id}/`)} className="match-tab">
 																			<img src="../img/icoSummary.svg" alt="" />

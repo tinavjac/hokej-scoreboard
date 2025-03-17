@@ -124,8 +124,8 @@ const MainScoreboard = (props) => {
 	const [maxDate, setMaxDate] = useState(false)
 	const [liveBets, setLiveBets] = useState([])
 
-	const urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/"
-	const urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/"
+	const urlForeignRoot = "https://s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/"
+	const urlCzechRoot = "https://json.esports.cz/hokejcz/scoreboard/"
 	const urlLiveBets = "https://s3.eu-west-1.amazonaws.com/data.onlajny.com/odds/tipsport-live.json"
 
 	const foreignQuery = useQuery(["foreign"], () => fetch(`${urlForeignRoot}${APIDate}.json`).then((res) => res.json()), {

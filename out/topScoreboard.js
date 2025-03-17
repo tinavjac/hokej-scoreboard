@@ -35,8 +35,8 @@ var TopScoreboard = function TopScoreboard(props) {
 	/* API FETCHING */
 
 
-	var urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/";
-	var urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/";
+	var urlForeignRoot = "https://s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/";
+	var urlCzechRoot = "https://json.esports.cz/hokejcz/scoreboard/";
 
 	var foreignQuery = useQuery("foreign", function () {
 		return fetch("" + urlForeignRoot + APIDate + ".json").then(function (res) {
@@ -74,6 +74,7 @@ var TopScoreboard = function TopScoreboard(props) {
 			return setCzechRefetch(false);
 		}
 	});
+
 	/* END API FETCHING */
 	var scrollContainer = useRef(null);
 
@@ -117,13 +118,7 @@ var TopScoreboard = function TopScoreboard(props) {
 		{ className: "topScoreboard-container" },
 		foreignQuery.isSuccess || czechQuery.isSuccess ? React.createElement(
 			"section",
-			{
-				className: "topScoreboard",
-				ref: scrollContainer,
-				onMouseDown: mouseDownHandler,
-				onMouseMove: mouseMoveHandler,
-				onMouseUp: mouseUpHandler
-			},
+			{ className: "topScoreboard", ref: scrollContainer, onMouseDown: mouseDownHandler, onMouseMove: mouseMoveHandler, onMouseUp: mouseUpHandler },
 			czechQuery.data != undefined && Object.entries(czechQuery.data).map(function (_ref) {
 				var _ref2 = _slicedToArray(_ref, 2),
 				    key = _ref2[0],

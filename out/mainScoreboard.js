@@ -180,8 +180,8 @@ var MainScoreboard = function MainScoreboard(props) {
 	    liveBets = _useState24[0],
 	    setLiveBets = _useState24[1];
 
-	var urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/";
-	var urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/";
+	var urlForeignRoot = "https://s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/";
+	var urlCzechRoot = "https://json.esports.cz/hokejcz/scoreboard/";
 	var urlLiveBets = "https://s3.eu-west-1.amazonaws.com/data.onlajny.com/odds/tipsport-live.json";
 
 	var foreignQuery = useQuery(["foreign"], function () {

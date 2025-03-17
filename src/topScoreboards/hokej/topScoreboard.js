@@ -18,8 +18,8 @@ const TopScoreboard = (props) => {
 	const [foreignRefetch, setForeignRefetch] = useState(false)
 
 	/* API FETCHING */
-	const urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/"
-	const urlCzechRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/"
+	const urlForeignRoot = "https://s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/"
+	const urlCzechRoot = "https://json.esports.cz/hokejcz/scoreboard/"
 
 	const foreignQuery = useQuery("foreign", () => fetch(`${urlForeignRoot}${APIDate}.json`).then((res) => res.json()), {
 		retry: false,
@@ -41,6 +41,7 @@ const TopScoreboard = (props) => {
 		onSuccess: (res) => setCzechRefetch(5000),
 		onError: (res) => setCzechRefetch(false),
 	})
+
 	/* END API FETCHING */
 	const scrollContainer = useRef(null)
 
@@ -79,13 +80,7 @@ const TopScoreboard = (props) => {
 	return (
 		<div className="topScoreboard-container">
 			{foreignQuery.isSuccess || czechQuery.isSuccess ? (
-				<section
-					className="topScoreboard"
-					ref={scrollContainer}
-					onMouseDown={mouseDownHandler}
-					onMouseMove={mouseMoveHandler}
-					onMouseUp={mouseUpHandler}
-				>
+				<section className="topScoreboard" ref={scrollContainer} onMouseDown={mouseDownHandler} onMouseMove={mouseMoveHandler} onMouseUp={mouseUpHandler}>
 					{czechQuery.data != undefined &&
 						Object.entries(czechQuery.data).map(([key, value]) => {
 							let render = false
@@ -136,8 +131,7 @@ const TopScoreboard = (props) => {
 														</div>
 														<div
 															className={
-																"team-score " +
-																(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+																"team-score " + (match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
 															}
 														>
 															{match.score_home}
@@ -150,8 +144,7 @@ const TopScoreboard = (props) => {
 														</div>
 														<div
 															className={
-																"team-score " +
-																(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+																"team-score " + (match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
 															}
 														>
 															{match.score_visitor}
@@ -222,8 +215,7 @@ const TopScoreboard = (props) => {
 															</div>
 															<div
 																className={
-																	"team-score " +
-																	(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+																	"team-score " + (match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
 																}
 															>
 																{match.score_home}
@@ -236,8 +228,7 @@ const TopScoreboard = (props) => {
 															</div>
 															<div
 																className={
-																	"team-score " +
-																	(match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
+																	"team-score " + (match.match_status == "před zápasem" ? "future-match" : match.match_status == "live" ? "active-match" : "")
 																}
 															>
 																{match.score_visitor}

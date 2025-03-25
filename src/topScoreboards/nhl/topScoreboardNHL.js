@@ -26,7 +26,7 @@ const TopScoreboard = () => {
 	const [refetch, setRefetch] = useState(false)
 
 	/* API FETCHING */
-	const apiURL = "https://s3-eu-west-1.amazonaws.com/nhl.cz/scoreboard/"
+	const apiURL = "https://json.esports.cz/nhlcz/scoreboard/"
 
 	const todayQuery = useQuery("today", () => fetch(`${apiURL}${today}.json`).then((res) => res.json()), {
 		retry: false,
@@ -93,9 +93,7 @@ const TopScoreboard = () => {
 						onMouseMove={mouseMoveHandler}
 						onMouseUp={mouseUpHandler}
 					>
-						{todayQuery.data != undefined && (
-							<DayMatches data={todayQuery.data} date={date} apiDate={today} day={day} month={month} year={year} />
-						)}
+						{todayQuery.data != undefined && <DayMatches data={todayQuery.data} date={date} apiDate={today} day={day} month={month} year={year} />}
 						{tomorowQuery.data != undefined && (
 							<DayMatches data={tomorowQuery.data} date={date2} apiDate={tomorow} day={day2} month={month2} year={year2} />
 						)}
@@ -166,9 +164,7 @@ const Team = ({ logo, shortcut, matchStatus, score, seriesScore }) => (
 			<img src={logo} alt="" />
 			<p className="team-name">{shortcut}</p>
 		</div>
-		<div className={"team-score " + (matchStatus == "před zápasem" ? "future-match" : matchStatus == "live" ? "active-match" : "")}>
-			{score}
-		</div>
+		<div className={"team-score " + (matchStatus == "před zápasem" ? "future-match" : matchStatus == "live" ? "active-match" : "")}>{score}</div>
 		{seriesScore && seriesScore.length > 0 && <div className="series-score">{seriesScore}</div>}
 	</div>
 )

@@ -106,7 +106,7 @@ var MainScoreboard = function MainScoreboard() {
 	};
 
 	/* API FETCHING */
-	var apiURL = "https://s3-eu-west-1.amazonaws.com/nhl.cz/scoreboard/";
+	var apiURL = "https://json.esports.cz/nhlcz/scoreboard/";
 
 	var dataQuery = useQuery(["data"], function () {
 		return fetch("" + apiURL + APIDate + ".json").then(function (res) {

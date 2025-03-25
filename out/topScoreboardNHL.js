@@ -39,7 +39,7 @@ var TopScoreboard = function TopScoreboard() {
 	/* API FETCHING */
 
 
-	var apiURL = "https://s3-eu-west-1.amazonaws.com/nhl.cz/scoreboard/";
+	var apiURL = "https://json.esports.cz/nhlcz/scoreboard/";
 
 	var todayQuery = useQuery("today", function () {
 		return fetch("" + apiURL + today + ".json").then(function (res) {

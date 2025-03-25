@@ -69,7 +69,7 @@ const MainScoreboard = () => {
 	}
 
 	/* API FETCHING */
-	const apiURL = "https://s3-eu-west-1.amazonaws.com/nhl.cz/scoreboard/"
+	const apiURL = "https://json.esports.cz/nhlcz/scoreboard/"
 
 	const dataQuery = useQuery(["data"], () => fetch(`${apiURL}${APIDate}.json`).then((res) => res.json()), {
 		retry: false,
@@ -195,9 +195,7 @@ const MatchCenterInfo = ({ match, dayName }) => (
 )
 
 const MatchScore = ({ matchStatus, score }) => (
-	<div className={"match-score " + (matchStatus == "před zápasem" ? "future-match" : matchStatus == "live" ? "active-match" : "")}>
-		{score}
-	</div>
+	<div className={"match-score " + (matchStatus == "před zápasem" ? "future-match" : matchStatus == "live" ? "active-match" : "")}>{score}</div>
 )
 
 const MatchFutureInfo = ({ dayName, matchDate, matchTime }) => (

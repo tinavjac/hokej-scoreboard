@@ -18,7 +18,7 @@ const TopScoreboard = (props) => {
 	const [foreignRefetch, setForeignRefetch] = useState(false)
 
 	/* API FETCHING */
-	const urlForeignRoot = "https://s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/"
+	const urlForeignRoot = "https://json.esports.cz/hokejcz/scoreboard/onlajny/"
 	const urlCzechRoot = "https://json.esports.cz/hokejcz/scoreboard/"
 
 	const foreignQuery = useQuery("foreign", () => fetch(`${urlForeignRoot}${APIDate}.json`).then((res) => res.json()), {

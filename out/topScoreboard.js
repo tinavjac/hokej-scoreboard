@@ -35,7 +35,7 @@ var TopScoreboard = function TopScoreboard(props) {
 	/* API FETCHING */
 
 
-	var urlForeignRoot = "https://s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/";
+	var urlForeignRoot = "https://json.esports.cz/hokejcz/scoreboard/onlajny/";
 	var urlCzechRoot = "https://json.esports.cz/hokejcz/scoreboard/";
 
 	var foreignQuery = useQuery("foreign", function () {

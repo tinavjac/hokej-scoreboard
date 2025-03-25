@@ -124,7 +124,7 @@ const MainScoreboard = (props) => {
 	const [maxDate, setMaxDate] = useState(false)
 	const [liveBets, setLiveBets] = useState([])
 
-	const urlForeignRoot = "https://s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/"
+	const urlForeignRoot = "https://json.esports.cz/hokejcz/scoreboard/onlajny/"
 	const urlCzechRoot = "https://json.esports.cz/hokejcz/scoreboard/"
 	const urlLiveBets = "https://s3.eu-west-1.amazonaws.com/data.onlajny.com/odds/tipsport-live.json"
 

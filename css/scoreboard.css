@@ -486,7 +486,8 @@ body {
 	margin-top: 8px;
 }
 .scoreBoard-button {
-	padding: 10px 21.5px;
+	height: 36px;
+	padding-inline: 22px;
 	background-color: var(--color-blue);
 	border-radius: var(--default-border-radius);
 	color: var(--color-white);
@@ -494,6 +495,15 @@ body {
 	font-size: 11px;
 	font-weight: var(--font-extra-bold);
 	text-decoration: none;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+}
+.scoreBoard-button img {
+	height: 20px;
+	width: auto;
 }
 .scoreBoard-button:hover,
 .scoreBoard-button:focus {

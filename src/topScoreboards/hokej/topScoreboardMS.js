@@ -3,7 +3,7 @@ const { useState, useRef } = React
 
 const queryClientTop = new QueryClient()
 
-const TopScoreboard = (props) => {
+const TopScoreboard = () => {
 	let date = new Date()
 	//let date = new Date(2023, 3, 16)
 	let year = date.getFullYear()
@@ -25,7 +25,7 @@ const TopScoreboard = (props) => {
 	const [foreignRefetch, setForeignRefetch] = useState(false)
 
 	/* API FETCHING */
-	const urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/"
+	const urlForeignRoot = "https://json.esports.cz/hokejcz/scoreboard/onlajny/"
 
 	const todayQuery = useQuery("today", () => fetch(`${urlForeignRoot}${today}.json`).then((res) => res.json()), {
 		retry: false,
@@ -45,6 +45,7 @@ const TopScoreboard = (props) => {
 		refetchInterval: false,
 		refetchIntervalInBackground: true,
 	})
+
 	/* END API FETCHING */
 	const scrollContainer = useRef(null)
 
@@ -82,7 +83,7 @@ const TopScoreboard = (props) => {
 
 	return (
 		<React.Fragment>
-			{(todayQuery.data != undefined && Object.keys(todayQuery.data).includes("12")) ||
+			{(todayQuery.data != undefined && !Object.keys(todayQuery.data).includes("12")) ||
 			(tomorowQuery.data != undefined && Object.keys(tomorowQuery.data).includes("12")) ? (
 				<div className="topScoreboard-container ms">
 					<section
@@ -92,7 +93,7 @@ const TopScoreboard = (props) => {
 						onMouseMove={mouseMoveHandler}
 						onMouseUp={mouseUpHandler}
 					>
-						<a href="https://www.tipsport.cz/PartnerRedirectAction.do?pid=61&sid=45&bid=3924&tid=11461" className="ms-logo-anchor" target="_blank">
+						<a href="https://www.tipsport.cz/PartnerRedirectAction.do?pid=61&sid=45&bid=3924&tid=11686" className="ms-logo-anchor" target="_blank">
 							<img src="https://ban.tipsport.cz/c/1x1.php?pid=61&sid=45&bid=35610&tid=11274" alt="" title="" style={{ width: 0, height: 0 }} />
 							<img className="ms-logo" src="../img/tipsport_logo.png" alt="" />
 						</a>
@@ -101,7 +102,7 @@ const TopScoreboard = (props) => {
 								let isFake = value.matches.every((match) => {
 									return today != match.date
 								})
-								if (key == 12 && !isFake) {
+								if (key == 38 && !isFake) {
 									return (
 										<section className="League" key={key} style={{ pointerEvents: scroll.pointerEvents ? "all" : "none" }}>
 											<div className={"league-name"}>
@@ -157,7 +158,7 @@ const TopScoreboard = (props) => {
 								let isFake = value.matches.every((match) => {
 									return tomorow != match.date
 								})
-								if (key == 12 && !isFake) {
+								if (key == 38 && !isFake) {
 									return (
 										<section className="League" key={key} style={{ pointerEvents: scroll.pointerEvents ? "all" : "none" }}>
 											<div className={"league-name"}>

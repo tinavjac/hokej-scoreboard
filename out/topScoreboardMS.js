@@ -11,7 +11,7 @@ var _React = React,
 
 var queryClientTop = new QueryClient();
 
-var TopScoreboard = function TopScoreboard(props) {
+var TopScoreboard = function TopScoreboard() {
 	var date = new Date();
 	//let date = new Date(2023, 3, 16)
 	var year = date.getFullYear();
@@ -38,7 +38,7 @@ var TopScoreboard = function TopScoreboard(props) {
 	/* API FETCHING */
 
 
-	var urlForeignRoot = "//s3-eu-west-1.amazonaws.com/hokej.cz/scoreboard/onlajny/";
+	var urlForeignRoot = "https://json.esports.cz/hokejcz/scoreboard/onlajny/";
 
 	var todayQuery = useQuery("today", function () {
 		return fetch("" + urlForeignRoot + today + ".json").then(function (res) {
@@ -70,6 +70,7 @@ var TopScoreboard = function TopScoreboard(props) {
 		refetchInterval: false,
 		refetchIntervalInBackground: true
 	});
+
 	/* END API FETCHING */
 	var scrollContainer = useRef(null);
 
@@ -111,7 +112,7 @@ var TopScoreboard = function TopScoreboard(props) {
 	return React.createElement(
 		React.Fragment,
 		null,
-		todayQuery.data != undefined && Object.keys(todayQuery.data).includes("12") || tomorowQuery.data != undefined && Object.keys(tomorowQuery.data).includes("12") ? React.createElement(
+		todayQuery.data != undefined && !Object.keys(todayQuery.data).includes("12") || tomorowQuery.data != undefined && Object.keys(tomorowQuery.data).includes("12") ? React.createElement(
 			"div",
 			{ className: "topScoreboard-container ms" },
 			React.createElement(
@@ -125,7 +126,7 @@ var TopScoreboard = function TopScoreboard(props) {
 				},
 				React.createElement(
 					"a",
-					{ href: "https://www.tipsport.cz/PartnerRedirectAction.do?pid=61&sid=45&bid=3924&tid=11461", className: "ms-logo-anchor", target: "_blank" },
+					{ href: "https://www.tipsport.cz/PartnerRedirectAction.do?pid=61&sid=45&bid=3924&tid=11686", className: "ms-logo-anchor", target: "_blank" },
 					React.createElement("img", { src: "https://ban.tipsport.cz/c/1x1.php?pid=61&sid=45&bid=35610&tid=11274", alt: "", title: "", style: { width: 0, height: 0 } }),
 					React.createElement("img", { className: "ms-logo", src: "../img/tipsport_logo.png", alt: "" })
 				),
@@ -137,7 +138,7 @@ var TopScoreboard = function TopScoreboard(props) {
 					var isFake = value.matches.every(function (match) {
 						return today != match.date;
 					});
-					if (key == 12 && !isFake) {
+					if (key == 38 && !isFake) {
 						return React.createElement(
 							"section",
 							{ className: "League", key: key, style: { pointerEvents: scroll.pointerEvents ? "all" : "none" } },
@@ -221,7 +222,7 @@ var TopScoreboard = function TopScoreboard(props) {
 					var isFake = value.matches.every(function (match) {
 						return tomorow != match.date;
 					});
-					if (key == 12 && !isFake) {
+					if (key == 38 && !isFake) {
 						return React.createElement(
 							"section",
 							{ className: "League", key: key, style: { pointerEvents: scroll.pointerEvents ? "all" : "none" } },

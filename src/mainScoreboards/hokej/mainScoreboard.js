@@ -3,7 +3,7 @@ const { useState, useEffect, createRoot, useRef } = React
 
 const queryClient = new QueryClient()
 
-const MainScoreboard = (props) => {
+const MainScoreboard = () => {
 	const days = ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"]
 	let date = new Date()
 
@@ -48,6 +48,13 @@ const MainScoreboard = (props) => {
 
 	const isOnlineLeague = (key) => {
 		return onlineLeagues.some((item) => item === key)
+	}
+
+	const isOnHomepage = (key) => {
+		if (typeof isHomepage != "undefined") {
+			return isHomepage
+		}
+		return false
 	}
 
 	const renderOnPage = () => {
@@ -225,7 +232,7 @@ const MainScoreboard = (props) => {
 		}
 	}
 
-	const getTipsportMeasureCodes = (key) => {
+	const getTipsportMeasureCodes = () => {
 		return {
 			before: "?pid=61&sid=45&bid=2405&tid=1721",
 			live: "?pid=61&sid=45&bid=2429&tid=1761",
@@ -640,15 +647,6 @@ const MainScoreboard = (props) => {
 																		</div>
 																	</div>
 																)}
-																{/* {match.bets.tipsport.link != null && match.match_status == "live" && (
-																	<div
-																		onClick={(e) => handleMatchClick(e, `https://www.tipsport.cz/live/ledni-hokej-23${getTipsportMeasureCodes(key).live}`, true)}
-																		className="match-tab match-tab--tipsport"
-																	>
-																		<img src="../img/icoTipsport.svg" alt="" />
-																		<p>Livesázka</p>
-																	</div>
-																)} */}
 																{match.match_status == "po zápase" && value.league_name == "Tipsport extraliga" && (
 																	<div onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/tv/hokejka/category/14`)} className="match-tab">
 																		<img src="../img/icoPlayBlack.svg" alt="" />
@@ -832,15 +830,6 @@ const MainScoreboard = (props) => {
 																			<p>Text</p>
 																		</div>
 																	)}
-																	{/* {match.bets.tipsport.link != null && match.match_status == "live" && (
-																		<div
-																			onClick={(e) => handleMatchClick(e, `https://www.tipsport.cz/live/ledni-hokej-23${getTipsportMeasureCodes(key).live}`, true)}
-																			className="match-tab match-tab--tipsport"
-																		>
-																			<img src="../img/icoTipsport.svg" alt="" />
-																			<p>Livesázka</p>
-																		</div>
-																	)} */}
 																	{match.match_status == "po zápase" && (
 																		<div onClick={(e) => handleMatchClick(e, `https://www.hokej.cz/zapas/${match.hokejcz_id}/`)} className="match-tab">
 																			<img src="../img/icoSummary.svg" alt="" />
@@ -864,6 +853,18 @@ const MainScoreboard = (props) => {
 						<div className="scoreBoard-buttonsContainer">
 							<ScoreboardButton link={buttonsUrl ? buttonsUrl.url.matches : "#"} label={"Rozpis zápasů"} />
 							<ScoreboardButton link={buttonsUrl ? buttonsUrl.url.table : "#"} label={"Tabulka soutěže"} />
+							{isOnHomepage() && (
+								<ScoreboardButton
+									link="https://www.tipsport.cz/PartnerRedirectAction.do?pid=61&sid=45&bid=2226&tid=11686&kwid=31965"
+									label={"Tipuj na zápasy MS"}
+									icon={
+										<React.Fragment>
+											<img src="../img/icoTipsport.svg" alt="" />
+											<img src="https://ban.tipsport.cz/c/1x1.php?pid=61&sid=45&bid=2226&tid=11686&kwid=33788" alt="" title="" style={{ display: "none" }} />
+										</React.Fragment>
+									}
+								/>
+							)}
 						</div>
 					)}
 				</section>
@@ -872,8 +873,9 @@ const MainScoreboard = (props) => {
 	)
 }
 
-const ScoreboardButton = ({ link, label }) => (
+const ScoreboardButton = ({ link, label, icon }) => (
 	<a href={link} className="scoreBoard-button">
+		{icon}
 		{label}
 	</a>
 )

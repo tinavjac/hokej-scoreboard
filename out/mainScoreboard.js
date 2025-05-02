@@ -13,7 +13,7 @@ var _React = React,
 
 var queryClient = new QueryClient();
 
-var MainScoreboard = function MainScoreboard(props) {
+var MainScoreboard = function MainScoreboard() {
 	var days = ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"];
 	var date = new Date();
 
@@ -72,6 +72,13 @@ var MainScoreboard = function MainScoreboard(props) {
 		return onlineLeagues.some(function (item) {
 			return item === key;
 		});
+	};
+
+	var isOnHomepage = function isOnHomepage(key) {
+		if (typeof isHomepage != "undefined") {
+			return isHomepage;
+		}
+		return false;
 	};
 
 	var renderOnPage = function renderOnPage() {
@@ -304,7 +311,7 @@ var MainScoreboard = function MainScoreboard(props) {
 		}
 	};
 
-	var getTipsportMeasureCodes = function getTipsportMeasureCodes(key) {
+	var getTipsportMeasureCodes = function getTipsportMeasureCodes() {
 		return {
 			before: "?pid=61&sid=45&bid=2405&tid=1721",
 			live: "?pid=61&sid=45&bid=2429&tid=1761"
@@ -1188,7 +1195,17 @@ var MainScoreboard = function MainScoreboard(props) {
 				"div",
 				{ className: "scoreBoard-buttonsContainer" },
 				React.createElement(ScoreboardButton, { link: buttonsUrl ? buttonsUrl.url.matches : "#", label: "Rozpis zápasů" }),
-				React.createElement(ScoreboardButton, { link: buttonsUrl ? buttonsUrl.url.table : "#", label: "Tabulka soutěže" })
+				React.createElement(ScoreboardButton, { link: buttonsUrl ? buttonsUrl.url.table : "#", label: "Tabulka soutěže" }),
+				isOnHomepage() && React.createElement(ScoreboardButton, {
+					link: "https://www.tipsport.cz/PartnerRedirectAction.do?pid=61&sid=45&bid=2226&tid=11686&kwid=31965",
+					label: "Tipuj na zápasy MS",
+					icon: React.createElement(
+						React.Fragment,
+						null,
+						React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
+						React.createElement("img", { src: "https://ban.tipsport.cz/c/1x1.php?pid=61&sid=45&bid=2226&tid=11686&kwid=33788", alt: "", title: "", style: { display: "none" } })
+					)
+				})
 			)
 		)
 	);
@@ -1196,10 +1213,12 @@ var MainScoreboard = function MainScoreboard(props) {
 
 var ScoreboardButton = function ScoreboardButton(_ref9) {
 	var link = _ref9.link,
-	    label = _ref9.label;
+	    label = _ref9.label,
+	    icon = _ref9.icon;
 	return React.createElement(
 		"a",
 		{ href: link, className: "scoreBoard-button" },
+		icon,
 		label
 	);
 };

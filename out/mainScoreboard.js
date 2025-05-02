@@ -1203,7 +1203,7 @@ var MainScoreboard = function MainScoreboard() {
 						React.Fragment,
 						null,
 						React.createElement("img", { src: "../img/icoTipsport.svg", alt: "" }),
-						React.createElement("img", { src: "https://ban.tipsport.cz/c/1x1.php?pid=61&sid=45&bid=2226&tid=11686&kwid=33788", alt: "", title: "", style: { display: "none" } })
+						React.createElement("img", { src: "https://ban.tipsport.cz/c/1x1.php?pid=61&sid=45&bid=2226&tid=11686&kwid=33788", alt: "", title: "", style: { width: 0, height: 0 } })
 					)
 				})
 			)

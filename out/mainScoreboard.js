@@ -74,7 +74,7 @@ var MainScoreboard = function MainScoreboard() {
 		});
 	};
 
-	var isOnHomepage = function isOnHomepage(key) {
+	var isOnHomepage = function isOnHomepage() {
 		if (typeof isHomepage != "undefined") {
 			return isHomepage;
 		}
@@ -1198,7 +1198,8 @@ var MainScoreboard = function MainScoreboard() {
 				React.createElement(ScoreboardButton, { link: buttonsUrl ? buttonsUrl.url.table : "#", label: "Tabulka soutěže" }),
 				isOnHomepage() && React.createElement(ScoreboardButton, {
 					link: "https://www.tipsport.cz/PartnerRedirectAction.do?pid=61&sid=45&bid=2226&tid=11686&kwid=31965",
-					label: "Tipuj na zápasy MS",
+					label: "Tipuj na z\xE1pasy MS",
+					target: "_blank",
 					icon: React.createElement(
 						React.Fragment,
 						null,
@@ -1214,10 +1215,11 @@ var MainScoreboard = function MainScoreboard() {
 var ScoreboardButton = function ScoreboardButton(_ref9) {
 	var link = _ref9.link,
 	    label = _ref9.label,
-	    icon = _ref9.icon;
+	    icon = _ref9.icon,
+	    target = _ref9.target;
 	return React.createElement(
 		"a",
-		{ href: link, className: "scoreBoard-button" },
+		{ href: link, className: "scoreBoard-button", target: target },
 		icon,
 		label
 	);

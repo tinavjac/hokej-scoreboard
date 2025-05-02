@@ -112,7 +112,7 @@ var TopScoreboard = function TopScoreboard() {
 	return React.createElement(
 		React.Fragment,
 		null,
-		todayQuery.data != undefined && !Object.keys(todayQuery.data).includes("12") || tomorowQuery.data != undefined && Object.keys(tomorowQuery.data).includes("12") ? React.createElement(
+		todayQuery.data != undefined && Object.keys(todayQuery.data).includes("12") || tomorowQuery.data != undefined && Object.keys(tomorowQuery.data).includes("12") ? React.createElement(
 			"div",
 			{ className: "topScoreboard-container ms" },
 			React.createElement(
@@ -138,7 +138,7 @@ var TopScoreboard = function TopScoreboard() {
 					var isFake = value.matches.every(function (match) {
 						return today != match.date;
 					});
-					if (key == 38 && !isFake) {
+					if (key == 12 && !isFake) {
 						return React.createElement(
 							"section",
 							{ className: "League", key: key, style: { pointerEvents: scroll.pointerEvents ? "all" : "none" } },
@@ -222,7 +222,7 @@ var TopScoreboard = function TopScoreboard() {
 					var isFake = value.matches.every(function (match) {
 						return tomorow != match.date;
 					});
-					if (key == 38 && !isFake) {
+					if (key == 12 && !isFake) {
 						return React.createElement(
 							"section",
 							{ className: "League", key: key, style: { pointerEvents: scroll.pointerEvents ? "all" : "none" } },

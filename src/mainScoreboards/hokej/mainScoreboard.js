@@ -50,7 +50,7 @@ const MainScoreboard = () => {
 		return onlineLeagues.some((item) => item === key)
 	}
 
-	const isOnHomepage = (key) => {
+	const isOnHomepage = () => {
 		if (typeof isHomepage != "undefined") {
 			return isHomepage
 		}
@@ -856,7 +856,8 @@ const MainScoreboard = () => {
 							{isOnHomepage() && (
 								<ScoreboardButton
 									link="https://www.tipsport.cz/PartnerRedirectAction.do?pid=61&sid=45&bid=2226&tid=11686&kwid=31965"
-									label={"Tipuj na zápasy MS"}
+									label="Tipuj na zápasy MS"
+									target="_blank"
 									icon={
 										<React.Fragment>
 											<img src="../img/icoTipsport.svg" alt="" />
@@ -873,8 +874,8 @@ const MainScoreboard = () => {
 	)
 }
 
-const ScoreboardButton = ({ link, label, icon }) => (
-	<a href={link} className="scoreBoard-button">
+const ScoreboardButton = ({ link, label, icon, target }) => (
+	<a href={link} className="scoreBoard-button" target={target}>
 		{icon}
 		{label}
 	</a>

@@ -83,7 +83,7 @@ const TopScoreboard = () => {
 
 	return (
 		<React.Fragment>
-			{(todayQuery.data != undefined && !Object.keys(todayQuery.data).includes("12")) ||
+			{(todayQuery.data != undefined && Object.keys(todayQuery.data).includes("12")) ||
 			(tomorowQuery.data != undefined && Object.keys(tomorowQuery.data).includes("12")) ? (
 				<div className="topScoreboard-container ms">
 					<section
@@ -102,7 +102,7 @@ const TopScoreboard = () => {
 								let isFake = value.matches.every((match) => {
 									return today != match.date
 								})
-								if (key == 38 && !isFake) {
+								if (key == 12 && !isFake) {
 									return (
 										<section className="League" key={key} style={{ pointerEvents: scroll.pointerEvents ? "all" : "none" }}>
 											<div className={"league-name"}>
@@ -158,7 +158,7 @@ const TopScoreboard = () => {
 								let isFake = value.matches.every((match) => {
 									return tomorow != match.date
 								})
-								if (key == 38 && !isFake) {
+								if (key == 12 && !isFake) {
 									return (
 										<section className="League" key={key} style={{ pointerEvents: scroll.pointerEvents ? "all" : "none" }}>
 											<div className={"league-name"}>

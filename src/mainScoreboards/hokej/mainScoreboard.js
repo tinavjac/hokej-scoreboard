@@ -1,7 +1,14 @@
 const { QueryClient, QueryClientProvider, useQuery } = ReactQuery
-const { useState, useEffect, createRoot, useRef } = React
+const { useState, useEffect, useRef } = React
 
 const queryClient = new QueryClient()
+
+const tipsportMeasureCodesRegex = /(?:pid=\d+|sid=\d+|bid=\d+|tid=\d+)(?:&(?:pid=\d+|sid=\d+|bid=\d+|tid=\d+)){3}/
+
+const tipsportMeasureCodes = {
+	before: "pid=61&sid=45&bid=2405&tid=1721",
+	live: "pid=61&sid=45&bid=2429&tid=1761",
+}
 
 const MainScoreboard = () => {
 	const days = ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"]
@@ -232,17 +239,18 @@ const MainScoreboard = () => {
 		}
 	}
 
-	const getTipsportMeasureCodes = () => {
-		return {
-			before: "?pid=61&sid=45&bid=2405&tid=1721",
-			live: "?pid=61&sid=45&bid=2429&tid=1761",
-		}
-	}
-
 	const getLiveBets = (id) => {
 		if (liveBets && Object.keys(liveBets).some((key) => key == id)) {
 			return liveBets[id]
 		}
+	}
+
+	const getTipsportUrl = (url, matchState) => {
+		if (tipsportMeasureCodesRegex.test(url)) {
+			return url
+		}
+
+		return `${url}${url.includes("?") ? "&" : "?"}${tipsportMeasureCodes[matchState]}`
 	}
 
 	useEffect(() => {
@@ -252,6 +260,7 @@ const MainScoreboard = () => {
 	}, [APIDate])
 
 	const [scoreboardWidth, setScoreboardWidth] = useState(undefined)
+
 	useEffect(() => {
 		if (MainScoreboard.current) {
 			setScoreboardWidth(MainScoreboard.current.clientWidth)
@@ -623,7 +632,7 @@ const MainScoreboard = () => {
 																)}
 																{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
 																	<div
-																		onClick={(e) => handleMatchClick(e, `${match.bets.tipsport.link}${getTipsportMeasureCodes(key).before}`, true)}
+																		onClick={(e) => handleMatchClick(e, getTipsportUrl(match.bets.tipsport.link, "before"), true)}
 																		className="match-tab match-tab--tipsport"
 																	>
 																		<img src="../img/icoTipsport.svg" alt="" />
@@ -636,7 +645,7 @@ const MainScoreboard = () => {
 																)}
 																{match.match_status == "live" && getLiveBets(match.onlajny_id) && (
 																	<div
-																		onClick={(e) => handleMatchClick(e, `${getLiveBets(match.onlajny_id).link}${getTipsportMeasureCodes(key).live}`, true)}
+																		onClick={(e) => handleMatchClick(e, getTipsportUrl(getLiveBets(match.onlajny_id).link, "live"), true)}
 																		className="match-tab match-tab--tipsport"
 																	>
 																		<img src="../img/icoTipsport.svg" alt="" />
@@ -800,7 +809,7 @@ const MainScoreboard = () => {
 																	)}
 																	{match.bets.tipsport.link != null && match.match_status == "před zápasem" && (
 																		<div
-																			onClick={(e) => handleMatchClick(e, `${match.bets.tipsport.link}${getTipsportMeasureCodes(key).before}`, true)}
+																			onClick={(e) => handleMatchClick(e, getTipsportUrl(match.bets.tipsport.link, "before"), true)}
 																			className="match-tab match-tab--tipsport"
 																		>
 																			<img src="../img/icoTipsport.svg" alt="" />
@@ -813,7 +822,7 @@ const MainScoreboard = () => {
 																	)}
 																	{match.match_status == "live" && getLiveBets(match.onlajny_id) && (
 																		<div
-																			onClick={(e) => handleMatchClick(e, `${getLiveBets(match.onlajny_id).link}${getTipsportMeasureCodes(key).live}`, true)}
+																			onClick={(e) => handleMatchClick(e, getTipsportUrl(getLiveBets(match.onlajny_id).link, "live"), true)}
 																			className="match-tab match-tab--tipsport"
 																		>
 																			<img src="../img/icoTipsport.svg" alt="" />

@@ -7,11 +7,17 @@ var _ReactQuery = ReactQuery,
 var _React = React,
     useState = _React.useState,
     useEffect = _React.useEffect,
-    createRoot = _React.createRoot,
     useRef = _React.useRef;
 
 
 var queryClient = new QueryClient();
+
+var tipsportMeasureCodesRegex = /(?:pid=\d+|sid=\d+|bid=\d+|tid=\d+)(?:&(?:pid=\d+|sid=\d+|bid=\d+|tid=\d+)){3}/;
+
+var tipsportMeasureCodes = {
+	before: "pid=61&sid=45&bid=2405&tid=1721",
+	live: "pid=61&sid=45&bid=2429&tid=1761"
+};
 
 var MainScoreboard = function MainScoreboard() {
 	var days = ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"];
@@ -311,19 +317,20 @@ var MainScoreboard = function MainScoreboard() {
 		}
 	};
 
-	var getTipsportMeasureCodes = function getTipsportMeasureCodes() {
-		return {
-			before: "?pid=61&sid=45&bid=2405&tid=1721",
-			live: "?pid=61&sid=45&bid=2429&tid=1761"
-		};
-	};
-
 	var getLiveBets = function getLiveBets(id) {
 		if (liveBets && Object.keys(liveBets).some(function (key) {
 			return key == id;
 		})) {
 			return liveBets[id];
 		}
+	};
+
+	var getTipsportUrl = function getTipsportUrl(url, matchState) {
+		if (tipsportMeasureCodesRegex.test(url)) {
+			return url;
+		}
+
+		return "" + url + (url.includes("?") ? "&" : "?") + tipsportMeasureCodes[matchState];
 	};
 
 	useEffect(function () {
@@ -840,7 +847,7 @@ var MainScoreboard = function MainScoreboard() {
 											"div",
 											{
 												onClick: function onClick(e) {
-													return handleMatchClick(e, "" + match.bets.tipsport.link + getTipsportMeasureCodes(key).before, true);
+													return handleMatchClick(e, getTipsportUrl(match.bets.tipsport.link, "before"), true);
 												},
 												className: "match-tab match-tab--tipsport"
 											},
@@ -869,7 +876,7 @@ var MainScoreboard = function MainScoreboard() {
 											"div",
 											{
 												onClick: function onClick(e) {
-													return handleMatchClick(e, "" + getLiveBets(match.onlajny_id).link + getTipsportMeasureCodes(key).live, true);
+													return handleMatchClick(e, getTipsportUrl(getLiveBets(match.onlajny_id).link, "live"), true);
 												},
 												className: "match-tab match-tab--tipsport"
 											},
@@ -1105,7 +1112,7 @@ var MainScoreboard = function MainScoreboard() {
 												"div",
 												{
 													onClick: function onClick(e) {
-														return handleMatchClick(e, "" + match.bets.tipsport.link + getTipsportMeasureCodes(key).before, true);
+														return handleMatchClick(e, getTipsportUrl(match.bets.tipsport.link, "before"), true);
 													},
 													className: "match-tab match-tab--tipsport"
 												},
@@ -1134,7 +1141,7 @@ var MainScoreboard = function MainScoreboard() {
 												"div",
 												{
 													onClick: function onClick(e) {
-														return handleMatchClick(e, "" + getLiveBets(match.onlajny_id).link + getTipsportMeasureCodes(key).live, true);
+														return handleMatchClick(e, getTipsportUrl(getLiveBets(match.onlajny_id).link, "live"), true);
 													},
 													className: "match-tab match-tab--tipsport"
 												},
